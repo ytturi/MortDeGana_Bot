@@ -13,12 +13,10 @@ def get_logging_options(config):
     if config.has_section(section):
         if config.has_option(section, 'level'):
             log_level = config.get(section, 'level')
-            print(log_level.upper() in levels)
             if log_level.upper() in levels:
                 log_level = levels[log_level]
         if config.has_option(section, 'format'):
             log_format = config.get(section, 'level')
-    print(log_level)
 
     # Return values
     return log_level, log_format
