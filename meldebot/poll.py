@@ -8,11 +8,11 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 POLL_KEYBOARD = InlineKeyboardMarkup([
     [
         InlineKeyboardButton('MEL', callback_data='vote MEL'),
-        InlineKeyboardButton('MEL + X', switch_inline_query_current_chat="vote MEL+X"),
-        InlineKeyboardButton('MOTO', callback_data='vote MOTO'),
+        InlineKeyboardButton('MEL + 1', callback_data="vote MEL+1"),
+        InlineKeyboardButton('MEL - 1', callback_data="vote MEL-1"),
     ],
     [
-        InlineKeyboardButton('END', callback_data='end')
+        InlineKeyboardButton('MOTO', callback_data='vote MOTO'),
     ],
 ])
 
@@ -91,16 +91,29 @@ def insert_user_in_result(results, result_idx, user, extra=False):
             if user in vote:
                 user_vote_idx = idx
         return user_vote_idx
-    # Make vote text
+
+    def get_user_extra_vote(arr, user):
+        idx = search_user_vote(arr, user)   # Search vote
+        if idx is False:
+            return 0
+        vote = arr[idx][len(user)+2:]       # Remove username from vote
+        vote.strip()
+        return int(vote) if vote else 0     # If any vote, parse to int
+
+    # Init vote text
     text = '@{}'.format(user)
-    if extra:
-        text += "+{}".format(extra)
     # Update results
     votes = result_user_votes(results[result_idx])
     ## Find last vote (if any)
     user_vote_idx = search_user_vote(votes, user)
+    import pudb;pu.db
     if user_vote_idx is not False:
-        # IF exists, replace it
+        # IF exists
+        if extra:
+            # If extra, update it
+            extra = extra + get_user_extra_vote(votes, user)
+            if extra and extra > 0: # Can't set lower than 0
+                text += '+{}'.format(extra)
         votes[user_vote_idx] = text
         results[result_idx] = ','.join(votes) # UPDATE
     else:
@@ -117,21 +130,14 @@ def insert_user_in_result(results, result_idx, user, extra=False):
     results[other_idx] = ','.join(votes) # UPDATE
     return results
 
-def parse_extra_vote(extra):
-    # DEFAULT="vote MEL"
-    # EXTRA="vote MEL+X", append the X
-    if extra and '+' in extra:
-        return int(extra[extra.index('+')+1:]) #TRUST
-    return 0
-
 def update_poll_message(text, user, query):
     question = text.split('\n')[:-4] 
     results = text.split('\n')[-3:]
     results = [results[0], results[-1]]
-    # DATA="vote [MEL|MOTO]"
+    # DATA="vote [MEL|MOTO|MEL+1|MEL-1]"
     vote = query.data[5:]
     if "MEL" in vote:
-        extra = parse_extra_vote(vote[3:])
+        extra = int(vote[3:]) if vote[3:] else 0
         results = insert_user_in_result(
             results, 0, user=user, extra=extra
         )
@@ -143,7 +149,6 @@ def update_poll_message(text, user, query):
 
 
 def vote_poll(bot, update):
-    import pudb;pu.db
     message_text = update_poll_message(
         text=update.effective_message.text,
         user=update.effective_user.username,
