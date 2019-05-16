@@ -1,24 +1,19 @@
-from configparser import ConfigParser
 from telegram.ext import Updater
-from os.path import expanduser
 import logging
 
 # Self-imports
-from confs import get_logging_options
+from confs import get_logging_options, get_telegram_token
 from mel import mel_handler
 from poll import poll_handlers
 
 # Main Process
 if __name__ == '__main__':
-    # Init confs
-    config = ConfigParser()
-    config.read(['mortdegana.cfg', expanduser('~/.mortdegana.cfg')])
     # Init logger
-    log_level, log_format = get_logging_options(config)
+    log_level, log_format = get_logging_options()
     logging.basicConfig(level=log_level,format=log_format)
     logger = logging.getLogger('INIT')
     # Init listener
-    TOKEN = config.defaults().get("token", False)
+    TOKEN = get_telegram_token()
     if not TOKEN:
         logger.critical("No token provided! Add a token at the config file: '~/.mortdegana.cfg'")
         exit(-1)

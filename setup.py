@@ -9,5 +9,6 @@ setup(
         "click",
         "python-telegram-bot",
         "ConfigParser",
+        "requests",
     ]
 )

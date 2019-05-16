@@ -164,7 +164,8 @@ def vote_poll(bot, update):
         reply_markup=POLL_KEYBOARD
     )
     if 'MOTO' in update.callback_query.data:
-        update.effective_message.reply_animation(get_gif_url())
+        update.effective_message.reply_animation(
+            get_gif_url(['crash', 'motorbike']))
 
 
 POLL_VOTE_HANDLER = CallbackQueryHandler(vote_poll, pattern=r'^vote')

@@ -1,4 +1,10 @@
-def get_logging_options(config):
+from configparser import ConfigParser
+from os.path import expanduser
+
+config = ConfigParser()
+config.read(['mortdegana.cfg', expanduser('~/.mortdegana.cfg')])
+
+def get_logging_options():
     from logging import INFO, DEBUG, CRITICAL
     # Defaults
     log_level = INFO
@@ -20,3 +26,9 @@ def get_logging_options(config):
 
     # Return values
     return log_level, log_format
+
+def get_telegram_token():
+    return config.defaults().get("telegram_token", False)
+
+def get_giphy_api_key():
+    return config.defaults().get("giphy_api_key", False)
