@@ -1,8 +1,20 @@
 from configparser import ConfigParser
 from os.path import expanduser
 
+SAMPLE_CFG = """[DEFAULT]
+telegram_token: <InsertTelegramBotToken>
+giphy_api_key: <InsertGiphyAPIKey>
+[LOGGING]
+level: INFO
+format: [%(asctime)s][%(name)s][%(levelname)s]: %(message)s
+"""
+
 config = ConfigParser()
 config.read(['mortdegana.cfg', expanduser('~/.mortdegana.cfg')])
+
+def init_configs():
+    with open('mortdegana.cfg', 'w') as cfg:
+        cfg.write(SAMPLE_CFG)
 
 def get_logging_options():
     from logging import INFO, DEBUG, CRITICAL
