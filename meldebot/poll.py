@@ -1,6 +1,9 @@
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
+# Self imports
+from mel import get_gif_url
+
 
 # Mort de Gana POLL MANAGER
 
@@ -106,7 +109,6 @@ def insert_user_in_result(results, result_idx, user, extra=False):
     votes = result_user_votes(results[result_idx])
     ## Find last vote (if any)
     user_vote_idx = search_user_vote(votes, user)
-    import pudb;pu.db
     if user_vote_idx is not False:
         # IF exists
         if extra:
@@ -118,6 +120,9 @@ def insert_user_in_result(results, result_idx, user, extra=False):
         results[result_idx] = ','.join(votes) # UPDATE
     else:
         # IF not exists, ADD the new vote
+        # IF extra, add it
+        if extra and extra > 0: # Can't set lower than 0
+            text += '+{}'.format(extra)
         votes.append(text)
         votes = sorted(votes)                   # SORT
         results[result_idx] = ','.join(votes) # UPDATE
@@ -158,6 +163,8 @@ def vote_poll(bot, update):
         text=message_text,
         reply_markup=POLL_KEYBOARD
     )
+    if 'MOTO' in update.callback_query.data:
+        update.effective_message.reply_animation(get_gif_url())
 
 
 POLL_VOTE_HANDLER = CallbackQueryHandler(vote_poll, pattern=r'^vote')
