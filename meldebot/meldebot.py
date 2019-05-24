@@ -5,7 +5,11 @@ import click
 # Self-imports
 from confs import get_logging_options, get_telegram_token, init_configs
 from mel import mel_handler
+from haces_cosas import hc_handler
+from tuquiets import tuquiets_handler
 from poll import poll_handlers
+
+MEL_HANDLERS = [mel_handler, hc_handler, tuquiets_handler]
 
 @click.command()
 @click.option(
