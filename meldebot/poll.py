@@ -154,9 +154,12 @@ def update_poll_message(text, user, query):
 
 
 def vote_poll(bot, update):
+    username = update.effective_user.username
+    if username is None:
+        username = update.effective_user.full_name
     message_text = update_poll_message(
         text=update.effective_message.text,
-        user=update.effective_user.username,
+        user=username,
         query=update.callback_query
     )
     update.effective_message.edit_text(
