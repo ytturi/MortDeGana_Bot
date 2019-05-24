@@ -51,7 +51,9 @@ def listener(init_config, verbose, debug, token):
     #   ADD Handler for "hello"
     for handler in poll_handlers:
         updater.dispatcher.add_handler(handler)
-    updater.dispatcher.add_handler(mel_handler)
+
+    for handler in MEL_HANDLERS:
+        updater.dispatcher.add_handler(handler)
     #   Listen till end
     updater.start_polling()
     updater.idle()
