@@ -3,7 +3,8 @@ import logging
 import click
 
 # Self-imports
-from confs import get_logging_options, get_telegram_token, init_configs
+from confs import get_logging_options, get_telegram_token
+from confs import read_configs, init_configs
 from mel import mel_handler
 from haces_cosas import hc_handler
 from tuquiets import tuquiets_handler
@@ -12,6 +13,8 @@ from poll import poll_handlers
 MEL_HANDLERS = [mel_handler, hc_handler, tuquiets_handler]
 
 @click.command()
+@click.option(
+    '-c', '--config', type=str, help='Use config file')
 @click.option(
     '-i', '--init-config', 'init_config', is_flag=True,
     default=False, help="Initialize config file")
@@ -24,7 +27,9 @@ MEL_HANDLERS = [mel_handler, hc_handler, tuquiets_handler]
 @click.option(
     '-t', '--token',
     default=False, help="Set telegram token instead of using a config file")
-def listener(init_config, verbose, debug, token):
+def listener(config, init_config, verbose, debug, token):
+    # Init configs
+    read_configs(config)
     # Init logger
     log_level, log_format = get_logging_options()
     if verbose:

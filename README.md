@@ -39,3 +39,26 @@ Just send a random GIF. It uses a 100 random seed with one of the following sear
 ## TODO: Spam prevention
 
 In order to avoid spam by other bot commands, repeated messages will be erased. Also warns the admins of this behaviour.
+
+
+----
+
+## Bot usage
+
+```
+Usage: meldebot.py [OPTIONS]
+
+Options:
+  -c, --config TEXT  Use config file
+  -i, --init-config  Initialize config file
+  -v, --verbose      Override verbosity level for the logger to INFO
+  -d, --debug        Override verbosity level for the logger to DEBUG
+  -t, --token TEXT   Set telegram token instead of using a config file
+  --help             Show this message and exit.
+```
+
+### Installation
+
+1. Clone from repo
+2. Install as a package (`pip install .`)
+
