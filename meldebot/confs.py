@@ -1,6 +1,8 @@
 from configparser import ConfigParser
 from os.path import expanduser
 
+import logging
+
 SAMPLE_CFG = """[DEFAULT]
 telegram_token: <InsertTelegramBotToken>
 giphy_api_key: <InsertGiphyAPIKey>
@@ -22,14 +24,13 @@ def init_configs():
         cfg.write(SAMPLE_CFG)
 
 def get_logging_options():
-    from logging import INFO, DEBUG, CRITICAL
     # Defaults
-    log_level = INFO
+    log_level = logging.INFO
     log_format = '[%(asctime)s][%(name)s][%(levelname)s]: %(message)s'
     levels = {
-        'DEBUG': DEBUG,
-        'INFO': INFO,
-        'CRITICAL': CRITICAL
+        'DEBUG': logging.DEBUG,
+        'INFO': logging.INFO,
+        'CRITICAL': logging.CRITICAL
     }
     # Get from configs
     section = 'LOGGING'
@@ -40,9 +41,22 @@ def get_logging_options():
                 log_level = levels[log_level]
         if config.has_option(section, 'format'):
             log_format = config.get(section, 'level')
+    else:
+        config.add_section(section)
+        config.set(section, 'level', str(log_level))
+        config.set(section, 'format', log_format)
 
     # Return values
     return log_level, log_format
+
+def init_logger(verbose, debug):
+    log_level, log_format = get_logging_options()
+    if verbose:
+        log_level = logging.INFO
+    if debug:
+        log_level = logging.DEBUG
+    config.set('LOGGING', 'level', str(logging.getLevelName(log_level)))
+    logging.basicConfig(level=log_level,format=log_format)
 
 def get_telegram_token():
     return config.defaults().get("telegram_token", False)

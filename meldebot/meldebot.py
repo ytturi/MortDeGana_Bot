@@ -4,7 +4,7 @@ import click
 
 # Self-imports
 from confs import get_logging_options, get_telegram_token
-from confs import read_configs, init_configs
+from confs import read_configs, init_configs, init_logger
 from mel import mel_handler
 from haces_cosas import hc_handler
 from tuquiets import tuquiets_handler
@@ -31,12 +31,7 @@ def listener(config, init_config, verbose, debug, token):
     # Init configs
     read_configs(config)
     # Init logger
-    log_level, log_format = get_logging_options()
-    if verbose:
-        log_level = logging.INFO
-    if debug:
-        log_level = logging.DEBUG
-    logging.basicConfig(level=log_level,format=log_format)
+    init_logger(verbose, debug)
     logger = logging.getLogger('INIT')
     # Init Configs
     if init_config:
