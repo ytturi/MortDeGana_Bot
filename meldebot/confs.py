@@ -10,7 +10,12 @@ format: [%(asctime)s][%(name)s][%(levelname)s]: %(message)s
 """
 
 config = ConfigParser()
-config.read(['mortdegana.cfg', expanduser('~/.mortdegana.cfg')])
+
+def read_configs(path=False):
+    if not path:
+        config.read(['mortdegana.cfg', expanduser('~/.mortdegana.cfg')])
+    else:
+        config.read(path)
 
 def init_configs():
     with open('mortdegana.cfg', 'w') as cfg:
