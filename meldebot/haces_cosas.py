@@ -30,7 +30,6 @@ def get_random_phrase():
 
 def get_hc_text(bot, update):
     phrase = get_random_phrase()
-    print(phrase)
     update.message.reply_text(phrase)
 
 hc_handler = CommandHandler('hacescosas', get_hc_text)
