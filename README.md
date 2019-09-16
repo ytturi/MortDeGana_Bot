@@ -1,6 +1,8 @@
-> WIP: This bot is on WIP and does not even have a 0.X version. :persevere:
-
 # Mel De Bot
+
+> WE HAVE A BUILD!
+
+<img src="https://travis-ci.org/ytturi/MortDeGana_Bot.svg?branch=master" alt="build:">
 
 Mel de bot covers poll needs from a bot. It has 2 funcs by the moment and 1 todo:
 
@@ -46,7 +48,7 @@ In order to avoid spam by other bot commands, repeated messages will be erased. 
 ## Bot usage
 
 ```
-Usage: meldebot.py [OPTIONS]
+Usage: meldebot [OPTIONS]
 
 Options:
   -c, --config TEXT  Use config file
@@ -62,3 +64,11 @@ Options:
 1. Clone from repo
 2. Install as a package (`pip install .`)
 
+### Tests
+
+Integrity test: `python setup.py test`
+Functionallity test:
+```
+pip install -r dev_requirements.txt
+mamba spec/test_*
+```

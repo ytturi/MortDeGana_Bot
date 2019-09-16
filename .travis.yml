@@ -1,0 +1,9 @@
+
+language: python
+
+install:
+- python setup.py test
+- pip install -r dev_requirements.txt
+
+script:
+- mamba spec/test_*

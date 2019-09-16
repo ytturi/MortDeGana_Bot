@@ -1,5 +1,7 @@
 from setuptools import setup, find_packages
 
+with open('dev_requirements.txt', 'r') as dev_deps:
+    test_deps = [dep.strip() for dep in dev_deps.readlines() if dep.strip()]
 
 setup(
     name='meldebot',
@@ -15,4 +17,5 @@ setup(
         [console_scripts]
         meldebot=meldebot.meldebot:listener
     ''',
+    tests_require=test_deps,
 )
