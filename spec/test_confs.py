@@ -1,7 +1,13 @@
-from meldebot import confs
 from mamba import description, context, it, before
 from os import listdir
 from expects import expect, be_true, be_false
+
+# Import from files in order to work with coverage
+import importlib.util
+spec = importlib.util.spec_from_file_location("meldebot.confs", "meldebot/confs.py")
+confs = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(confs)
+
 
 with description('Configs manager'):
     with context('Init config file'):
