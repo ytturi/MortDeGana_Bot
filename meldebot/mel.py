@@ -6,7 +6,7 @@ from logging import getLogger
 from requests import get as http_get
 
 # Self imports
-from confs import get_giphy_api_key
+from meldebot.confs import get_giphy_api_key
 
 def get_gif_url(params):
     logger = getLogger('GIF')

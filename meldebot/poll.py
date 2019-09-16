@@ -1,9 +1,9 @@
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+import logging
 
 # Self imports
-from mel import get_gif_url
-import logging
+from meldebot.mel import get_gif_url
 
 
 # Mort de Gana POLL MANAGER
