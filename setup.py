@@ -10,5 +10,9 @@ setup(
         "python-telegram-bot",
         "ConfigParser",
         "requests",
-    ]
+    ],
+    entry_points='''
+        [console_scripts]
+        meldebot=meldebot.meldebot:listener
+    ''',
 )
