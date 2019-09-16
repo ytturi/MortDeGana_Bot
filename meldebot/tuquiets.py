@@ -17,7 +17,7 @@ def get_random_name():
     name_num = randint(0, len(name) -1)
     return name[name_num]
 
-def get_tuquiets_text(bot, update):
+def get_tuquiets_text(update, context):
     _name = get_random_name()
     update.message.reply_text(_name)
 

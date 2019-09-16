@@ -49,7 +49,8 @@ def get_random_params():
         params = ['honey']
     return params
 
-def get_mel_gifs(bot, update):
+# Def Handler
+def get_mel_gifs(update, context):
     params = get_random_params()
     update.message.reply_animation(get_gif_url(params))
 

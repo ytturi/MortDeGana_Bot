@@ -3,6 +3,7 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
 # Self imports
 from mel import get_gif_url
+import logging
 
 
 # Mort de Gana POLL MANAGER
@@ -38,9 +39,9 @@ def get_answers(status=None):
     return answer
 
 
-def start_poll(bot, update, args):
+def start_poll(update, context):
     text = '{}\n{}'.format(
-        get_question(extra_text=' '.join(args)),
+        get_question(extra_text=' '.join(context.args)),
         get_answers()
     )
     message = update.message.reply_text(
@@ -153,7 +154,7 @@ def update_poll_message(text, user, query):
     return '\n'.join(question)
 
 
-def vote_poll(bot, update):
+def vote_poll(update, context):
     username = update.effective_user.username
     if username is None:
         username = update.effective_user.full_name
