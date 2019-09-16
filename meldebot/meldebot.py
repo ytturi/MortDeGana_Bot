@@ -47,7 +47,7 @@ def listener(config, init_config, verbose, debug, token):
         logger.critical("No token provided! Add a token at the config file: '~/.mortdegana.cfg'")
         exit(-1)
     logger.debug("TOKEN: {}".format(TOKEN))
-    updater = Updater(TOKEN)
+    updater = Updater(TOKEN, use_context=True)
     #   ADD Handler for "hello"
     for handler in poll_handlers:
         updater.dispatcher.add_handler(handler)

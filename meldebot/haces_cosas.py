@@ -28,7 +28,7 @@ def get_random_phrase():
     phrase_num = randint(0, len(phrase) -1)
     return phrase[phrase_num]
 
-def get_hc_text(bot, update):
+def get_hc_text(update, context):
     phrase = get_random_phrase()
     update.message.reply_text(phrase)
 
