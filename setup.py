@@ -5,7 +5,7 @@ with open('dev_requirements.txt', 'r') as dev_deps:
 
 setup(
     name='meldebot',
-    version='0.1',
+    version='1.0',
     packages=find_packages(),
     install_requires=[
         "click",
