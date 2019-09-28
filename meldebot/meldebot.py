@@ -5,17 +5,21 @@ import click
 # Self-imports
 from meldebot.confs import get_logging_options, get_telegram_token
 from meldebot.confs import read_configs, init_configs, init_logger
-from meldebot.mel import mel_handler, moto_handler
+from meldebot.flute import flute_handler
 from meldebot.haces_cosas import hc_handler
-from meldebot.tuquiets import tuquiets_handler
+from meldebot.mel import mel_handler, moto_handler
 from meldebot.poll import poll_handlers
+from meldebot.tuquiets import tuquiets_handler
 
+# Command handlers
 MEL_HANDLERS = [
+    flute_handler,
+    hc_handler,
     mel_handler,
     moto_handler,
-    hc_handler,
     tuquiets_handler
-]
+] + poll_handlers
+
 
 @click.command()
 @click.option(
@@ -53,10 +57,7 @@ def listener(config, init_config, verbose, debug, token):
         exit(-1)
     logger.debug("TOKEN: {}".format(TOKEN))
     updater = Updater(TOKEN, use_context=True)
-    #   ADD Handler for "hello"
-    for handler in poll_handlers:
-        updater.dispatcher.add_handler(handler)
-
+    #   ADD Handlers
     for handler in MEL_HANDLERS:
         updater.dispatcher.add_handler(handler)
     #   Listen till end
