@@ -17,5 +17,6 @@ setup(
         [console_scripts]
         meldebot=meldebot.meldebot:listener
     ''',
-    tests_require=test_deps,
+    #tests_require=test_deps,
+    tests_suite='spec',
 )
