@@ -1,3 +1,11 @@
+###############################################################################
+# Project: Mort de Gana Bot
+# Author: Ytturi
+# Descr: Answer command with custom GIF options from Giphy
+# Commands:
+# - MEL: Send random GIF (See `get_mel_params`)
+# - MOTO: Send motorbike GIF
+###############################################################################
 from telegram.ext import CommandHandler
 from random import randint
 from configparser import ConfigParser
@@ -49,9 +57,20 @@ def get_random_params():
         params = ['honey']
     return params
 
-# Def Handler
-def get_mel_gifs(update, context):
-    params = get_random_params()
-    update.message.reply_animation(get_gif_url(params))
+def get_gifs(opt):
+    if 'mel' in opt:
+        params = get_random_params()
+    elif 'moto' in opt:
+        params = ['crash', 'motorbike']
+    return get_gif_url(params)
 
-mel_handler = CommandHandler('mel', get_mel_gifs)
+# Def Handler
+def cb_mel_handler(update, context):
+    update.message.reply_animation(get_gifs('mel'))
+
+def cb_moto_handler(update, context):
+    update.message.reply_animation(get_gifs('moto'))
+
+
+mel_handler = CommandHandler('mel', cb_mel_handler)
+moto_handler = CommandHandler('moto', cb_moto_handler)

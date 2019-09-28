@@ -3,7 +3,7 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 import logging
 
 # Self imports
-from meldebot.mel import get_gif_url
+from meldebot.mel import get_gifs
 
 
 # Mort de Gana POLL MANAGER
@@ -169,7 +169,7 @@ def vote_poll(update, context):
     )
     if 'MOTO' in update.callback_query.data:
         update.effective_message.reply_animation(
-            get_gif_url(['crash', 'motorbike']))
+            get_gifs('moto'))
 
 
 POLL_VOTE_HANDLER = CallbackQueryHandler(vote_poll, pattern=r'^vote')
