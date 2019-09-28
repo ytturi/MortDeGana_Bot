@@ -5,12 +5,17 @@ import click
 # Self-imports
 from meldebot.confs import get_logging_options, get_telegram_token
 from meldebot.confs import read_configs, init_configs, init_logger
-from meldebot.mel import mel_handler
+from meldebot.mel import mel_handler, moto_handler
 from meldebot.haces_cosas import hc_handler
 from meldebot.tuquiets import tuquiets_handler
 from meldebot.poll import poll_handlers
 
-MEL_HANDLERS = [mel_handler, hc_handler, tuquiets_handler]
+MEL_HANDLERS = [
+    mel_handler,
+    moto_handler,
+    hc_handler,
+    tuquiets_handler
+]
 
 @click.command()
 @click.option(
