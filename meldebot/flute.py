@@ -24,7 +24,7 @@ def get_random_flute():
         'SAAFA5T_GBE', # Attack on Titan
     ]    
     vnum = randint(0,3)
-    return URLS[vnum]
+    return [URLS[vnum]]
 
 def get_video_url(opt):
     if 'flute' in opt:
