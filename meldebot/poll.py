@@ -45,7 +45,7 @@ def start_poll(update, context):
         get_answers()
     )
     message = update.message.reply_text(
-        'WIP!\n'+text,
+        text,
         reply_markup=POLL_KEYBOARD,
     )
 
