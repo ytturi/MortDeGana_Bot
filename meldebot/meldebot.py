@@ -7,7 +7,7 @@ from meldebot.confs import get_logging_options, get_telegram_token
 from meldebot.confs import read_configs, init_configs, init_logger
 from meldebot.flute import flute_handler
 from meldebot.haces_cosas import hc_handler
-from meldebot.mel import mel_handler, moto_handler
+from meldebot.mel import mel_handler, moto_handler, substitute_handler
 from meldebot.poll import poll_handlers
 from meldebot.tuquiets import tuquiets_handler
 
@@ -17,6 +17,7 @@ MEL_HANDLERS = [
     hc_handler,
     mel_handler,
     moto_handler,
+    substitute_handler,
     tuquiets_handler
 ] + poll_handlers
 
