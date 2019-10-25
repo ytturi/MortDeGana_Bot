@@ -100,8 +100,8 @@ def cb_substitute_handler(update, context):
 
     original_message = update.effective_message.reply_to_message
 
-    from_text = substitute_text.split('/')[0]
-    to_text = substitute_text.split('/')[1]
+    from_text = substitute_text.split('/', 1)[0]
+    to_text = substitute_text.split('/', 1)[1]
 
     final_text = original_message.text.replace(from_text, to_text)
     update.message.reply_text(
