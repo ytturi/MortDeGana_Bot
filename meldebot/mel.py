@@ -83,9 +83,12 @@ def get_gifs(opt):
 
 
 # Def Handler
+@send_typing_action
 def cb_mel_handler(update, context):
     update.message.reply_animation(get_gifs('mel'))
 
+
+@send_typing_action
 def cb_moto_handler(update, context):
     update.message.reply_animation(get_gifs('moto'))
 
