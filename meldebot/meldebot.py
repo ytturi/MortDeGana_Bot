@@ -65,6 +65,7 @@ def listener(config, init_config, verbose, debug, token):
     updater.start_polling()
     updater.idle()
 
+
 # Main Process
 if __name__ == '__main__':
     listener()

@@ -40,7 +40,7 @@ def get_gif_url(params):
 
     base_url = "https://api.giphy.com/v1/gifs/search"
     search_params = '+'.join(params)
-    idx=randint(1, 50)
+    idx = randint(1, 50)
     query_url = '{url}?q={search}&offset={idx}&limit=1&api_key={api}'.format(
         url=base_url, search=search_params, idx=idx, api=api_key
     )
@@ -54,6 +54,7 @@ def get_gif_url(params):
     gif_url = 'https://media.giphy.com/media/{}/giphy.gif'.format(gif_id)
     return gif_url
 
+
 def get_random_params():
     search_params = [
         'fun',
@@ -63,7 +64,7 @@ def get_random_params():
         'falling',
         'drunk'
     ]
-    param_num = randint(1,3)
+    param_num = randint(1, 3)
     params = []
     while len(params) < param_num:
         params.append(search_params[randint(0, len(search_params)-1)])
@@ -72,12 +73,14 @@ def get_random_params():
         params = ['honey']
     return params
 
+
 def get_gifs(opt):
     if 'mel' in opt:
         params = get_random_params()
     elif 'moto' in opt:
         params = ['crash', 'motorbike']
     return get_gif_url(params)
+
 
 # Def Handler
 def cb_mel_handler(update, context):
