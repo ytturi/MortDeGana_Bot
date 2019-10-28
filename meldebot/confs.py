@@ -15,15 +15,18 @@ debug: False
 
 config = ConfigParser()
 
+
 def read_configs(path=False):
     if not path:
         config.read(['mortdegana.cfg', expanduser('~/.mortdegana.cfg')])
     else:
         config.read(path)
 
+
 def init_configs():
     with open('mortdegana.cfg', 'w') as cfg:
         cfg.write(SAMPLE_CFG)
+
 
 def get_logging_options():
     # Defaults
@@ -51,6 +54,7 @@ def get_logging_options():
     # Return values
     return log_level, log_format
 
+
 def init_logger(verbose, debug):
     log_level, log_format = get_logging_options()
     if verbose:
@@ -58,10 +62,12 @@ def init_logger(verbose, debug):
     if debug:
         log_level = logging.DEBUG
     config.set('LOGGING', 'level', str(logging.getLevelName(log_level)))
-    logging.basicConfig(level=log_level,format=log_format)
+    logging.basicConfig(level=log_level, format=log_format)
+
 
 def get_telegram_token():
     return config.defaults().get("telegram_token", False)
+
 
 def get_giphy_api_key():
     return config.defaults().get("giphy_api_key", False)
