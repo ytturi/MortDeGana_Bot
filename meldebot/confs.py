@@ -9,6 +9,8 @@ giphy_api_key: <InsertGiphyAPIKey>
 [LOGGING]
 level: INFO
 format: [%(asctime)s][%(name)s][%(levelname)s]: %(message)s
+[DEVELOPMENT]
+debug: False
 """
 
 config = ConfigParser()
@@ -63,3 +65,7 @@ def get_telegram_token():
 
 def get_giphy_api_key():
     return config.defaults().get("giphy_api_key", False)
+
+
+def get_debug_enabled():
+    return config.get('DEVELOPMENT', 'debug')
