@@ -16,7 +16,7 @@ from requests import get as http_get
 from functools import wraps
 
 # Self imports
-from meldebot.confs import get_giphy_api_key
+from meldebot.confs import get_giphy_api_key, get_debug_enabled
 
 
 def send_typing_action(func):
@@ -109,7 +109,8 @@ def cb_substitute_handler(update, context):
         reply_to_message_id=original_message.message_id,
         parse_mode=telegram.ParseMode.MARKDOWN
     )
-    substitute_message.delete()
+    if not get_debug_enabled():
+        substitute_message.delete()
 
 
 mel_handler = CommandHandler('mel', cb_mel_handler)

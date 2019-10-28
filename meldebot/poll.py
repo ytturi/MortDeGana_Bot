@@ -8,7 +8,7 @@ from meldebot.mel import get_gifs
 
 # Mort de Gana POLL MANAGER
 
-## POLL KEYBOARD
+# POLL KEYBOARD
 POLL_KEYBOARD = InlineKeyboardMarkup([
     [
         InlineKeyboardButton('MEL', callback_data='vote MEL'),
@@ -20,7 +20,8 @@ POLL_KEYBOARD = InlineKeyboardMarkup([
     ],
 ])
 
-## POLL START
+# POLL START
+
 
 def get_question(extra_text):
     question = "Mel o no?\n"
@@ -49,6 +50,7 @@ def start_poll(update, context):
         reply_markup=POLL_KEYBOARD,
     )
 
+
 POLL_START_HANDLER = CommandHandler('poll', start_poll, pass_args=True)
 
 
@@ -58,11 +60,11 @@ def result_user_votes(result):
     break_idx = False
     for idx, char in enumerate(result):
         if char == '-':
-            break_idx = idx;
-            break;
+            break_idx = idx
+            break
         if char == '@':
             # If there is no result part and we reach a username
-            break;
+            break
     if break_idx is False and result:
         return result.split(',')
     break_idx += 1
@@ -72,17 +74,19 @@ def result_user_votes(result):
     else:
         return []
 
+
 def recount_result(result):
     """Parse the result line and count the votes"""
     user_votes = result_user_votes(result)
     total = 0
     for vote in user_votes:
         if not vote:
-            break;
+            break
         total += 1
         if '+' in vote:
             total += int(vote[vote.index('+')+1:])
     return total
+
 
 def insert_user_in_result(results, result_idx, user, extra=False):
     """
@@ -108,7 +112,7 @@ def insert_user_in_result(results, result_idx, user, extra=False):
     text = '@{}'.format(user)
     # Update results
     votes = result_user_votes(results[result_idx])
-    ## Find last vote (if any)
+    # Find last vote (if any)
     user_vote_idx = search_user_vote(votes, user)
     if user_vote_idx is not False:
         # IF exists
@@ -135,6 +139,7 @@ def insert_user_in_result(results, result_idx, user, extra=False):
         del votes[user_vote_idx]
     results[other_idx] = ','.join(votes) # UPDATE
     return results
+
 
 def update_poll_message(text, user, query):
     question = text.split('\n')[:-4] 

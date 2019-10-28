@@ -3,7 +3,7 @@ import logging
 import click
 
 # Self-imports
-from meldebot.confs import get_logging_options, get_telegram_token
+from meldebot.confs import get_logging_options, get_telegram_token, get_debug_enabled
 from meldebot.confs import read_configs, init_configs, init_logger
 from meldebot.flute import flute_handler
 from meldebot.haces_cosas import hc_handler
@@ -59,7 +59,10 @@ def listener(config, init_config, verbose, debug, token):
     logger.debug("TOKEN: {}".format(TOKEN))
     updater = Updater(TOKEN, use_context=True)
     #   ADD Handlers
+    debug_enabled = get_debug_enabled()
     for handler in MEL_HANDLERS:
+        if debug_enabled and hasattr(handler, 'command'):
+            handler.command = [c + '_test' for c in handler.command]
         updater.dispatcher.add_handler(handler)
     #   Listen till end
     updater.start_polling()
