@@ -1,9 +1,9 @@
 import unittest
 from os import listdir, remove
 
-from meldebot import confs
+from meldebot.mel import conf
 
-class TestConfs(unittest.TestCase):
+class TestConf(unittest.TestCase):
     def setUp(self):
         self.fname = 'mortdegana.cfg'
         try:
@@ -23,7 +23,7 @@ class TestConfs(unittest.TestCase):
     def test_create_default_file(self):
         files = [f for f in listdir() if f==self.fname]
         self.assertFalse(self.fname in files)
-        confs.init_configs()
+        conf.init_configs()
         files = [f for f in listdir() if f==self.fname]
         self.assertTrue(self.fname in files)
 

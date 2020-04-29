@@ -9,7 +9,7 @@ from telegram.ext import CommandHandler
 from random import randint
 from logging import getLogger
 
-from meldebot.confs import send_typing_action
+from meldebot.mel.conf import send_typing_action
 
 def search_video_url(params):
     # TODO: actually search the videos

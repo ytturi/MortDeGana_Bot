@@ -12,8 +12,8 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 import logging
 
 # Self imports
-from meldebot.mel import get_gifs
-from meldebot.confs import send_typing_action
+from meldebot.mel.gif import get_gifs
+from meldebot.mel.conf import send_typing_action
 
 # Mort de Gana POLL MANAGER
 

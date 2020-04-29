@@ -8,7 +8,7 @@
 ###############################################################################
 from telegram.ext import CommandHandler
 
-from meldebot.confs import send_typing_action
+from meldebot.mel.conf import send_typing_action
 
 @send_typing_action
 def cb_spoiler_handler(update, context):

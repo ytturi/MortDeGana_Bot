@@ -10,22 +10,21 @@ import logging
 import click
 
 # Self-imports
-from meldebot.confs import get_logging_options, get_telegram_token, get_debug_enabled
-from meldebot.confs import read_configs, init_configs, init_logger
-from meldebot.flute import flute_handler
-from meldebot.meldetext import TEXT_HANDLERS
-from meldebot.meldegif import GIF_HANDLERS
-from meldebot.meldereply import reply_handlers
-from meldebot.poll import POLL_HANDLERS
-from meldebot.tuquiets import 
-from meldebot.spoiler import spoiler_handlers
+from meldebot.mel.conf import read_configs, init_configs, init_logger
+from meldebot.mel.conf import get_logging_options, get_telegram_token
+from meldebot.mel.conf import get_debug_enabled
+from meldebot.mel.flute import flute_handler
+from meldebot.mel.text import TEXT_HANDLERS
+from meldebot.mel.gif import GIF_HANDLERS
+from meldebot.mel.reply import REPLY_HANDLERS
+from meldebot.mel.poll import POLL_HANDLERS
 
 # Command handlers
 MEL_HANDLERS = (
     [flute_handler]
     + TEXT_HANDLERS
     + GIF_HANDLERS
-    + reply_handlers
+    + REPLY_HANDLERS
     + POLL_HANDLERS
 )
 

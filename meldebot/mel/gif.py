@@ -15,8 +15,8 @@ from logging import getLogger
 from requests import get as http_get
 
 # Self imports
-from meldebot.confs import get_giphy_api_key, get_debug_enabled
-from meldebot.confs import send_typing_action
+from meldebot.mel.conf import get_giphy_api_key, get_debug_enabled
+from meldebot.mel.conf import send_typing_action
 
 
 def get_gif_url(params):
