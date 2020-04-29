@@ -1,0 +1,8 @@
+[DEFAULT]
+telegram_token: <InsertTelegramBotToken>
+giphy_api_key: <InsertGiphyAPIKey>
+[LOGGING]
+level: INFO
+format: [%(asctime)s][%(name)s][%(levelname)s]: %(message)s
+[DEVELOPMENT]
+debug: False

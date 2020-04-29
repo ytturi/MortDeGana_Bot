@@ -52,7 +52,7 @@ def listener(config, init_config, verbose, debug, token):
     logger = logging.getLogger('INIT')
     # Init Configs
     if init_config:
-        init_configs()
+        init_configs(config)
         logger.info("The file 'mortdegana.cfg' has been created.")
         exit(-1)
     # Init listener

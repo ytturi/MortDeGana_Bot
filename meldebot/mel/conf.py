@@ -6,7 +6,8 @@
 # Descr: Configuration management and tooling
 ###############################################################################
 from configparser import ConfigParser
-from os.path import expanduser
+from os import makedirs
+from os.path import expanduser, isfile, isdir, basename, dirname, join
 from functools import wraps
 
 import logging
@@ -24,19 +25,43 @@ debug: False
 config = ConfigParser()
 
 
-def read_configs(path=False):
-    if not path:
+def read_configs(configpath=False):
+    """Read Configurations
+
+    Keyword Arguments:
+        configpath {str} -- Path to the configuration file (default: {False})
+    """
+    if not configpath:
         config.read(['mortdegana.cfg', expanduser('~/.mortdegana.cfg')])
     else:
-        config.read(path)
+        if isfile(configpath):
+            config.read(configpath)
 
 
-def init_configs():
-    with open('mortdegana.cfg', 'w') as cfg:
+def init_configs(configpath=None):
+    """Initialize configurations
+
+    Keyword Arguments:
+        configpath {str} -- Path to the configuration file (default: {None})
+    """
+    if not configpath:
+        fname = 'mortdegana.cfg'
+        configpath = fname
+    else:
+        fname = basename(configpath)
+        pname = dirname(configpath)
+        if pname and not isdir(pname):
+            makedirs(pname)
+    with open(configpath, 'w') as cfg:
         cfg.write(SAMPLE_CFG)
 
 
 def get_logging_options():
+    """Get Logging Options
+
+    Returns:
+        tuple(int,str) -- Returns a tuple containing the logging level (int) and the format (str)
+    """
     # Defaults
     log_level = logging.INFO
     log_format = '[%(asctime)s][%(name)s][%(levelname)s]: %(message)s'
@@ -64,6 +89,12 @@ def get_logging_options():
 
 
 def init_logger(verbose, debug):
+    """Initialize logging settings
+
+    Arguments:
+        verbose {boolean} -- Verbosity: Sets logger to INFO level
+        debug {boolean} -- Debug: Sets logger to DEBUG level
+    """
     log_level, log_format = get_logging_options()
     if verbose:
         log_level = logging.INFO
