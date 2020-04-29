@@ -6,14 +6,35 @@
 # - Substitute (replace): Replace text usage: `/s <textToReplace>/<replacement>`
 # - Spoiler: Hide spoiler messages in pop-up attachments. Usage: `/spoiler`
 ###############################################################################
-from telegram.ext import CommandHandler
+from telegram.ext import CommandHandler, CallbackQueryHandler
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from logging import getLogger
+import telegram
 
-from meldebot.mel.conf import send_typing_action
+logger = getLogger('Reply')
+
+from meldebot.mel.utils import send_typing_action, get_username
 
 @send_typing_action
 def cb_spoiler_handler(update, context):
-    #TODO
-    pass
+    spoiler_message = update.effective_message.reply_to_message
+    command_message = update.effective_message
+    if not spoiler_message:
+        spoiler_message = update.effective_message
+    logger.debug(spoiler_message.text)
+    update.message.reply_text(
+        "{} that's a spoiler!".format(spoiler_message.from_user.name),
+        reply_markup=InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton(
+                    'Show Spoiler',
+                    callback_data='spoiler_popup {}'.format(spoiler_message.text)),
+            ],
+        ]),
+    )
+    #TODO: Borrar missatges
+    spoiler_message.delete()
+    command_message.delete()
 
 
 @send_typing_action
@@ -36,7 +57,7 @@ def cb_substitute_handler(update, context):
         substitute_message.delete()
 
 
-spoiler_handler = CommandHandler('s', cb_spoiler_handler)
+spoiler_handler = CommandHandler('spoiler', cb_spoiler_handler)
 substitute_handler = CommandHandler('s', cb_substitute_handler)
 
 REPLY_HANDLERS = [

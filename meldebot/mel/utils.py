@@ -12,5 +12,5 @@ def send_typing_action(func):
 
     return command_func
 
-def get_username(telegram_message)
+def get_username(telegram_message):
     return telegram_message.username or telegram_message.full_name
