@@ -1,3 +1,10 @@
+###############################################################################
+# Project: Mort de Gana Bot
+# Authors:
+# - Ytturi
+# - gdalmau
+# Descr: Telegram bot initializer
+###############################################################################
 from telegram.ext import Updater
 import logging
 import click

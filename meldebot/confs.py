@@ -1,3 +1,10 @@
+###############################################################################
+# Project: Mort de Gana Bot
+# Authors:
+# - Ytturi
+# - gdalmau
+# Descr: Configuration management and tooling
+###############################################################################
 from configparser import ConfigParser
 from os.path import expanduser
 from functools import wraps

@@ -1,3 +1,12 @@
+###############################################################################
+# Project: Mort de Gana Bot
+# Authors:
+# - Ytturi
+# - gdalmau
+# Descr: Polling manager
+# Commands:
+# - Poll: Send a poll with a specified message. Usage: `/poll {message}`
+###############################################################################
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 import logging
@@ -41,6 +50,7 @@ def get_answers(status=None):
 
 @send_typing_action
 def start_poll(update, context):
+    # TODO: Remove querying message
     text = '{}\n{}'.format(
         get_question(extra_text=' '.join(context.args)),
         get_answers()
