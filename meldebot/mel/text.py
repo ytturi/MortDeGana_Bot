@@ -12,7 +12,7 @@
 from telegram.ext import CommandHandler
 from random import randint
 
-from meldebot.mel.conf import send_typing_action
+from meldebot.mel.utils import send_typing_action
 
 def get_random_phrase():
     phrase = ["Druty",

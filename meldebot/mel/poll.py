@@ -13,7 +13,7 @@ import logging
 
 # Self imports
 from meldebot.mel.gif import get_gifs
-from meldebot.mel.conf import send_typing_action
+from meldebot.mel.utils import send_typing_action, get_username
 
 # Mort de Gana POLL MANAGER
 
@@ -169,9 +169,7 @@ def update_poll_message(text, user, query):
     return '\n'.join(question)
 
 def vote_poll(update, context):
-    username = update.effective_user.username
-    if username is None:
-        username = update.effective_user.full_name
+    username = get_username(update.effective_user)
     message_text = update_poll_message(
         text=update.effective_message.text,
         user=username,
