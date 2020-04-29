@@ -3,8 +3,8 @@
 # Author: Ytturi
 # Descr: Answer command with custom GIF options from Giphy
 # Commands:
-# - MEL: Send random GIF (See `get_mel_params`)
-# - MOTO: Send motorbike GIF
+# - MEL: Send random GIF (See `get_mel_params`). Usage: `/mel`
+# - MOTO: Send motorbike GIF. Usage: `/moto`
 ###############################################################################
 from telegram.ext import CommandHandler
 import telegram
@@ -80,27 +80,10 @@ def cb_mel_handler(update, context):
 def cb_moto_handler(update, context):
     update.message.reply_animation(get_gifs('moto'))
 
-
-@send_typing_action
-def cb_substitute_handler(update, context):
-    substitute_message = update.effective_message
-    substitute_text = substitute_message.text.split(' ', 1)[1]
-
-    original_message = update.effective_message.reply_to_message
-
-    from_text = substitute_text.split('/', 1)[0]
-    to_text = substitute_text.split('/', 1)[1]
-
-    final_text = original_message.text.replace(from_text, to_text)
-    update.message.reply_text(
-        "*Did you mean?*:\n\"{}\"".format(final_text),
-        reply_to_message_id=original_message.message_id,
-        parse_mode=telegram.ParseMode.MARKDOWN
-    )
-    if not get_debug_enabled():
-        substitute_message.delete()
-
-
 mel_handler = CommandHandler('mel', cb_mel_handler)
 moto_handler = CommandHandler('moto', cb_moto_handler)
-substitute_handler = CommandHandler('s', cb_substitute_handler)
+
+GIF_HANDLERS = [
+    mel_handler,
+    moto_handler
+]

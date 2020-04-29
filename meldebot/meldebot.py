@@ -6,21 +6,21 @@ import click
 from meldebot.confs import get_logging_options, get_telegram_token, get_debug_enabled
 from meldebot.confs import read_configs, init_configs, init_logger
 from meldebot.flute import flute_handler
-from meldebot.haces_cosas import hc_handler
-from meldebot.mel import mel_handler, moto_handler, substitute_handler
-from meldebot.poll import poll_handlers
-from meldebot.tuquiets import tuquiets_handler
+from meldebot.meldetext import TEXT_HANDLERS
+from meldebot.meldegif import GIF_HANDLERS
+from meldebot.meldereply import reply_handlers
+from meldebot.poll import POLL_HANDLERS
+from meldebot.tuquiets import 
 from meldebot.spoiler import spoiler_handlers
 
 # Command handlers
-MEL_HANDLERS = [
-    flute_handler,
-    hc_handler,
-    mel_handler,
-    moto_handler,
-    substitute_handler,
-    tuquiets_handler
-] + poll_handlers + spoiler_handlers
+MEL_HANDLERS = (
+    [flute_handler]
+    + TEXT_HANDLERS
+    + GIF_HANDLERS
+    + reply_handlers
+    + POLL_HANDLERS
+)
 
 
 @click.command()

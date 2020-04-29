@@ -182,7 +182,7 @@ POLL_VOTE_HANDLER = CallbackQueryHandler(vote_poll, pattern=r'^vote')
 # HANDLERS to register
 
 
-poll_handlers = [
+POLL_HANDLERS = [
     POLL_START_HANDLER,
     POLL_VOTE_HANDLER,
 ]
