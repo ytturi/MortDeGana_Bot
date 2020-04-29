@@ -1,6 +1,8 @@
 from telegram.ext import CommandHandler
 from random import randint
 
+from meldebot.confs import send_typing_action
+
 def get_random_phrase():
     phrase = ["Druty",
      "Se trasca la magedia",
@@ -28,6 +30,7 @@ def get_random_phrase():
     phrase_num = randint(0, len(phrase) -1)
     return phrase[phrase_num]
 
+@send_typing_action
 def get_hc_text(update, context):
     phrase = get_random_phrase()
     update.message.reply_text(phrase)

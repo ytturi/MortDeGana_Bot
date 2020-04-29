@@ -4,7 +4,7 @@ import logging
 
 # Self imports
 from meldebot.mel import get_gifs
-
+from meldebot.confs import send_typing_action
 
 # Mort de Gana POLL MANAGER
 
@@ -39,7 +39,7 @@ def get_answers(status=None):
     )
     return answer
 
-
+@send_typing_action
 def start_poll(update, context):
     text = '{}\n{}'.format(
         get_question(extra_text=' '.join(context.args)),
@@ -157,7 +157,6 @@ def update_poll_message(text, user, query):
 
     question.append(get_answers(results))
     return '\n'.join(question)
-
 
 def vote_poll(update, context):
     username = update.effective_user.username

@@ -9,6 +9,8 @@ from telegram.ext import CommandHandler
 from random import randint
 from logging import getLogger
 
+from meldebot.confs import send_typing_action
+
 def search_video_url(params):
     # TODO: actually search the videos
     vkey = params[0]
@@ -32,6 +34,7 @@ def get_video_url(opt):
     return search_video_url(params)
 
 # Def Handler
+@send_typing_action
 def cb_flute_handler(update, context):
     update.message.reply_html(get_video_url('flute'))
 

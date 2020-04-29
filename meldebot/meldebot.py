@@ -10,6 +10,7 @@ from meldebot.haces_cosas import hc_handler
 from meldebot.mel import mel_handler, moto_handler, substitute_handler
 from meldebot.poll import poll_handlers
 from meldebot.tuquiets import tuquiets_handler
+from meldebot.spoiler import spoiler_handlers
 
 # Command handlers
 MEL_HANDLERS = [
@@ -19,7 +20,7 @@ MEL_HANDLERS = [
     moto_handler,
     substitute_handler,
     tuquiets_handler
-] + poll_handlers
+] + poll_handlers + spoiler_handlers
 
 
 @click.command()
