@@ -13,7 +13,6 @@ from configparser import ConfigParser
 from os.path import expanduser
 from logging import getLogger
 from requests import get as http_get
-from functools import wraps
 
 # Self imports
 from meldebot.confs import get_giphy_api_key, get_debug_enabled
