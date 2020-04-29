@@ -5,11 +5,9 @@
 # - gdalmau
 # Descr: Configuration management and tooling
 ###############################################################################
-from configparser import ConfigParser
+from configparser import RawConfigParser
 from os import makedirs
 from os.path import expanduser, isfile, isdir, basename, dirname, join
-from functools import wraps
-
 import logging
 
 SAMPLE_CFG = """[DEFAULT]
@@ -22,7 +20,7 @@ format: [%(asctime)s][%(name)s][%(levelname)s]: %(message)s
 debug: False
 """
 
-config = ConfigParser()
+config = RawConfigParser(inline_comment_prefixes=[';', '#'], allow_no_value=True)
 
 
 def read_configs(configpath=False):
@@ -78,7 +76,7 @@ def get_logging_options():
             if log_level.upper() in levels:
                 log_level = levels[log_level]
         if config.has_option(section, 'format'):
-            log_format = config.get(section, 'level')
+            log_format = config.get(section, 'format')
     else:
         config.add_section(section)
         config.set(section, 'level', str(log_level))
