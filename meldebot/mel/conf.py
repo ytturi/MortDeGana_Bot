@@ -13,6 +13,7 @@ import logging
 SAMPLE_CFG = """[DEFAULT]
 telegram_token: <InsertTelegramBotToken>
 giphy_api_key: <InsertGiphyAPIKey>
+store_path: /data/spoilers
 [LOGGING]
 level: INFO
 format: [%(asctime)s][%(name)s][%(levelname)s]: %(message)s
@@ -108,6 +109,10 @@ def get_telegram_token():
 
 def get_giphy_api_key():
     return config.defaults().get("giphy_api_key", False)
+
+
+def get_store_path():
+    return config.defaults().get("store_path", False)
 
 
 def get_debug_enabled():

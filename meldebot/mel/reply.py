@@ -17,24 +17,26 @@ from meldebot.mel.utils import send_typing_action, get_username
 
 @send_typing_action
 def cb_spoiler_handler(update, context):
-    spoiler_message = update.effective_message.reply_to_message
-    command_message = update.effective_message
-    if not spoiler_message:
-        spoiler_message = update.effective_message
-    logger.debug(spoiler_message.text)
-    update.message.reply_text(
-        "{} that's a spoiler!".format(spoiler_message.from_user.name),
-        reply_markup=InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton(
-                    'Show Spoiler',
-                    callback_data='spoiler_popup {}'.format(spoiler_message.text)),
-            ],
-        ]),
-    )
-    #TODO: Borrar missatges
-    spoiler_message.delete()
-    command_message.delete()
+    # TODO: Store message to get_store_path() and reply with filename_id
+    pass
+    # spoiler_message = update.effective_message.reply_to_message
+    # command_message = update.effective_message
+    # if not spoiler_message:
+    #     spoiler_message = update.effective_message
+    # logger.debug(spoiler_message.text)
+    # update.message.reply_text(
+    #     "{} that's a spoiler!".format(spoiler_message.from_user.name),
+    #     reply_markup=InlineKeyboardMarkup([
+    #         [
+    #             InlineKeyboardButton(
+    #                 'Show Spoiler',
+    #                 callback_data='spoiler_popup {}'.format(f'Spoiler: {spoiler_message.text}')),
+    #         ],
+    #     ]),
+    # )
+    # #TODO: Borrar missatges
+    # spoiler_message.delete()
+    # command_message.delete()
 
 
 @send_typing_action
