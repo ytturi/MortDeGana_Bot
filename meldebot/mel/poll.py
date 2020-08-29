@@ -9,6 +9,7 @@
 ###############################################################################
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from random import choice, randint
 import logging
 
 # Self imports
@@ -47,6 +48,23 @@ def get_answers(status=None):
         recount_result(status[1]),status[1],
     )
     return answer
+
+def get_moto_quote() -> str:
+    """Generate a random text for motos
+
+    Returns:
+        str: Moto quote
+    """
+    moto_quote_set = [
+        f'Vaig al gym, la idea es anarhi {randint(1,20)} cops per setmana',
+        f'Tinc hora a la pelu que nomes hi vaig {randint(1,20)} cops per setmana',
+        f'Fa {randint(2,30)} anys plovia',
+        'Soc un mort de gana',
+        'Plou i fa sol, em quedo a casa sol',
+        "Jo vindria, pero m'agrada fer motos",
+    ]
+
+    return choice(moto_quote_set)
 
 @send_typing_action
 def start_poll(update, context):
@@ -175,13 +193,15 @@ def vote_poll(update, context):
         user=username,
         query=update.callback_query
     )
+    if message_text == update.effective_message.text:
+        return
     update.effective_message.edit_text(
         text=message_text,
         reply_markup=POLL_KEYBOARD
     )
     if 'MOTO' in update.callback_query.data:
         update.effective_message.reply_animation(
-            get_gifs('moto'))
+            get_gifs('moto'), caption=f'{username}: {get_moto_quote()}', quote=True)
 
 
 POLL_VOTE_HANDLER = CallbackQueryHandler(vote_poll, pattern=r'^vote')
