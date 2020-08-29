@@ -16,7 +16,7 @@ from requests import get as http_get
 
 # Self imports
 from meldebot.mel.conf import get_giphy_api_key, get_debug_enabled
-from meldebot.mel.utils import send_typing_action
+from meldebot.mel.utils import send_typing_action, remove_command_message
 
 
 def get_gif_url(params):
@@ -72,11 +72,13 @@ def get_gifs(opt):
 
 # Def Handler
 @send_typing_action
+@remove_command_message
 def cb_mel_handler(update, context):
     update.message.reply_animation(get_gifs('mel'))
 
 
 @send_typing_action
+@remove_command_message
 def cb_moto_handler(update, context):
     update.message.reply_animation(get_gifs('moto'))
 

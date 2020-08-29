@@ -12,7 +12,7 @@
 from telegram.ext import CommandHandler
 from random import randint
 
-from meldebot.mel.utils import send_typing_action
+from meldebot.mel.utils import send_typing_action, remove_command_message
 
 def get_random_phrase():
     phrase = ["Druty",
@@ -41,10 +41,6 @@ def get_random_phrase():
     phrase_num = randint(0, len(phrase) -1)
     return phrase[phrase_num]
 
-@send_typing_action
-def get_hc_text(update, context):
-    phrase = get_random_phrase()
-    update.message.reply_text(phrase)
 
 def get_random_name():
     name = [
@@ -62,7 +58,16 @@ def get_random_name():
     name_num = randint(0, len(name) -1)
     return name[name_num]
 
+
 @send_typing_action
+@remove_command_message
+def get_hc_text(update, context):
+    phrase = get_random_phrase()
+    update.message.reply_text(phrase)
+
+
+@send_typing_action
+@remove_command_message
 def get_tuquiets_text(update, context):
     _name = get_random_name()
     update.message.reply_text(_name)

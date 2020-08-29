@@ -14,7 +14,7 @@ import logging
 
 # Self imports
 from meldebot.mel.gif import get_gifs
-from meldebot.mel.utils import send_typing_action, get_username
+from meldebot.mel.utils import send_typing_action, remove_command_message, get_username
 
 # Mort de Gana POLL MANAGER
 
@@ -67,8 +67,9 @@ def get_moto_quote() -> str:
     return choice(moto_quote_set)
 
 @send_typing_action
+@remove_command_message
 def start_poll(update, context):
-    # TODO: Remove querying message
+    logger.info('Creating poll')
     text = '{}\n{}'.format(
         get_question(extra_text=' '.join(context.args)),
         get_answers()
