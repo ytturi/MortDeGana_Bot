@@ -9,13 +9,15 @@ from telegram.ext import CommandHandler
 from random import randint
 from logging import getLogger
 
-from meldebot.mel.utils import send_typing_action
+from meldebot.mel.utils import send_typing_action, remove_command_message
+
 
 def search_video_url(params):
     # TODO: actually search the videos
     vkey = params[0]
     url = 'https://www.youtube.com/watch?v={}'.format(vkey)
     return url 
+
 
 def get_random_flute():
     # TODO: actually return search parameters
@@ -28,14 +30,18 @@ def get_random_flute():
     vnum = randint(0,3)
     return [URLS[vnum]]
 
+
 def get_video_url(opt):
     if 'flute' in opt:
         params = get_random_flute()
     return search_video_url(params)
 
+
 # Def Handler
 @send_typing_action
+@remove_command_message
 def cb_flute_handler(update, context):
     update.message.reply_html(get_video_url('flute'))
+
 
 flute_handler = CommandHandler('flute', cb_flute_handler)

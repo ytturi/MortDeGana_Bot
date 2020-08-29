@@ -116,4 +116,8 @@ def get_store_path():
 
 
 def get_debug_enabled():
-    return config.get('DEVELOPMENT', 'debug')
+    section = 'DEVELOPMENT'
+    option = 'debug'
+    if config.has_section(section) and config.has_option(section, option):
+        return config.get(section, option).lower() == 'true'
+    return False

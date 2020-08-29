@@ -13,14 +13,16 @@ import telegram
 
 logger = getLogger('Reply')
 
-from meldebot.mel.utils import send_typing_action, get_username
+from meldebot.mel.utils import send_typing_action, remove_command_message, get_username
 
 @send_typing_action
+@remove_command_message
 def cb_spoiler_handler(update, context):
+    logger.info('Reply spoiler')
+    logger.warn('Spoiler: Not yet implemented')
     # TODO: Store message to get_store_path() and reply with filename_id
     pass
     # spoiler_message = update.effective_message.reply_to_message
-    # command_message = update.effective_message
     # if not spoiler_message:
     #     spoiler_message = update.effective_message
     # logger.debug(spoiler_message.text)
@@ -36,12 +38,12 @@ def cb_spoiler_handler(update, context):
     # )
     # #TODO: Borrar missatges
     # spoiler_message.delete()
-    # command_message.delete()
 
 
 @send_typing_action
+@remove_command_message
 def cb_substitute_handler(update, context):
-    substitute_message = update.effective_message
+    logger.info('Reply subsitute')
     substitute_text = substitute_message.text.split(' ', 1)[1]
 
     original_message = update.effective_message.reply_to_message
@@ -55,8 +57,6 @@ def cb_substitute_handler(update, context):
         reply_to_message_id=original_message.message_id,
         parse_mode=telegram.ParseMode.MARKDOWN
     )
-    if not get_debug_enabled():
-        substitute_message.delete()
 
 
 spoiler_handler = CommandHandler('spoiler', cb_spoiler_handler)
