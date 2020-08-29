@@ -15,7 +15,7 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        meldebot=meldebot.meldebot:listener
+        meldebot=meldebot.bot:listener
     ''',
     #tests_require=test_deps,
     tests_suite='spec',

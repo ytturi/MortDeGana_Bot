@@ -1,25 +1,32 @@
+###############################################################################
+# Project: Mort de Gana Bot
+# Authors:
+# - Ytturi
+# - gdalmau
+# Descr: Telegram bot initializer
+###############################################################################
 from telegram.ext import Updater
 import logging
 import click
 
 # Self-imports
-from meldebot.confs import get_logging_options, get_telegram_token, get_debug_enabled
-from meldebot.confs import read_configs, init_configs, init_logger
-from meldebot.flute import flute_handler
-from meldebot.haces_cosas import hc_handler
-from meldebot.mel import mel_handler, moto_handler, substitute_handler
-from meldebot.poll import poll_handlers
-from meldebot.tuquiets import tuquiets_handler
+from meldebot.mel.conf import read_configs, init_configs, init_logger
+from meldebot.mel.conf import get_logging_options, get_telegram_token
+from meldebot.mel.conf import get_debug_enabled
+from meldebot.mel.flute import flute_handler
+from meldebot.mel.text import TEXT_HANDLERS
+from meldebot.mel.gif import GIF_HANDLERS
+from meldebot.mel.reply import REPLY_HANDLERS
+from meldebot.mel.poll import POLL_HANDLERS
 
 # Command handlers
-MEL_HANDLERS = [
-    flute_handler,
-    hc_handler,
-    mel_handler,
-    moto_handler,
-    substitute_handler,
-    tuquiets_handler
-] + poll_handlers
+MEL_HANDLERS = (
+    [flute_handler]
+    + TEXT_HANDLERS
+    + GIF_HANDLERS
+    + REPLY_HANDLERS
+    + POLL_HANDLERS
+)
 
 
 @click.command()
@@ -45,7 +52,7 @@ def listener(config, init_config, verbose, debug, token):
     logger = logging.getLogger('INIT')
     # Init Configs
     if init_config:
-        init_configs()
+        init_configs(config)
         logger.info("The file 'mortdegana.cfg' has been created.")
         exit(-1)
     # Init listener

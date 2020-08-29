@@ -1,10 +1,20 @@
+###############################################################################
+# Project: Mort de Gana Bot
+# Authors:
+# - Ytturi
+# - gdalmau
+# Descr: Polling manager
+# Commands:
+# - Poll: Send a poll with a specified message. Usage: `/poll {message}`
+###############################################################################
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from random import choice, randint
 import logging
 
 # Self imports
-from meldebot.mel import get_gifs
-
+from meldebot.mel.gif import get_gifs
+from meldebot.mel.utils import send_typing_action, get_username
 
 # Mort de Gana POLL MANAGER
 
@@ -39,8 +49,26 @@ def get_answers(status=None):
     )
     return answer
 
+def get_moto_quote() -> str:
+    """Generate a random text for motos
 
+    Returns:
+        str: Moto quote
+    """
+    moto_quote_set = [
+        f'Vaig al gym, la idea es anarhi {randint(1,20)} cops per setmana',
+        f'Tinc hora a la pelu que nomes hi vaig {randint(1,20)} cops per setmana',
+        f'Fa {randint(2,30)} anys plovia',
+        'Soc un mort de gana',
+        'Plou i fa sol, em quedo a casa sol',
+        "Jo vindria, pero m'agrada fer motos",
+    ]
+
+    return choice(moto_quote_set)
+
+@send_typing_action
 def start_poll(update, context):
+    # TODO: Remove querying message
     text = '{}\n{}'.format(
         get_question(extra_text=' '.join(context.args)),
         get_answers()
@@ -158,23 +186,22 @@ def update_poll_message(text, user, query):
     question.append(get_answers(results))
     return '\n'.join(question)
 
-
 def vote_poll(update, context):
-    username = update.effective_user.username
-    if username is None:
-        username = update.effective_user.full_name
+    username = get_username(update.effective_user)
     message_text = update_poll_message(
         text=update.effective_message.text,
         user=username,
         query=update.callback_query
     )
+    if message_text == update.effective_message.text:
+        return
     update.effective_message.edit_text(
         text=message_text,
         reply_markup=POLL_KEYBOARD
     )
     if 'MOTO' in update.callback_query.data:
         update.effective_message.reply_animation(
-            get_gifs('moto'))
+            get_gifs('moto'), caption=f'{username}: {get_moto_quote()}', quote=True)
 
 
 POLL_VOTE_HANDLER = CallbackQueryHandler(vote_poll, pattern=r'^vote')
@@ -183,7 +210,7 @@ POLL_VOTE_HANDLER = CallbackQueryHandler(vote_poll, pattern=r'^vote')
 # HANDLERS to register
 
 
-poll_handlers = [
+POLL_HANDLERS = [
     POLL_START_HANDLER,
     POLL_VOTE_HANDLER,
 ]
