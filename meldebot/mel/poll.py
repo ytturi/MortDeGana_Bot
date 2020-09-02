@@ -10,11 +10,13 @@
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from random import choice, randint
-import logging
+from logging import getLogger
 
 # Self imports
 from meldebot.mel.gif import get_gifs
 from meldebot.mel.utils import send_typing_action, remove_command_message, get_username
+
+logger = getLogger(__name__)
 
 # Mort de Gana POLL MANAGER
 
@@ -69,7 +71,7 @@ def get_moto_quote() -> str:
 @send_typing_action
 @remove_command_message
 def start_poll(update, context):
-    logger.info('Creating poll')
+    logger.info('Handling newpoll')
     text = '{}\n{}'.format(
         get_question(extra_text=' '.join(context.args)),
         get_answers()
@@ -77,6 +79,7 @@ def start_poll(update, context):
     message = update.message.reply_text(
         text,
         reply_markup=POLL_KEYBOARD,
+        quote=False
     )
 
 
@@ -188,6 +191,7 @@ def update_poll_message(text, user, query):
     return '\n'.join(question)
 
 def vote_poll(update, context):
+    logger.info('Handling votepoll')
     username = get_username(update.effective_user)
     message_text = update_poll_message(
         text=update.effective_message.text,
@@ -198,7 +202,8 @@ def vote_poll(update, context):
         return
     update.effective_message.edit_text(
         text=message_text,
-        reply_markup=POLL_KEYBOARD
+        reply_markup=POLL_KEYBOARD,
+        quote=True
     )
     if 'MOTO' in update.callback_query.data:
         update.effective_message.reply_animation(

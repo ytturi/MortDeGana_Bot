@@ -11,6 +11,8 @@ from logging import getLogger
 
 from meldebot.mel.utils import send_typing_action, remove_command_message
 
+logger = getLogger(__name__)
+
 
 def search_video_url(params):
     # TODO: actually search the videos
@@ -41,7 +43,8 @@ def get_video_url(opt):
 @send_typing_action
 @remove_command_message
 def cb_flute_handler(update, context):
-    update.message.reply_html(get_video_url('flute'))
+    logger.info('Handling flute')
+    update.message.reply_html(get_video_url('flute'), quote=False)
 
 
 flute_handler = CommandHandler('flute', cb_flute_handler)

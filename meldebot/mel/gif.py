@@ -18,9 +18,9 @@ from requests import get as http_get
 from meldebot.mel.conf import get_giphy_api_key, get_debug_enabled
 from meldebot.mel.utils import send_typing_action, remove_command_message
 
+logger = getLogger(__name__)
 
 def get_gif_url(params):
-    logger = getLogger('GIF')
     api_key = get_giphy_api_key()
     if not api_key:
         logger.critical('NO API KEY FOR GIPHY!')
@@ -74,13 +74,15 @@ def get_gifs(opt):
 @send_typing_action
 @remove_command_message
 def cb_mel_handler(update, context):
-    update.message.reply_animation(get_gifs('mel'))
+    logger.info('Handling mel')
+    update.message.reply_animation(get_gifs('mel'), quote=False)
 
 
 @send_typing_action
 @remove_command_message
 def cb_moto_handler(update, context):
-    update.message.reply_animation(get_gifs('moto'))
+    logger.info('Handling moto')
+    update.message.reply_animation(get_gifs('moto'), quote=False)
 
 mel_handler = CommandHandler('mel', cb_mel_handler)
 moto_handler = CommandHandler('moto', cb_moto_handler)

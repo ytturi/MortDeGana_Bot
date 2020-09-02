@@ -21,35 +21,46 @@ from meldebot.mel.poll import POLL_HANDLERS
 
 # Command handlers
 MEL_HANDLERS = (
-    [flute_handler]
-    + TEXT_HANDLERS
-    + GIF_HANDLERS
-    + REPLY_HANDLERS
-    + POLL_HANDLERS
+    [flute_handler] + TEXT_HANDLERS + GIF_HANDLERS + REPLY_HANDLERS + POLL_HANDLERS
 )
 
 
 @click.command()
+@click.option("-c", "--config", type=str, help="Use config file")
 @click.option(
-    '-c', '--config', type=str, help='Use config file')
+    "-i",
+    "--init-config",
+    "init_config",
+    is_flag=True,
+    default=False,
+    help="Initialize config file",
+)
 @click.option(
-    '-i', '--init-config', 'init_config', is_flag=True,
-    default=False, help="Initialize config file")
+    "-v",
+    "--verbose",
+    is_flag=True,
+    default=False,
+    help="Override verbosity level for the logger to INFO",
+)
 @click.option(
-    '-v', '--verbose', is_flag=True,
-    default=False, help="Override verbosity level for the logger to INFO")
+    "-d",
+    "--debug",
+    is_flag=True,
+    default=False,
+    help="Override verbosity level for the logger to DEBUG",
+)
 @click.option(
-    '-d', '--debug', is_flag=True,
-    default=False, help="Override verbosity level for the logger to DEBUG")
-@click.option(
-    '-t', '--token',
-    default=False, help="Set telegram token instead of using a config file")
+    "-t",
+    "--token",
+    default=False,
+    help="Set telegram token instead of using a config file",
+)
 def listener(config, init_config, verbose, debug, token):
     # Init configs
     read_configs(config)
     # Init logger
     init_logger(verbose, debug)
-    logger = logging.getLogger('INIT')
+    logger = logging.getLogger("INIT")
     # Init Configs
     if init_config:
         init_configs(config)

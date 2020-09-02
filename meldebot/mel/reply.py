@@ -11,7 +11,7 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from logging import getLogger
 import telegram
 
-logger = getLogger('Reply')
+logger = getLogger(__name__)
 
 from meldebot.mel.utils import send_typing_action, remove_command_message, get_username
 
@@ -44,7 +44,7 @@ def cb_spoiler_handler(update, context):
 @remove_command_message
 def cb_substitute_handler(update, context):
     logger.info('Reply subsitute')
-    substitute_text = substitute_message.text.split(' ', 1)[1]
+    substitute_text = update.effective_message.text.split(' ', 1)[1]
 
     original_message = update.effective_message.reply_to_message
 
@@ -55,7 +55,7 @@ def cb_substitute_handler(update, context):
     update.message.reply_text(
         "*Did you mean?*:\n\"{}\"".format(final_text),
         reply_to_message_id=original_message.message_id,
-        parse_mode=telegram.ParseMode.MARKDOWN
+        parse_mode=telegram.ParseMode.MARKDOWN,
     )
 
 

@@ -11,10 +11,20 @@
 ###############################################################################
 from telegram.ext import CommandHandler
 from random import randint
+from logging import getLogger
 
 from meldebot.mel.utils import send_typing_action, remove_command_message
 
+logger = getLogger(__name__)
+
+
 def get_random_phrase():
+    """
+    Get a random Mort de gana phrase
+
+    Returns:
+        str: Mort de gana phrase
+    """
     phrase = ["Druty",
      "Se trasca la magedia",
      "La vecina se atormenta",
@@ -43,6 +53,12 @@ def get_random_phrase():
 
 
 def get_random_name():
+    """
+    Get random Mort de gana names
+
+    Returns:
+        str: Mort de gana name
+    """
     name = [
      "Jaumayer",
      "Pol obj",
@@ -62,15 +78,17 @@ def get_random_name():
 @send_typing_action
 @remove_command_message
 def get_hc_text(update, context):
+    logger.info('Handling hacescosas')
     phrase = get_random_phrase()
-    update.message.reply_text(phrase)
+    update.message.reply_text(phrase, quote=False)
 
 
 @send_typing_action
 @remove_command_message
 def get_tuquiets_text(update, context):
+    logger.info('Handling tuquiets')
     _name = get_random_name()
-    update.message.reply_text(_name)
+    update.message.reply_text(_name, quote=False)
 
 tuquiets_handler = CommandHandler('tuquiets', get_tuquiets_text)
 hc_handler = CommandHandler('hacescosas', get_hc_text)
