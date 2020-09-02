@@ -21,7 +21,7 @@ format: [%(asctime)s][%(name)s][%(levelname)s]: %(message)s
 debug: False
 """
 
-config = RawConfigParser(inline_comment_prefixes=[';', '#'], allow_no_value=True)
+config = RawConfigParser(inline_comment_prefixes=[";", "#"], allow_no_value=True)
 
 
 def read_configs(configpath=False):
@@ -31,7 +31,7 @@ def read_configs(configpath=False):
         configpath {str} -- Path to the configuration file (default: {False})
     """
     if not configpath:
-        config.read(['mortdegana.cfg', expanduser('~/.mortdegana.cfg')])
+        config.read(["mortdegana.cfg", expanduser("~/.mortdegana.cfg")])
     else:
         if isfile(configpath):
             config.read(configpath)
@@ -44,14 +44,14 @@ def init_configs(configpath=None):
         configpath {str} -- Path to the configuration file (default: {None})
     """
     if not configpath:
-        fname = 'mortdegana.cfg'
+        fname = "mortdegana.cfg"
         configpath = fname
     else:
         fname = basename(configpath)
         pname = dirname(configpath)
         if pname and not isdir(pname):
             makedirs(pname)
-    with open(configpath, 'w') as cfg:
+    with open(configpath, "w") as cfg:
         cfg.write(SAMPLE_CFG)
 
 
@@ -63,25 +63,25 @@ def get_logging_options():
     """
     # Defaults
     log_level = logging.INFO
-    log_format = '[%(asctime)s][%(name)s][%(levelname)s]: %(message)s'
+    log_format = "[%(asctime)s][%(name)s][%(levelname)s]: %(message)s"
     levels = {
-        'DEBUG': logging.DEBUG,
-        'INFO': logging.INFO,
-        'CRITICAL': logging.CRITICAL
+        "DEBUG": logging.DEBUG,
+        "INFO": logging.INFO,
+        "CRITICAL": logging.CRITICAL,
     }
     # Get from configs
-    section = 'LOGGING'
+    section = "LOGGING"
     if config.has_section(section):
-        if config.has_option(section, 'level'):
-            log_level = config.get(section, 'level')
+        if config.has_option(section, "level"):
+            log_level = config.get(section, "level")
             if log_level.upper() in levels:
                 log_level = levels[log_level]
-        if config.has_option(section, 'format'):
-            log_format = config.get(section, 'format')
+        if config.has_option(section, "format"):
+            log_format = config.get(section, "format")
     else:
         config.add_section(section)
-        config.set(section, 'level', str(log_level))
-        config.set(section, 'format', log_format)
+        config.set(section, "level", str(log_level))
+        config.set(section, "format", log_format)
 
     # Return values
     return log_level, log_format
@@ -99,7 +99,7 @@ def init_logger(verbose, debug):
         log_level = logging.INFO
     if debug:
         log_level = logging.DEBUG
-    config.set('LOGGING', 'level', str(logging.getLevelName(log_level)))
+    config.set("LOGGING", "level", str(logging.getLevelName(log_level)))
     logging.basicConfig(level=log_level, format=log_format)
 
 
@@ -116,8 +116,8 @@ def get_store_path():
 
 
 def get_debug_enabled():
-    section = 'DEVELOPMENT'
-    option = 'debug'
+    section = "DEVELOPMENT"
+    option = "debug"
     if config.has_section(section) and config.has_option(section, option):
-        return config.get(section, option).lower() == 'true'
+        return config.get(section, option).lower() == "true"
     return False

@@ -72,23 +72,25 @@ def listener(config, init_config, verbose, debug, token):
     else:
         TOKEN = get_telegram_token()
     if not TOKEN:
-        logger.critical("No token provided! Add a token at the config file: '~/.mortdegana.cfg'")
+        logger.critical(
+            "No token provided! Add a token at the config file: '~/.mortdegana.cfg'"
+        )
         exit(-1)
     logger.debug("TOKEN: {}".format(TOKEN))
     updater = Updater(TOKEN, use_context=True)
     #   ADD Handlers
     debug_enabled = get_debug_enabled()
-    logger.debug(f'Debug enabled: {debug_enabled}')
+    logger.debug(f"Debug enabled: {debug_enabled}")
     for handler in MEL_HANDLERS:
-        if debug_enabled and hasattr(handler, 'command'):
-            handler.command = [c + '_test' for c in handler.command]
+        if debug_enabled and hasattr(handler, "command"):
+            handler.command = [c + "_test" for c in handler.command]
         updater.dispatcher.add_handler(handler)
     #   Listen till end
-    logger.info('Mel de bot has started')
+    logger.info("Mel de bot has started")
     updater.start_polling()
     updater.idle()
 
 
 # Main Process
-if __name__ == '__main__':
+if __name__ == "__main__":
     listener()

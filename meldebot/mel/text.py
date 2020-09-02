@@ -25,30 +25,31 @@ def get_random_phrase():
     Returns:
         str: Mort de gana phrase
     """
-    phrase = ["Druty",
-     "Se trasca la magedia",
-     "La vecina se atormenta",
-     "Joc de Crons",
-     "Dijendres",
-     "Es acil",
-     "Padalar",
-     "Saitcustomisais",
-     "Can lluma",
-     "Mes llumat que en Llumi",
-     "erpik",
-     "isu",
-     "phython",
-     "L'aplaipr",
-     "-Nice... +tru mit iu pro eh"
-     "Mel",
-     "El rp",
-     "Nas fent",
-     "Muakatrakamatrakatek",
-     "Hacendado me hallo",
-     "Mort de gana",
-     "Els reis son els pandas",
-     "i tu qui ets?"]
-    phrase_num = randint(0, len(phrase) -1)
+    phrase = [
+        "Druty",
+        "Se trasca la magedia",
+        "La vecina se atormenta",
+        "Joc de Crons",
+        "Dijendres",
+        "Es acil",
+        "Padalar",
+        "Saitcustomisais",
+        "Can lluma",
+        "Mes llumat que en Llumi",
+        "erpik",
+        "isu",
+        "phython",
+        "L'aplaipr",
+        "-Nice... +tru mit iu pro eh" "Mel",
+        "El rp",
+        "Nas fent",
+        "Muakatrakamatrakatek",
+        "Hacendado me hallo",
+        "Mort de gana",
+        "Els reis son els pandas",
+        "i tu qui ets?",
+    ]
+    phrase_num = randint(0, len(phrase) - 1)
     return phrase[phrase_num]
 
 
@@ -60,25 +61,25 @@ def get_random_name():
         str: Mort de gana name
     """
     name = [
-     "Jaumayer",
-     "Pol obj",
-     "Pol ids",
-     "Grillem",
-     "Agusti Berloso",
-     "Eduard Fita",
-     "Nicolais ni colareis",
-     "Nicolais ni tampoco colareis",
-     "Luis Carlos Galan (veure wikipedia)",
-     "Pol request",
+        "Jaumayer",
+        "Pol obj",
+        "Pol ids",
+        "Grillem",
+        "Agusti Berloso",
+        "Eduard Fita",
+        "Nicolais ni colareis",
+        "Nicolais ni tampoco colareis",
+        "Luis Carlos Galan (veure wikipedia)",
+        "Pol request",
     ]
-    name_num = randint(0, len(name) -1)
+    name_num = randint(0, len(name) - 1)
     return name[name_num]
 
 
 @send_typing_action
 @remove_command_message
 def get_hc_text(update, context):
-    logger.info('Handling hacescosas')
+    logger.info("Handling hacescosas")
     phrase = get_random_phrase()
     update.message.reply_text(phrase, quote=False)
 
@@ -86,14 +87,12 @@ def get_hc_text(update, context):
 @send_typing_action
 @remove_command_message
 def get_tuquiets_text(update, context):
-    logger.info('Handling tuquiets')
+    logger.info("Handling tuquiets")
     _name = get_random_name()
     update.message.reply_text(_name, quote=False)
 
-tuquiets_handler = CommandHandler('tuquiets', get_tuquiets_text)
-hc_handler = CommandHandler('hacescosas', get_hc_text)
 
-TEXT_HANDLERS = [
-    tuquiets_handler,
-    hc_handler
-]
+tuquiets_handler = CommandHandler("tuquiets", get_tuquiets_text)
+hc_handler = CommandHandler("hacescosas", get_hc_text)
+
+TEXT_HANDLERS = [tuquiets_handler, hc_handler]
