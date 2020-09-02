@@ -4,15 +4,18 @@ from os.path import isfile, isdir, basename, dirname
 
 from meldebot.mel import conf
 
+
 class TestConf(unittest.TestCase):
     def setUp(self):
-        self.defaultname = 'mortdegana.cfg'
-        self.newfile = 'mortdegana.mel'
-        self.newpath = 'mel/mortdegana.mel'
+        self.defaultname = "mortdegana.cfg"
+        self.newfile = "mortdegana.mel"
+        self.newpath = "mel/mortdegana.mel"
         # Ensure we don't commit the config file :S
         try:
-            with open(self.defaultname, 'r') as existing_file:
-                raise Exception('Config file already exists!, Testing requires an empty environment')
+            with open(self.defaultname, "r") as existing_file:
+                raise Exception(
+                    "Config file already exists!, Testing requires an empty environment"
+                )
         except (IOError, FileNotFoundError):
             pass
         except:
@@ -35,23 +38,23 @@ class TestConf(unittest.TestCase):
     def test_create_default_file(self):
         """Creation of a default config file"""
         # File does not exist before
-        files = [f for f in listdir() if f==self.defaultname]
+        files = [f for f in listdir() if f == self.defaultname]
         self.assertFalse(self.defaultname in files)
         # Initialize config file
         conf.init_configs()
         # File must exist afterwards
-        files = [f for f in listdir() if f==self.defaultname]
+        files = [f for f in listdir() if f == self.defaultname]
         self.assertTrue(self.defaultname in files)
 
     def test_create_with_path(self):
         """Creation of a default config file specifing the path"""
         # File does not exist before
-        files = [f for f in listdir() if f==self.newfile]
+        files = [f for f in listdir() if f == self.newfile]
         self.assertFalse(self.newfile in files)
         # Initialize config file
         conf.init_configs(self.newfile)
         # File must exist afterwards
-        files = [f for f in listdir() if f==self.newfile]
+        files = [f for f in listdir() if f == self.newfile]
         self.assertTrue(self.newfile in files)
 
     def test_create_with_new_path(self):

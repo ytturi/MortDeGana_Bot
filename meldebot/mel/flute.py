@@ -11,28 +11,30 @@ from logging import getLogger
 
 from meldebot.mel.utils import send_typing_action, remove_command_message
 
+logger = getLogger(__name__)
+
 
 def search_video_url(params):
     # TODO: actually search the videos
     vkey = params[0]
-    url = 'https://www.youtube.com/watch?v={}'.format(vkey)
-    return url 
+    url = "https://www.youtube.com/watch?v={}".format(vkey)
+    return url
 
 
 def get_random_flute():
     # TODO: actually return search parameters
     URLS = [
-        'Ep_blZhvI2A', # Jurassic park
-        'KolfEhV-KiA', # Titanic
-        '3jW4feI2q_I', # Harry Potter
-        'SAAFA5T_GBE', # Attack on Titan
-    ]    
-    vnum = randint(0,3)
+        "Ep_blZhvI2A",  # Jurassic park
+        "KolfEhV-KiA",  # Titanic
+        "3jW4feI2q_I",  # Harry Potter
+        "SAAFA5T_GBE",  # Attack on Titan
+    ]
+    vnum = randint(0, 3)
     return [URLS[vnum]]
 
 
 def get_video_url(opt):
-    if 'flute' in opt:
+    if "flute" in opt:
         params = get_random_flute()
     return search_video_url(params)
 
@@ -41,7 +43,8 @@ def get_video_url(opt):
 @send_typing_action
 @remove_command_message
 def cb_flute_handler(update, context):
-    update.message.reply_html(get_video_url('flute'))
+    logger.info("Handling flute")
+    update.message.reply_html(get_video_url("flute"), quote=False)
 
 
-flute_handler = CommandHandler('flute', cb_flute_handler)
+flute_handler = CommandHandler("flute", cb_flute_handler)
