@@ -12,6 +12,13 @@ Are you implementing any new feature? Probably you will need to fork this repo, 
 Please link your PR to one of the existing issues (or create a new one).
 If there is no issue, please describe the PR according to the Pull Request template available (should appear in your GitHub UI when you create the PR)
 
+# Code-wise
+
+## Using types in Python
+
+Yes, we know it's not something required, but it is for us.
+It's not something present in the whole code (yet). However **all new code should be typed**.
+
 ## Found bugs while coding ?
 
 - Are they minor bugs? -> Solve them in your PR
