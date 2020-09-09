@@ -1,7 +1,5 @@
 # Mel De Bot
 
-> WE HAVE A BUILD!
-
 <img src="https://travis-ci.org/ytturi/MortDeGana_Bot.svg?branch=master" alt="build:">
 
 Mel de bot covers poll needs from a bot. It has 2 funcs by the moment and 1 todo:
