@@ -14,6 +14,11 @@ If there is no issue, please describe the PR according to the Pull Request templ
 
 # Code-wise
 
+## Code styling
+
+We want to follow PEP8, you can run the check.sh (or just check it to see what it does) in order to run black on all the python files of the repo.
+Black will take care of all the styling for you and the code will look neat!
+
 ## Using types in Python
 
 Yes, we know it's not something required, but it is for us.
