@@ -64,9 +64,4 @@ Options:
 
 ### Tests
 
-Integrity test: `python setup.py test`
-Functionallity test:
-```
-pip install -r dev_requirements.txt
-mamba spec/test_*
-```
+Unittests: `python setup.py test`
