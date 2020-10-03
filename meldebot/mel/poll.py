@@ -28,7 +28,7 @@ MOTO_QUOTE = [
     "Soc un mort de gana",
     "Plou i fa sol, em quedo a casa sol",
     "Jo vindria, pero m'agrada fer motos",
-    "Mhe endescuidat de regar el cactus de gisce,
+    "M'he endescuidat de regar el cactus de gisce",
     "Mha semblat veure una gota a la carretera",
     "El metge m'ha dit que no puc menjar aliments rics en sodi",
     "Demà haig d'anar a passar la itv",
