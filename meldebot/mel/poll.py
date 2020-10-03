@@ -20,6 +20,28 @@ logger = getLogger(__name__)
 
 # Mort de Gana POLL MANAGER
 
+# MOTO QUOTES
+MOTO_QUOTE = [
+    f"Vaig al gym, la idea es anarhi {randint(1,20)} cops per setmana",
+    f"Tinc hora a la pelu que nomes hi vaig {randint(1,20)} cops per setmana",
+    f"Fa {randint(2,30)} anys plovia",
+    "Soc un mort de gana",
+    "Plou i fa sol, em quedo a casa sol",
+    "Jo vindria, pero m'agrada fer motos",
+    "Mhe endescuidat de regar el cactus de gisce,
+    "Mha semblat veure una gota a la carretera",
+    "El metge m'ha dit que no puc menjar aliments rics en sodi",
+    "Demà haig d'anar a passar la itv",
+    "Tinc el rellotge en format 24h",
+    "Estic esperant a que en Marc em doni el contracte",
+    "Volia venir pro no soc 1000itar",
+    "Volia venir pro no soc 100tifiko",
+    "Esque em guardo dies de vacances",
+    "Estic esperant la corda i tamboret que m'he demanat a amazon",
+    "No puc venir pk la dona m'ha dit que anes a la platja de palafrugell i em quedés un parell d'hores sota l'aigua"
+]
+
+
 # POLL KEYBOARD
 POLL_KEYBOARD = InlineKeyboardMarkup(
     [
@@ -62,16 +84,7 @@ def get_moto_quote() -> str:
     Returns:
         str: Moto quote
     """
-    moto_quote_set = [
-        f"Vaig al gym, la idea es anarhi {randint(1,20)} cops per setmana",
-        f"Tinc hora a la pelu que nomes hi vaig {randint(1,20)} cops per setmana",
-        f"Fa {randint(2,30)} anys plovia",
-        "Soc un mort de gana",
-        "Plou i fa sol, em quedo a casa sol",
-        "Jo vindria, pero m'agrada fer motos",
-    ]
-
-    return choice(moto_quote_set)
+    return choice(MOTO_QUOTE)
 
 
 @send_typing_action
