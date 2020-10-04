@@ -34,8 +34,7 @@ def get_random_gif_provider():
 def get_gif_provider(provider_name):
     method_caller = GIF_PROVIDERS.get(provider_name)
     if not method_caller:
-        logger.critical("NO PROIDER DEFINED FOR {0}".format(provider_name))
-        exit(-1)  # exit or raise Exception ?
+        raise Exception(f"No provider defined with name: {provider_name}")
     else:
         return method_caller
 
