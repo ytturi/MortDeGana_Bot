@@ -8,20 +8,39 @@
 ###############################################################################
 from telegram.ext import CommandHandler
 import telegram
-from random import randint
+from random import randint, choice
 from configparser import ConfigParser
 from os.path import expanduser
 from logging import getLogger
 from requests import get as http_get
 
 # Self imports
-from meldebot.mel.conf import get_giphy_api_key, get_debug_enabled
+from meldebot.mel.conf import get_giphy_api_key, get_debug_enabled, get_tenor_api_key
 from meldebot.mel.utils import send_typing_action, remove_command_message
 
 logger = getLogger(__name__)
 
 
-def get_gif_url(params):
+def get_gif_url(params, provider=None):
+    if not provider:
+        provider = get_random_gif_provider()
+    return provider(params)
+
+
+def get_random_gif_provider():
+    return get_gif_provider(choice(list(GIF_PROVIDERS.keys())))
+
+
+def get_gif_provider(provider_name):
+    method_caller = GIF_PROVIDERS.get(provider_name)
+    if not method_caller:
+        logger.critical("NO PROIDER DEFINED FOR {0}".format(provider_name))
+        exit(-1)  # exit or raise Exception ?
+    else:
+        return method_caller
+
+
+def get_gif_url_giphy(params):
     api_key = get_giphy_api_key()
     if not api_key:
         logger.critical("NO API KEY FOR GIPHY!")
@@ -41,6 +60,28 @@ def get_gif_url(params):
         r.raise_for_status()
     gif_id = r.json()["data"][0]["id"]
     gif_url = "https://media.giphy.com/media/{}/giphy.gif".format(gif_id)
+    return gif_url
+
+
+def get_gif_url_tenor(params):
+    api_key = get_tenor_api_key()
+    if not api_key:
+        logger.critical("NO API KEY FOR Tenor!")
+        exit(-1)
+
+    base_url = "https://api.tenor.com/v1/search?"
+    search_params = "+".join(params)
+    idx = randint(1, 50)
+    query_url = "{url}?q={search}&pos={idx}&limit=1&key={api}&contentfilter=off&media_filter=basic&ar_range=all".format(
+        url=base_url, search=search_params, idx=idx, api=api_key
+    )
+    logger.debug("Tenor - GET: {}".format(query_url))
+    r = http_get(query_url)
+    if r.status_code != 200:
+        logger.error("Could not get tenor content!")
+        logger.error("{} - {}".format(r.status_code, r.text))
+        r.raise_for_status()
+    gif_url = r.json()["results"][0]["url"]
     return gif_url
 
 
@@ -83,3 +124,7 @@ mel_handler = CommandHandler("mel", cb_mel_handler)
 moto_handler = CommandHandler("moto", cb_moto_handler)
 
 GIF_HANDLERS = [mel_handler, moto_handler]
+GIF_PROVIDERS = {
+    "giphy": get_gif_url_giphy,
+    "tenor": get_gif_url_tenor,
+}

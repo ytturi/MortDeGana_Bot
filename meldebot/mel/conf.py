@@ -111,6 +111,10 @@ def get_giphy_api_key():
     return config.defaults().get("giphy_api_key", False)
 
 
+def get_tenor_api_key():
+    return config.defaults().get("tenor_api_key", False)
+
+
 def get_store_path():
     return config.defaults().get("store_path", False)
 
