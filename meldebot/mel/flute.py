@@ -14,11 +14,9 @@ from meldebot.mel.utils import send_typing_action, remove_command_message
 logger = getLogger(__name__)
 
 
-def search_video_url(params):
+def search_video_url(video_key):
     # TODO: actually search the videos
-    vkey = params[0]
-    url = "https://www.youtube.com/watch?v={}".format(vkey)
-    return url
+    return "https://www.youtube.com/watch?v={}".format(video_key)
 
 
 def get_random_flute():
@@ -33,7 +31,7 @@ def get_random_flute():
 
 
 def get_video_url(opt):
-    if "flute" in opt:
+    if opt == "flute":
         params = get_random_flute()
     return search_video_url(params)
 
