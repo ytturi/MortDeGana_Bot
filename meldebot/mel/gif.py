@@ -49,11 +49,14 @@ def get_gif_url_giphy(params):
     base_url = "https://api.giphy.com/v1/gifs/search"
     search_params = "+".join(params)
     idx = randint(1, 50)
-    query_url = "{url}?q={search}&offset={idx}&limit=1&api_key={api}".format(
-        url=base_url, search=search_params, idx=idx, api=api_key
-    )
-    logger.debug("GIPHY - GET: {}".format(query_url))
-    r = http_get(query_url)
+    url_params = {
+        'q': search_params,
+        'offset': idx,
+        'limit': 1,
+        'api_key': api_key,
+    }
+    logger.debug("GIPHY - GET: {}".format(url_params))
+    r = http_get(base_url, params=url_params)
     if r.status_code != 200:
         logger.error("Could not get giphy content!")
         logger.error("{} - {}".format(r.status_code, r.text))
@@ -72,11 +75,17 @@ def get_gif_url_tenor(params):
     base_url = "https://api.tenor.com/v1/search?"
     search_params = "+".join(params)
     idx = randint(1, 50)
-    query_url = "{url}?q={search}&pos={idx}&limit=1&key={api}&contentfilter=off&media_filter=basic&ar_range=all".format(
-        url=base_url, search=search_params, idx=idx, api=api_key
-    )
-    logger.debug("Tenor - GET: {}".format(query_url))
-    r = http_get(query_url)
+    url_params = {
+        'q': search_params,
+        'pos': idx,
+        'limit': 1,
+        'key': api_key,
+        'contentfilter': 'off',
+        'media_filter': 'basic',
+        'ar_range': 'all'
+    }
+    logger.debug("Tenor - GET: {}".format(url_params))
+    r = http_get(base_url, params=url_params)
     if r.status_code != 200:
         logger.error("Could not get tenor content!")
         logger.error("{} - {}".format(r.status_code, r.text))
