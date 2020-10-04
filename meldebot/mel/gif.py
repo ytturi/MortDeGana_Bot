@@ -8,7 +8,7 @@
 ###############################################################################
 from telegram.ext import CommandHandler
 import telegram
-from random import randint, choice
+from random import choice, randint, sample
 from configparser import ConfigParser
 from os.path import expanduser
 from logging import getLogger
@@ -96,10 +96,7 @@ def get_gif_url_tenor(params):
 
 def get_random_params():
     search_params = ["fun", "funny", "laugh", "honey", "falling", "drunk"]
-    param_num = randint(1, 3)
-    params = []
-    while len(params) < param_num:
-        params.append(search_params[randint(0, len(search_params) - 1)])
+    params = sample(search_params, k=randint(1, 3))
     if "honey" in params:
         # Filter for unwanted gifs e.e'
         params = ["honey"]
