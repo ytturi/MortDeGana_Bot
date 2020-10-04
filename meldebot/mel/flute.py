@@ -6,7 +6,7 @@
 # - FLUTE: Send random shitty flute video
 ###############################################################################
 from telegram.ext import CommandHandler
-from random import randint
+from random import choice
 from logging import getLogger
 
 from meldebot.mel.utils import send_typing_action, remove_command_message
@@ -29,8 +29,7 @@ def get_random_flute():
         "3jW4feI2q_I",  # Harry Potter
         "SAAFA5T_GBE",  # Attack on Titan
     ]
-    vnum = randint(0, 3)
-    return [URLS[vnum]]
+    return choice(URLS)
 
 
 def get_video_url(opt):
