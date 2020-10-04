@@ -10,7 +10,7 @@
 # - Tu qui ets: Send random names of haces cosas & friends. Usage: `/tuquiets`
 ###############################################################################
 from telegram.ext import CommandHandler
-from random import randint
+from random import choice
 from logging import getLogger
 
 from meldebot.mel.utils import send_typing_action, remove_command_message
@@ -49,8 +49,7 @@ def get_random_phrase():
         "Els reis son els pandas",
         "i tu qui ets?",
     ]
-    phrase_num = randint(0, len(phrase) - 1)
-    return phrase[phrase_num]
+    return choice(phrase)
 
 
 def get_random_name():
@@ -72,8 +71,7 @@ def get_random_name():
         "Luis Carlos Galan (veure wikipedia)",
         "Pol request",
     ]
-    name_num = randint(0, len(name) - 1)
-    return name[name_num]
+    return choice(name)
 
 
 @send_typing_action
