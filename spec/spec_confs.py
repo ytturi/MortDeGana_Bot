@@ -69,7 +69,7 @@ class TestConf(unittest.TestCase):
         self.assertTrue(isfile(self.newpath))
 
     def test_get_gif_provider_incorrect_provider(self):
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(Exception) as cm:
             melbot_gif.get_gif_provider("inventat")
         self.assertEqual(cm.exception.code, -1)
 
