@@ -71,7 +71,7 @@ class TestConf(unittest.TestCase):
     def test_get_gif_provider_incorrect_provider(self):
         with self.assertRaises(Exception) as cm:
             melbot_gif.get_gif_provider("inventat")
-        self.assertEqual(cm.exception.code, -1)
+        self.assertEqual(cm.messatge, f"No provider defined with name: inventat")
 
     def test_get_gif_provider_correct_provider(self):
         res = melbot_gif.get_gif_provider("giphy")
