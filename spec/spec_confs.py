@@ -3,6 +3,7 @@ from os import listdir, remove
 from os.path import isfile, isdir, basename, dirname
 
 from meldebot.mel import conf
+import meldebot.mel.gif as melbot_gif
 
 
 class TestConf(unittest.TestCase):
@@ -66,3 +67,16 @@ class TestConf(unittest.TestCase):
         conf.init_configs(self.newpath)
         # File must exist afterwards
         self.assertTrue(isfile(self.newpath))
+
+    def test_get_gif_provider_incorrect_provider(self):
+        with self.assertRaises(Exception) as cm:
+            melbot_gif.get_gif_provider("inventat")
+        self.assertEqual(str(cm.exception), f"No provider defined with name: inventat")
+
+    def test_get_gif_provider_correct_provider(self):
+        res = melbot_gif.get_gif_provider("giphy")
+        self.assertEqual(res, melbot_gif.get_gif_url_giphy)
+
+    def test_get_random_gif_provider(self):
+        res = melbot_gif.get_random_gif_provider()
+        self.assertIn(res, melbot_gif.GIF_PROVIDERS.values())
