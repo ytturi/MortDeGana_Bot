@@ -1,4 +1,5 @@
 from functools import wraps
+from random import randint
 import telegram
 
 from meldebot.mel.conf import get_debug_enabled
@@ -37,6 +38,20 @@ def remove_command_message(func):
         return return_value
 
     return command_func
+
+
+def get_insult() -> str:
+    from meldebot.insults import get_insults
+
+    # 1703 is INSULTS length
+    num: int = randint(0, 1703)
+
+    index = 0
+    for insult in get_insults():
+        if index == num:
+            return insult
+
+        index += 1
 
 
 def get_username(telegram_message):

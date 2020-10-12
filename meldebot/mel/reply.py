@@ -13,7 +13,12 @@ import telegram
 
 logger = getLogger(__name__)
 
-from meldebot.mel.utils import send_typing_action, remove_command_message, get_username
+from meldebot.mel.utils import (
+    send_typing_action,
+    remove_command_message,
+    get_username,
+    get_insult,
+)
 
 
 @send_typing_action
