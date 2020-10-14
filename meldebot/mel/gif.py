@@ -49,10 +49,10 @@ def get_gif_url_giphy(params):
     search_params = "+".join(params)
     idx = randint(1, 50)
     url_params = {
-        'q': search_params,
-        'offset': idx,
-        'limit': 1,
-        'api_key': api_key,
+        "q": search_params,
+        "offset": idx,
+        "limit": 1,
+        "api_key": api_key,
     }
     logger.debug("GIPHY - GET: {}".format(url_params))
     r = http_get(base_url, params=url_params)
@@ -75,13 +75,13 @@ def get_gif_url_tenor(params):
     search_params = "+".join(params)
     idx = randint(1, 50)
     url_params = {
-        'q': search_params,
-        'pos': idx,
-        'limit': 1,
-        'key': api_key,
-        'contentfilter': 'off',
-        'media_filter': 'basic',
-        'ar_range': 'all'
+        "q": search_params,
+        "pos": idx,
+        "limit": 1,
+        "key": api_key,
+        "contentfilter": "off",
+        "media_filter": "basic",
+        "ar_range": "all",
     }
     logger.debug("Tenor - GET: {}".format(url_params))
     r = http_get(base_url, params=url_params)

@@ -38,7 +38,7 @@ MOTO_QUOTE = [
     "Volia venir pro no soc 100tifiko",
     "Esque em guardo dies de vacances",
     "Estic esperant la corda i tamboret que m'he demanat a amazon",
-    "No puc venir pk la dona m'ha dit que anes a la platja de palafrugell i em quedés un parell d'hores sota l'aigua"
+    "No puc venir pk la dona m'ha dit que anes a la platja de palafrugell i em quedés un parell d'hores sota l'aigua",
 ]
 
 

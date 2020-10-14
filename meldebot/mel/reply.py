@@ -13,7 +13,12 @@ import telegram
 
 logger = getLogger(__name__)
 
-from meldebot.mel.utils import send_typing_action, remove_command_message, get_username
+from meldebot.mel.utils import (
+    send_typing_action,
+    remove_command_message,
+    get_username,
+    get_insult,
+)
 
 
 @send_typing_action
@@ -60,7 +65,30 @@ def cb_substitute_handler(update, context):
     )
 
 
+@send_typing_action
+@remove_command_message
+def cb_insult_handler(update, context) -> None:
+    logger.info("Reply insult")
+
+    original_message = update.effective_message.reply_to_message
+    insult = get_insult()
+
+    if original_message:
+        update.message.reply_text(
+            f"Ets un {insult}",
+            reply_to_message_id=original_message.message_id,
+            parse_mode=telegram.ParseMode.MARKDOWN,
+            quote=True,
+        )
+    else:
+        update.message.reply_text(
+            f"Ets un {insult}",
+            parse_mode=telegram.ParseMode.MARKDOWN,
+        )
+
+
 spoiler_handler = CommandHandler("spoiler", cb_spoiler_handler)
 substitute_handler = CommandHandler("s", cb_substitute_handler)
+insult_handler = CommandHandler("insult", cb_insult_handler)
 
-REPLY_HANDLERS = [spoiler_handler, substitute_handler]
+REPLY_HANDLERS = [spoiler_handler, substitute_handler, insult_handler]
