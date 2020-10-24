@@ -1,10 +1,9 @@
 ###############################################################################
 # Project: Mort de Gana Bot
-# Author: Ytturi
-# Descr: Answer command with custom GIF options from Giphy
+# Author: Bcedu
+# Descr: Answer command with ImageServer images
 # Commands:
-# - MEL: Send random GIF (See `get_mel_params`). Usage: `/mel`
-# - MOTO: Send motorbike GIF. Usage: `/moto`
+#  - GISCEMEME: Send random gisce meme. Usage: `/gisce_meme`
 ###############################################################################
 from telegram.ext import CommandHandler
 from logging import getLogger
@@ -18,7 +17,7 @@ from meldebot.mel.utils import send_typing_action, remove_command_message
 logger = getLogger(__name__)
 
 
-def get_gisce_meme_url(params):
+def get_gisce_meme_url(**params):
     auth_info = get_image_server_auth()
     if not auth_info:
         logger.critical("NO AUTH INFO FOR ImageServer!")
@@ -37,15 +36,11 @@ def get_gisce_meme_url(params):
     logger.debug("ImageServer - GET: {}".format(base_url))
     r = http_get(base_url, auth=auth)
     if r.status_code != 200:
-        logger.error("Could not get tenor content!")
+        logger.error("Could not get ImageServer content!")
         logger.error("{} - {}".format(r.status_code, r.text))
         r.raise_for_status()
     img_url = r.json()["url"]
     return img_url
-
-
-def get_gisce_meme(**kwargs):
-    return get_gisce_meme_url(kwargs)
 
 
 # Def Handler
@@ -53,7 +48,7 @@ def get_gisce_meme(**kwargs):
 @remove_command_message
 def cb_gisce_meme_handler(update, context):
     logger.info("Handling meme")
-    update.message.reply_photo(get_gisce_meme(id=None, tags=None), quote=False)
+    update.message.reply_photo(get_gisce_meme_url(id=None, tags=None), quote=False)
 
 
 gisce_meme_handler = CommandHandler("gisce_meme", cb_gisce_meme_handler)
