@@ -18,10 +18,11 @@ from meldebot.mel.text import TEXT_HANDLERS
 from meldebot.mel.gif import GIF_HANDLERS
 from meldebot.mel.reply import REPLY_HANDLERS
 from meldebot.mel.poll import POLL_HANDLERS
+from meldebot.mel.meme import MEME_HANDLERS
 
 # Command handlers
 MEL_HANDLERS = (
-    [flute_handler] + TEXT_HANDLERS + GIF_HANDLERS + REPLY_HANDLERS + POLL_HANDLERS
+    [flute_handler] + TEXT_HANDLERS + GIF_HANDLERS + REPLY_HANDLERS + POLL_HANDLERS + MEME_HANDLERS
 )
 
 
