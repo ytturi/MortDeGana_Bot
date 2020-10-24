@@ -115,6 +115,13 @@ def get_tenor_api_key():
     return config.defaults().get("tenor_api_key", False)
 
 
+def get_image_server_auth():
+    return {
+        'user': config.defaults().get("image_server_user", False),
+        'password': config.defaults().get("image_server_password", False)
+    }
+
+
 def get_store_path():
     return config.defaults().get("store_path", False)
 
