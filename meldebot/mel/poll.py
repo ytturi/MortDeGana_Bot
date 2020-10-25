@@ -72,7 +72,7 @@ def get_question(extra_text: str) -> str:
     return question
 
 
-def get_answers(status: List[str] = None) -> str:
+def get_answers(status: Optional[List[str]] = None) -> str:
     if status is None:
         status = ["", ""]
     answer = "MEL!\n{}- {}\nMOTO!\n{}- {}".format(
