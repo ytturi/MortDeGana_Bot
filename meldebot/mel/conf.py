@@ -116,15 +116,15 @@ def get_tenor_api_key() -> Optional[str]:
     return config.defaults().get("tenor_api_key", None)
 
 
-def get_image_server_auth() -> Dict[str, Any]:
+def get_image_server_auth() -> Dict[str, Optional[str]]:
     return {
-        'user': config.defaults().get("image_server_user", False),
-        'password': config.defaults().get("image_server_password", False)
+        'user': config.defaults().get("image_server_user", None),
+        'password': config.defaults().get("image_server_password", None)
     }
 
 
-def get_store_path() -> Any:
-    return config.defaults().get("store_path", False)
+def get_store_path() -> Optional[str]:
+    return config.defaults().get("store_path", None)
 
 
 def get_debug_enabled() -> bool:
