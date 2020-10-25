@@ -6,7 +6,10 @@
 # - MEL: Send random GIF (See `get_mel_params`). Usage: `/mel`
 # - MOTO: Send motorbike GIF. Usage: `/moto`
 ###############################################################################
-from telegram.ext import CommandHandler
+from typing import Callable, Dict, List, Union
+
+from telegram import Update
+from telegram.ext import CallbackContext, CommandHandler
 import telegram
 from random import choice, randint, sample
 from configparser import ConfigParser
@@ -21,17 +24,17 @@ from meldebot.mel.utils import send_typing_action, remove_command_message
 logger = getLogger(__name__)
 
 
-def get_gif_url(params, provider=None):
+def get_gif_url(params: List[str], provider: Callable = None) -> str:
     if not provider:
         provider = get_random_gif_provider()
     return provider(params)
 
 
-def get_random_gif_provider():
+def get_random_gif_provider() -> Callable:
     return get_gif_provider(choice(list(GIF_PROVIDERS.keys())))
 
 
-def get_gif_provider(provider_name):
+def get_gif_provider(provider_name: str) -> Callable:
     method_caller = GIF_PROVIDERS.get(provider_name)
     if not method_caller:
         raise Exception(f"No provider defined with name: {provider_name}")
@@ -39,7 +42,7 @@ def get_gif_provider(provider_name):
         return method_caller
 
 
-def get_gif_url_giphy(params):
+def get_gif_url_giphy(params: List[str]) -> str:
     api_key = get_giphy_api_key()
     if not api_key:
         logger.critical("NO API KEY FOR GIPHY!")
@@ -48,7 +51,7 @@ def get_gif_url_giphy(params):
     base_url = "https://api.giphy.com/v1/gifs/search"
     search_params = "+".join(params)
     idx = randint(1, 50)
-    url_params = {
+    url_params: Dict[str, Union[int, str]] = {
         "q": search_params,
         "offset": idx,
         "limit": 1,
@@ -65,7 +68,7 @@ def get_gif_url_giphy(params):
     return gif_url
 
 
-def get_gif_url_tenor(params):
+def get_gif_url_tenor(params: List[str]) -> str:
     api_key = get_tenor_api_key()
     if not api_key:
         logger.critical("NO API KEY FOR Tenor!")
@@ -74,7 +77,7 @@ def get_gif_url_tenor(params):
     base_url = "https://api.tenor.com/v1/search?"
     search_params = "+".join(params)
     idx = randint(1, 50)
-    url_params = {
+    url_params: Dict[str, Union[int, str]] = {
         "q": search_params,
         "pos": idx,
         "limit": 1,
@@ -93,7 +96,7 @@ def get_gif_url_tenor(params):
     return gif_url
 
 
-def get_random_params():
+def get_random_params() -> List[str]:
     search_params = ["fun", "funny", "laugh", "honey", "falling", "drunk"]
     params = sample(search_params, k=randint(1, 3))
     if "honey" in params:
@@ -102,7 +105,7 @@ def get_random_params():
     return params
 
 
-def get_gifs(opt):
+def get_gifs(opt: str) -> str:
     if "mel" in opt:
         params = get_random_params()
     elif "moto" in opt:
@@ -113,14 +116,14 @@ def get_gifs(opt):
 # Def Handler
 @send_typing_action
 @remove_command_message
-def cb_mel_handler(update, context):
+def cb_mel_handler(update: Update, context: CallbackContext) -> None:
     logger.info("Handling mel")
     update.message.reply_animation(get_gifs("mel"), quote=False)
 
 
 @send_typing_action
 @remove_command_message
-def cb_moto_handler(update, context):
+def cb_moto_handler(update: Update, context: CallbackContext) -> None:
     logger.info("Handling moto")
     update.message.reply_animation(get_gifs("moto"), quote=False)
 

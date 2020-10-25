@@ -5,7 +5,10 @@
 # Commands:
 #  - GISCEMEME: Send random gisce meme. Usage: `/gisce_meme`
 ###############################################################################
-from telegram.ext import CommandHandler
+from typing import Dict
+
+from telegram import Update
+from telegram.ext import CallbackContext, CommandHandler
 from logging import getLogger
 from requests import get as http_get
 from requests.auth import HTTPBasicAuth
@@ -17,7 +20,7 @@ from meldebot.mel.utils import send_typing_action, remove_command_message
 logger = getLogger(__name__)
 
 
-def get_gisce_meme_url(**params):
+def get_gisce_meme_url(**params: Dict[str, str]) -> str:
     auth_info = get_image_server_auth()
     if not auth_info:
         logger.critical("NO AUTH INFO FOR ImageServer!")
@@ -46,9 +49,9 @@ def get_gisce_meme_url(**params):
 # Def Handler
 @send_typing_action
 @remove_command_message
-def cb_gisce_meme_handler(update, context):
+def cb_gisce_meme_handler(update: Update, context: CallbackContext) -> None:
     logger.info("Handling meme")
-    update.message.reply_photo(get_gisce_meme_url(id=None, tags=None), quote=False)
+    update.message.reply_photo(get_gisce_meme_url(), quote=False)
 
 
 gisce_meme_handler = CommandHandler("gisce_meme", cb_gisce_meme_handler)

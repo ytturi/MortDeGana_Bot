@@ -6,8 +6,8 @@
 # - Substitute (replace): Replace text usage: `/s <textToReplace>/<replacement>`
 # - Spoiler: Hide spoiler messages in pop-up attachments. Usage: `/spoiler`
 ###############################################################################
-from telegram.ext import CommandHandler, CallbackQueryHandler
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.ext import CallbackContext, CommandHandler, CallbackQueryHandler
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton, Update
 from logging import getLogger
 import telegram
 
@@ -23,7 +23,7 @@ from meldebot.mel.utils import (
 
 @send_typing_action
 @remove_command_message
-def cb_spoiler_handler(update, context):
+def cb_spoiler_handler(update: Update, context: CallbackContext) -> None:
     logger.info("Reply spoiler")
     logger.warn("Spoiler: Not yet implemented")
     # TODO: Store message to get_store_path() and reply with filename_id
@@ -48,7 +48,7 @@ def cb_spoiler_handler(update, context):
 
 @send_typing_action
 @remove_command_message
-def cb_substitute_handler(update, context):
+def cb_substitute_handler(update: Update, context: CallbackContext) -> None:
     logger.info("Reply subsitute")
     substitute_text = update.effective_message.text.split(" ", 1)[1]
 
