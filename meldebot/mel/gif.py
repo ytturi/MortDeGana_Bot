@@ -6,6 +6,7 @@
 # - MEL: Send random GIF (See `get_mel_params`). Usage: `/mel`
 # - MOTO: Send motorbike GIF. Usage: `/moto`
 ###############################################################################
+from __future__ import annotations
 from typing import Callable, Dict, List, Optional, TYPE_CHECKING, Union
 
 from telegram.ext import CommandHandler

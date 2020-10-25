@@ -5,6 +5,7 @@
 # Commands:
 #  - GISCEMEME: Send random gisce meme. Usage: `/gisce_meme`
 ###############################################################################
+from __future__ import annotations
 from typing import Dict, TYPE_CHECKING
 
 from telegram.ext import CommandHandler
