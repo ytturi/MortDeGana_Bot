@@ -1,11 +1,14 @@
 from functools import wraps
 from random import randint
+from typing import Callable, Optional
+
 import telegram
+from telegram import User
 
 from meldebot.mel.conf import get_debug_enabled
 
 
-def send_typing_action(func):
+def send_typing_action(func: Callable) -> Callable:
     """Sends typing action while processing func command."""
 
     @wraps(func)
@@ -18,7 +21,7 @@ def send_typing_action(func):
     return command_func
 
 
-def remove_command_message(func):
+def remove_command_message(func: Callable) -> Callable:
     """Removes the message that triggered the handler."""
 
     @wraps(func)
@@ -40,7 +43,7 @@ def remove_command_message(func):
     return command_func
 
 
-def get_insult() -> str:
+def get_insult() -> Optional[str]:
     from meldebot.insults import get_insults
 
     # 1703 is INSULTS length
@@ -53,6 +56,8 @@ def get_insult() -> str:
 
         index += 1
 
+    return None
 
-def get_username(telegram_message):
-    return telegram_message.username or telegram_message.full_name
+
+def get_username(telegram_user: User) -> str:
+    return telegram_user.username or telegram_user.full_name

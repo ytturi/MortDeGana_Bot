@@ -7,6 +7,9 @@
 # Commands:
 # - Poll: Send a poll with a specified message. Usage: `/poll {message}`
 ###############################################################################
+from __future__ import annotations
+from typing import List, Optional, TYPE_CHECKING
+
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from random import choice, randint
@@ -15,6 +18,10 @@ from logging import getLogger
 # Self imports
 from meldebot.mel.gif import get_gifs
 from meldebot.mel.utils import send_typing_action, remove_command_message, get_username
+
+if TYPE_CHECKING:
+    from telegram import Update
+    from telegram.ext import CallbackContext
 
 logger = getLogger(__name__)
 
@@ -59,14 +66,14 @@ POLL_KEYBOARD = InlineKeyboardMarkup(
 # POLL START
 
 
-def get_question(extra_text):
+def get_question(extra_text: str) -> str:
     question = "Mel o no?\n"
     if extra_text:
         question = "{}\n{}".format(extra_text, question)
     return question
 
 
-def get_answers(status=None):
+def get_answers(status: Optional[List[str]] = None) -> str:
     if status is None:
         status = ["", ""]
     answer = "MEL!\n{}- {}\nMOTO!\n{}- {}".format(
@@ -89,7 +96,7 @@ def get_moto_quote() -> str:
 
 @send_typing_action
 @remove_command_message
-def start_poll(update, context):
+def start_poll(update: Update, context: CallbackContext) -> None:
     logger.info("Handling newpoll")
     text = "{}\n{}".format(
         get_question(extra_text=" ".join(context.args)), get_answers()
@@ -205,7 +212,7 @@ def update_poll_message(text, user, query):
     return "\n".join(question)
 
 
-def vote_poll(update, context):
+def vote_poll(update: Update, context: CallbackContext) -> None:
     logger.info("Handling votepoll")
     username = get_username(update.effective_user)
     message_text = update_poll_message(

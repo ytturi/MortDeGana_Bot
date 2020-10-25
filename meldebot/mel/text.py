@@ -9,16 +9,23 @@
 # - Haces cosas: Send random Haces cosas sentences. Usage: `/hacescosas`
 # - Tu qui ets: Send random names of haces cosas & friends. Usage: `/tuquiets`
 ###############################################################################
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 from telegram.ext import CommandHandler
 from random import choice
 from logging import getLogger
 
 from meldebot.mel.utils import send_typing_action, remove_command_message
 
+if TYPE_CHECKING:
+    from telegram import Update
+    from telegram.ext import CallbackContext
+
 logger = getLogger(__name__)
 
 
-def get_random_phrase():
+def get_random_phrase() -> str:
     """
     Get a random Mort de gana phrase
 
@@ -52,7 +59,7 @@ def get_random_phrase():
     return choice(phrase)
 
 
-def get_random_name():
+def get_random_name() -> str:
     """
     Get random Mort de gana names
 
@@ -76,7 +83,7 @@ def get_random_name():
 
 @send_typing_action
 @remove_command_message
-def get_hc_text(update, context):
+def get_hc_text(update: Update, context: CallbackContext) -> None:
     logger.info("Handling hacescosas")
     phrase = get_random_phrase()
     update.message.reply_text(phrase, quote=False)
@@ -84,7 +91,7 @@ def get_hc_text(update, context):
 
 @send_typing_action
 @remove_command_message
-def get_tuquiets_text(update, context):
+def get_tuquiets_text(update: Update, context: CallbackContext) -> None:
     logger.info("Handling tuquiets")
     _name = get_random_name()
     update.message.reply_text(_name, quote=False)

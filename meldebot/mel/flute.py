@@ -5,21 +5,28 @@
 # Commands:
 # - FLUTE: Send random shitty flute video
 ###############################################################################
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 from telegram.ext import CommandHandler
 from random import choice
 from logging import getLogger
 
 from meldebot.mel.utils import send_typing_action, remove_command_message
 
+if TYPE_CHECKING:
+    from telegram import Update
+    from telegram.ext import CallbackContext
+
 logger = getLogger(__name__)
 
 
-def search_video_url(video_key):
+def search_video_url(video_key: str) -> str:
     # TODO: actually search the videos
     return "https://www.youtube.com/watch?v={}".format(video_key)
 
 
-def get_random_flute():
+def get_random_flute() -> str:
     # TODO: actually return search parameters
     URLS = [
         "Ep_blZhvI2A",  # Jurassic park
@@ -30,7 +37,7 @@ def get_random_flute():
     return choice(URLS)
 
 
-def get_video_url(opt):
+def get_video_url(opt: str) -> str:
     if opt == "flute":
         params = get_random_flute()
     return search_video_url(params)
@@ -39,7 +46,7 @@ def get_video_url(opt):
 # Def Handler
 @send_typing_action
 @remove_command_message
-def cb_flute_handler(update, context):
+def cb_flute_handler(update: Update, context: CallbackContext) -> None:
     logger.info("Handling flute")
     update.message.reply_html(get_video_url("flute"), quote=False)
 

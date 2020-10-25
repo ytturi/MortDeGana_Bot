@@ -9,6 +9,7 @@ from configparser import RawConfigParser
 from os import makedirs
 from os.path import expanduser, isfile, isdir, basename, dirname, join
 import logging
+from typing import Any, Dict, Optional, Tuple
 
 SAMPLE_CFG = """[DEFAULT]
 telegram_token: <InsertTelegramBotToken>
@@ -24,7 +25,7 @@ debug: False
 config = RawConfigParser(inline_comment_prefixes=[";", "#"], allow_no_value=True)
 
 
-def read_configs(configpath=False):
+def read_configs(configpath: str = None) -> None:
     """Read Configurations
 
     Keyword Arguments:
@@ -37,7 +38,7 @@ def read_configs(configpath=False):
             config.read(configpath)
 
 
-def init_configs(configpath=None):
+def init_configs(configpath: str = None) -> None:
     """Initialize configurations
 
     Keyword Arguments:
@@ -87,7 +88,7 @@ def get_logging_options():
     return log_level, log_format
 
 
-def init_logger(verbose, debug):
+def init_logger(verbose: bool, debug: bool) -> None:
     """Initialize logging settings
 
     Arguments:
@@ -103,30 +104,30 @@ def init_logger(verbose, debug):
     logging.basicConfig(level=log_level, format=log_format)
 
 
-def get_telegram_token():
-    return config.defaults().get("telegram_token", False)
+def get_telegram_token() -> Optional[str]:
+    return config.defaults().get("telegram_token")
 
 
-def get_giphy_api_key():
-    return config.defaults().get("giphy_api_key", False)
+def get_giphy_api_key() -> Optional[str]:
+    return config.defaults().get("giphy_api_key", None)
 
 
-def get_tenor_api_key():
-    return config.defaults().get("tenor_api_key", False)
+def get_tenor_api_key() -> Optional[str]:
+    return config.defaults().get("tenor_api_key", None)
 
 
-def get_image_server_auth():
+def get_image_server_auth() -> Dict[str, Optional[str]]:
     return {
-        'user': config.defaults().get("image_server_user", False),
-        'password': config.defaults().get("image_server_password", False)
+        'user': config.defaults().get("image_server_user", None),
+        'password': config.defaults().get("image_server_password", None)
     }
 
 
-def get_store_path():
-    return config.defaults().get("store_path", False)
+def get_store_path() -> Optional[str]:
+    return config.defaults().get("store_path", None)
 
 
-def get_debug_enabled():
+def get_debug_enabled() -> bool:
     section = "DEVELOPMENT"
     option = "debug"
     if config.has_section(section) and config.has_option(section, option):
