@@ -2,16 +2,11 @@
 
 <img src="https://travis-ci.org/ytturi/MortDeGana_Bot.svg?branch=master" alt="build:">
 
-Mel de bot covers poll needs from a bot. It has 2 funcs by the moment and 1 todo:
 
-DONE:
+## Commands available
 
-- Party Poll
-- Mel gif
 
-TODO: Spam prevention
-
-## Party Poll
+### Party Poll
 
 Makes the question: "Who is coming?". The user may add extra text befor sending the poll. The options are: 
 
@@ -28,13 +23,62 @@ _Usage:_
 
 >TODO: ADD a GIF showing usage
 
-## Mel!
+
+### Mel!
 
 Just send a random GIF. It uses a 100 random seed with one of the following search words (decided randomly): "honey, party, smile, laugh, crash, fall, funny"
 
 ```
 /mel
 ```
+
+
+### Flute
+
+Send a random YouTube video with a shitty flute cover.
+
+```
+/flute
+```
+
+
+### Haces cosas
+
+Send a random text within the mosth famous phrases in the Mort de gana group.
+
+```
+/hacescosas
+```
+
+
+### Moto
+
+Send a motorbike crash gif from giphy.
+
+```
+/moto
+```
+
+
+### Tu qui ets
+
+Send a fine-tuned name of a random member of the Mort de gana group.
+
+```
+/tuquiets
+```
+
+
+### Did you mean?
+
+Sends a _Did you mean?_ message replying to a message, properly fixing what the writer actually meant.
+
+To use, reply to a message using:
+
+```
+/s <TEXT_FROM_ORIGINAL_MSG>/<TEXT_TO_BE_REPLACED_WITH>
+```
+
 
 ## TODO: Spam prevention
 
