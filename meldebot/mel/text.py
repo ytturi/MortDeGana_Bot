@@ -9,6 +9,7 @@
 # - Haces cosas: Send random Haces cosas sentences. Usage: `/hacescosas`
 # - Tu qui ets: Send random names of haces cosas & friends. Usage: `/tuquiets`
 ###############################################################################
+from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from telegram.ext import CommandHandler

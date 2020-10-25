@@ -6,6 +6,7 @@
 # - Substitute (replace): Replace text usage: `/s <textToReplace>/<replacement>`
 # - Spoiler: Hide spoiler messages in pop-up attachments. Usage: `/spoiler`
 ###############################################################################
+from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from telegram.ext import CommandHandler, CallbackQueryHandler

@@ -5,6 +5,7 @@
 # Commands:
 # - FLUTE: Send random shitty flute video
 ###############################################################################
+from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from telegram.ext import CommandHandler
