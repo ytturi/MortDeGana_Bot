@@ -9,12 +9,17 @@
 # - Haces cosas: Send random Haces cosas sentences. Usage: `/hacescosas`
 # - Tu qui ets: Send random names of haces cosas & friends. Usage: `/tuquiets`
 ###############################################################################
-from telegram import Update
-from telegram.ext import CallbackContext, CommandHandler
+from typing import TYPE_CHECKING
+
+from telegram.ext import CommandHandler
 from random import choice
 from logging import getLogger
 
 from meldebot.mel.utils import send_typing_action, remove_command_message
+
+if TYPE_CHECKING:
+    from telegram import Update
+    from telegram.ext import CallbackContext
 
 logger = getLogger(__name__)
 

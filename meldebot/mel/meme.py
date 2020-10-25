@@ -5,10 +5,9 @@
 # Commands:
 #  - GISCEMEME: Send random gisce meme. Usage: `/gisce_meme`
 ###############################################################################
-from typing import Dict
+from typing import Dict, TYPE_CHECKING
 
-from telegram import Update
-from telegram.ext import CallbackContext, CommandHandler
+from telegram.ext import CommandHandler
 from logging import getLogger
 from requests import get as http_get
 from requests.auth import HTTPBasicAuth
@@ -16,6 +15,10 @@ from requests.auth import HTTPBasicAuth
 # Self imports
 from meldebot.mel.conf import get_image_server_auth
 from meldebot.mel.utils import send_typing_action, remove_command_message
+
+if TYPE_CHECKING:
+    from telegram import Update
+    from telegram.ext import CallbackContext
 
 logger = getLogger(__name__)
 

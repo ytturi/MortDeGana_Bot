@@ -6,10 +6,9 @@
 # - MEL: Send random GIF (See `get_mel_params`). Usage: `/mel`
 # - MOTO: Send motorbike GIF. Usage: `/moto`
 ###############################################################################
-from typing import Callable, Dict, List, Union
+from typing import Callable, Dict, List, TYPE_CHECKING, Union
 
-from telegram import Update
-from telegram.ext import CallbackContext, CommandHandler
+from telegram.ext import CommandHandler
 import telegram
 from random import choice, randint, sample
 from configparser import ConfigParser
@@ -20,6 +19,10 @@ from requests import get as http_get
 # Self imports
 from meldebot.mel.conf import get_giphy_api_key, get_debug_enabled, get_tenor_api_key
 from meldebot.mel.utils import send_typing_action, remove_command_message
+
+if TYPE_CHECKING:
+    from telegram import Update
+    from telegram.ext import CallbackContext
 
 logger = getLogger(__name__)
 

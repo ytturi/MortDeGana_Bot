@@ -7,16 +7,20 @@
 # Commands:
 # - Poll: Send a poll with a specified message. Usage: `/poll {message}`
 ###############################################################################
-from typing import List
+from typing import List, TYPE_CHECKING
 
-from telegram.ext import CallbackContext, CommandHandler, CallbackQueryHandler
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton, Update
+from telegram.ext import CommandHandler, CallbackQueryHandler
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from random import choice, randint
 from logging import getLogger
 
 # Self imports
 from meldebot.mel.gif import get_gifs
 from meldebot.mel.utils import send_typing_action, remove_command_message, get_username
+
+if TYPE_CHECKING:
+    from telegram import Update
+    from telegram.ext import CallbackContext
 
 logger = getLogger(__name__)
 

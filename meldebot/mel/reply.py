@@ -6,10 +6,16 @@
 # - Substitute (replace): Replace text usage: `/s <textToReplace>/<replacement>`
 # - Spoiler: Hide spoiler messages in pop-up attachments. Usage: `/spoiler`
 ###############################################################################
-from telegram.ext import CallbackContext, CommandHandler, CallbackQueryHandler
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton, Update
+from typing import TYPE_CHECKING
+
+from telegram.ext import CommandHandler, CallbackQueryHandler
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from logging import getLogger
 import telegram
+
+if TYPE_CHECKING:
+    from telegram import Update
+    from telegram.ext import CallbackContext
 
 logger = getLogger(__name__)
 
