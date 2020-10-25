@@ -6,7 +6,7 @@
 # - MEL: Send random GIF (See `get_mel_params`). Usage: `/mel`
 # - MOTO: Send motorbike GIF. Usage: `/moto`
 ###############################################################################
-from typing import Callable, Dict, List, TYPE_CHECKING, Union
+from typing import Callable, Dict, List, Optional, TYPE_CHECKING, Union
 
 from telegram.ext import CommandHandler
 import telegram
@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 logger = getLogger(__name__)
 
 
-def get_gif_url(params: List[str], provider: Callable = None) -> str:
+def get_gif_url(params: List[str], provider: Optional[Callable] = None) -> str:
     if not provider:
         provider = get_random_gif_provider()
     return provider(params)

@@ -7,7 +7,7 @@
 # Commands:
 # - Poll: Send a poll with a specified message. Usage: `/poll {message}`
 ###############################################################################
-from typing import List, TYPE_CHECKING
+from typing import List, Optional, TYPE_CHECKING
 
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
