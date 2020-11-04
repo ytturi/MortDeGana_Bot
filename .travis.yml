@@ -10,5 +10,5 @@ install:
   - pip install -r dev_requirements.txt
 
 script:
-  - mypy meldebot/bot.py
+  - mypy meldebot
   - python setup.py test

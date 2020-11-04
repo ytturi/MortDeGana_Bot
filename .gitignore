@@ -5,3 +5,4 @@
 .coverage
 build/
 mortdegana.cfg
+.vscode/
