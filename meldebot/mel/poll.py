@@ -46,6 +46,10 @@ MOTO_QUOTE = [
     "Esque em guardo dies de vacances",
     "Estic esperant la corda i tamboret que m'he demanat a amazon",
     "No puc venir pk la dona m'ha dit que anes a la platja de palafrugell i em quedés un parell d'hores sota l'aigua",
+    "Casum l'olla! Ja tinc un dinar...",
+    "He quedat per fer una muntanya",
+    "Jo vindira pero es que se m'ha espatllat el GPS del mòbil",
+    "No puc venir que he d'afegir excuses de moto al bot",
 ]
 
 
