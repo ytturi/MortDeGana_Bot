@@ -22,7 +22,12 @@ from meldebot.mel.meme import MEME_HANDLERS
 
 # Command handlers
 MEL_HANDLERS = (
-    [flute_handler] + TEXT_HANDLERS + GIF_HANDLERS + REPLY_HANDLERS + POLL_HANDLERS + MEME_HANDLERS
+    [flute_handler]
+    + TEXT_HANDLERS
+    + GIF_HANDLERS
+    + REPLY_HANDLERS
+    + POLL_HANDLERS
+    + MEME_HANDLERS
 )
 
 

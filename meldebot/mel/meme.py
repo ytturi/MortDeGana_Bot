@@ -30,7 +30,7 @@ def get_gisce_meme_url(**params: Dict[str, str]) -> str:
         logger.critical("NO AUTH INFO FOR ImageServer!")
         exit(-1)
 
-    auth = HTTPBasicAuth(auth_info['user'], auth_info['password'])
+    auth = HTTPBasicAuth(auth_info["user"], auth_info["password"])
 
     base_url = "https://bcclean.tk/ImageServer/api"
     if params.get("id"):
@@ -61,4 +61,3 @@ def cb_gisce_meme_handler(update: Update, context: CallbackContext) -> None:
 gisce_meme_handler = CommandHandler("gisce_meme", cb_gisce_meme_handler)
 
 MEME_HANDLERS = [gisce_meme_handler]
-
