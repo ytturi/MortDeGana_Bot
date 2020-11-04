@@ -118,8 +118,8 @@ def get_tenor_api_key() -> Optional[str]:
 
 def get_image_server_auth() -> Dict[str, Optional[str]]:
     return {
-        'user': config.defaults().get("image_server_user", None),
-        'password': config.defaults().get("image_server_password", None)
+        "user": config.defaults().get("image_server_user", None),
+        "password": config.defaults().get("image_server_password", None),
     }
 
 
