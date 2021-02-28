@@ -8,16 +8,19 @@
 # - Poll: Send a poll with a specified message. Usage: `/poll {message}`
 ###############################################################################
 from __future__ import annotations
-from typing import List, Optional, TYPE_CHECKING
+from typing import Dict, List, Optional, TYPE_CHECKING
 
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from random import choice, randint
 from logging import getLogger
+from sqlalchemy import bindparam, select
 
 # Self imports
+from meldebot.database import Database
 from meldebot.mel.gif import get_gifs
 from meldebot.mel.utils import send_typing_action, remove_command_message, get_username
+from meldebot.mel.conf import using_database
 
 if TYPE_CHECKING:
     from telegram import Update
@@ -256,9 +259,8 @@ def vote_poll(update: Update, context: CallbackContext) -> None:
 
     if message_text == update.effective_message.text:
         return
-    update.effective_message.edit_text(
-        text=message_text, reply_markup=POLL_KEYBOARD, quote=True
-    )
+
+    update.effective_message.edit_text(text=message_text, reply_markup=POLL_KEYBOARD)
     if "MOTO" in update.callback_query.data:
         update.effective_message.reply_animation(
             get_gifs("moto"), caption=f"{username}: {get_moto_quote()}", quote=True
@@ -284,7 +286,223 @@ def new_update_poll_message(
         str: Updated poll text message
     """
 
-    pass
+    # Initialize the database connection
+    postgres = Database()
+
+    # Query data contains a string with the command sent when pressing
+    # the button with the format:
+    #
+    #   "vote [MEL|MOTO|MEL+1|MEL-1]"
+    #
+    # Substracting the first 5 characters results in the current vote action
+    vote_action = query_data[5:]
+
+    handle_vote(postgres, poll_id, username, vote_action)
+
+    votes = get_all_votes(postgres, poll_id)
+    return build_new_message(old_text, votes)
+
+
+def handle_vote(
+    postgres: Database, poll_id: int, username: str, vote_action: str
+) -> None:
+    """
+    Update the database according to the vote action
+    for the effective user in the poll message
+
+    Args:
+        postgres (Database): Database connection
+        poll_id (int): Telegram's `message_id` for the poll
+        username (str): Username of the user interacting with the poll
+        vote_action (str): [description]
+    """
+
+    # Check for existing vote for this user:
+    existing_vote = get_existing_vote(postgres, poll_id, username)
+
+    # Possible actions:
+    # - `MOTO`: set the vote to 0
+    if vote_action == "MOTO":
+        if existing_vote is None:
+            insert_vote(postgres, poll_id, username, 0)
+
+        elif existing_vote != 0:
+            update_vote(postgres, poll_id, username, 0)
+
+    # - `MEL`: set the vote to 1
+    elif vote_action == "MEL":
+        if existing_vote is None:
+            insert_vote(postgres, poll_id, username, 1)
+
+        elif existing_vote != 1:
+            update_vote(postgres, poll_id, username, 1)
+
+    # - `MEL+1`: Add 1 to the current vote
+    elif vote_action == "MEL+1":
+        if existing_vote is None:
+            insert_vote(postgres, poll_id, username, 2)
+
+        else:
+            new_vote = 2 if existing_vote < 2 else existing_vote + 1
+            update_vote(postgres, poll_id, username, new_vote)
+
+    # - `MEL-1`: Substract 1 to the current vote (Can't be less than 1)
+    elif vote_action == "MEL-1":
+        if existing_vote is None:
+            insert_vote(postgres, poll_id, username, 1)
+
+        else:
+            new_vote = 1 if existing_vote < 2 else existing_vote - 1
+            update_vote(postgres, poll_id, username, new_vote)
+
+
+def get_existing_vote(postgres: Database, poll_id: int, username: str) -> Optional[int]:
+    """
+    Query the database to get the current vote for the user if it exists.
+
+    Args:
+        postgres (Database): Database connection
+        poll_id (int): Telegram's `message_id` for the poll
+        username (str): Username of the user interacting with the poll
+
+    Returns:
+        int: [description]
+    """
+
+    select_query = select([postgres.motos_counter.c.vote]).where(
+        (postgres.motos_counter.c.poll_id == poll_id)
+        & (postgres.motos_counter.c.username == bindparam("username_"))
+    )
+    # We only expect one row to match
+    results = postgres.engine.execute(select_query, username_=username).first()
+
+    if results is None:
+        return None
+
+    else:
+        return results["vote"]
+
+
+def insert_vote(postgres: Database, poll_id: int, username: str, vote: int) -> None:
+    """
+    Insert a new vote into the database
+
+    Args:
+        postgres (Database): Database connection
+        poll_id (int): Telegram's `message_id` for the poll
+        username (str): Username of the user interacting with the poll
+        vote (int): New user vote
+    """
+    from datetime import datetime
+
+    insert_values = {
+        "poll_id": poll_id,
+        "username": username,
+        "vote": vote,
+        # TODO: Move the date to PostgreSQL
+        "date": datetime.now(),
+    }
+
+    insert_query = postgres.motos_counter.insert().values(insert_values)
+    postgres.engine.execute(insert_query)
+
+
+def update_vote(postgres: Database, poll_id: int, username: str, vote: int) -> None:
+    """
+    Insert a new vote into the database
+
+    Args:
+        postgres (Database): Database connection
+        poll_id (int): Telegram's `message_id` for the poll
+        username (str): Username of the user interacting with the poll
+        vote (int): New user vote
+    """
+    from datetime import datetime
+
+    insert_values = {
+        "poll_id": poll_id,
+        "username": username,
+        "vote": vote,
+        # TODO: Move the date to PostgreSQL
+        "date": datetime.now(),
+    }
+
+    update_query = (
+        postgres.motos_counter.update()
+        .values(insert_values)
+        .where(
+            (postgres.motos_counter.c.poll_id == poll_id)
+            & (postgres.motos_counter.c.username == bindparam("username_"))
+        )
+    )
+    postgres.engine.execute(update_query, username_=username)
+
+
+def get_all_votes(postgres: Database, poll_id: int) -> Dict[str, int]:
+    """
+    Get all votes for the current poll_id that are stored in the database
+
+    Args:
+        postgres (Database): Database connection
+        poll_id (int): Telegram's `message_id` for the poll
+
+    Returns:
+        Dict[str, Dict[str, int]]: A dictionary with the current votes
+    """
+
+    select_query = (
+        select([postgres.motos_counter.c.username, postgres.motos_counter.c.vote])
+        .where(postgres.motos_counter.c.poll_id == poll_id)
+        .order_by(postgres.motos_counter.c.vote, postgres.motos_counter.c.date)
+    )
+
+    results = postgres.engine.execute(select_query)
+
+    return [{**row} for row in results]
+
+
+def build_new_message(old_message: str, votes: List[Dict[str, int]]):
+    """
+    Build the new poll text message with the votes and the old message.
+
+    Args:
+        old_message (str): Old poll message. We use it to get the poll question
+        votes (Dict[str, int]): All the votes in the database. Used to build the current answers.
+    """
+
+    # This is a hack, but it's effective for now.
+    # We know that the results are build as:
+    #  "[Question]\n\nMEL\n<list of mel>\nMOTO\n<list of moto>"
+    # Therefore we can split on '\n' and remove this part
+    # by removing the last 4 '\n'
+    question = "\n".join(old_message.split("\n")[:-4])
+
+    mel_votes = [
+        (f'@{row["username"]}', row["vote"]) for row in votes if row["vote"] > 0
+    ]
+    moto_votes = [f'@{row["username"]}' for row in votes if row["vote"] == 0]
+
+    total_mel = sum([vote for user, vote in mel_votes])
+    total_moto = len([user for user in moto_votes])
+
+    mel = f"MEL: {total_mel}\n"
+    if total_mel > 0:
+        mel += ", ".join(
+            [f"{user}" if vote == 1 else f"{user}+{vote-1}" for user, vote in mel_votes]
+        )
+
+    else:
+        mel += "-"
+
+    moto = f"MOTO: {total_moto}\n"
+    if total_moto > 0:
+        moto += ", ".join(moto_votes)
+
+    # Ensure we have a character in the row to preserve the same amount of '\n'
+    else:
+        moto += "-"
+
+    return f"{question}\n{mel}\n{moto}"
 
 
 POLL_VOTE_HANDLER = CallbackQueryHandler(vote_poll, pattern=r"^vote")
