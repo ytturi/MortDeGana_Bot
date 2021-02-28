@@ -71,7 +71,7 @@ class Database:
             metadata,
             Column("id", BigInteger, primary_key=True, index=True),
             Column("poll_id", Integer, index=True, nullable=False),
-            Column("user_id", Integer, index=True, nullable=False),
+            Column("username", Text, index=True, nullable=False),
             Column("vote", Integer, index=True, nullable=False),
             Column("date", DateTime, index=True, nullable=False),
         )
