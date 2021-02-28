@@ -12,6 +12,8 @@ setup(
         "python-telegram-bot",
         "ConfigParser",
         "requests",
+        "sqlalchemy",
+        "psycopg2-binary"
     ],
     entry_points="""
         [console_scripts]
