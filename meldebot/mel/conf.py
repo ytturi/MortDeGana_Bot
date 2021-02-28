@@ -18,6 +18,15 @@ store_path: /data/spoilers
 [LOGGING]
 level: INFO
 format: [%(asctime)s][%(name)s][%(levelname)s]: %(message)s
+[POSTGRES]
+# You can either specify the connection URI:
+# connection: postgresql://user:password@localhost:port/database
+# Or specify each (required) parameter and let the bot build the URI:
+# host: localhost
+# port: 5432
+# user: meldebot
+# password: meldebot
+# database: meldebot
 [DEVELOPMENT]
 debug: False
 """
@@ -121,6 +130,77 @@ def get_image_server_auth() -> Dict[str, Optional[str]]:
         "user": config.defaults().get("image_server_user", None),
         "password": config.defaults().get("image_server_password", None),
     }
+
+
+def get_psql_connection() -> Optional[str]:
+    """Get the connection URI to connect to the postgres database from the config file.
+
+    Defaults the connection to:
+
+    postgresql://localhost/meldebot
+
+    Returns:
+        Optional[str]: Connection URI for the database or None
+    """
+    section = "POSTGRES"
+    if not config.has_section(section):
+        return None
+
+    if config.has_option(section, "connection"):
+        return config.get(section, "connection")
+
+    host = config.get(section, "host", fallback="localhost")
+    database = config.get(section, "database", fallback="meldebot")
+    port = config.get(section, "port", fallback=None)
+    user = config.get(section, "user", fallback=None)
+    password = config.get(section, "password", fallback=None)
+
+    return build_connection_uri_from_params(
+        host=host, port=port, user=user, password=password, database=database
+    )
+
+
+def build_connection_uri_from_params(
+    host: str,
+    database: str,
+    user: Optional[str],
+    password: Optional[str],
+    port: Optional[str],
+) -> str:
+    """Build the postgresql connection URI from the parameters
+
+    Args:
+        host (str): host of the database
+        database (str): name of the database
+        user (Optional[str]): user to access the database
+        password (Optional[str]): password to access the database
+        port (Optional[str]): port to access the database
+
+    Returns:
+        str: Connection URI
+    """
+
+    connection = "postgresql://"
+
+    if user:
+        auth = user
+
+        if password:
+            auth = f"{user}:{password}"
+
+        connection += f"{auth}@"
+
+    connection += host
+    if port:
+        connection += f":{port}"
+
+    connection += f"/{database}"
+
+    return connection
+
+
+def using_database() -> bool:
+    return True if get_psql_connection() is not None else False
 
 
 def get_store_path() -> Optional[str]:

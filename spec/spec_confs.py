@@ -80,3 +80,38 @@ class TestConf(unittest.TestCase):
     def test_get_random_gif_provider(self):
         res = melbot_gif.get_random_gif_provider()
         self.assertIn(res, melbot_gif.GIF_PROVIDERS.values())
+
+    def test_build_psql_connection(self):
+        host = "host"
+        port = "port"
+        user = "user"
+        password = "password"
+        database = "database"
+
+        actual = conf.build_connection_uri_from_params(
+            host=host, port=port, user=user, password=password, database=database
+        )
+
+        expected = f"postgresql://{user}:{password}@{host}:{port}/{database}"
+        self.assertEqual(actual, expected)
+
+        actual = conf.build_connection_uri_from_params(
+            host=host, port=port, user=None, password=password, database=database
+        )
+
+        expected = f"postgresql://{host}:{port}/{database}"
+        self.assertEqual(actual, expected)
+
+        actual = conf.build_connection_uri_from_params(
+            host=host, port=port, user=None, password=None, database=database
+        )
+
+        expected = f"postgresql://{host}:{port}/{database}"
+        self.assertEqual(actual, expected)
+
+        actual = conf.build_connection_uri_from_params(
+            host=host, port=None, user=None, password=None, database=database
+        )
+
+        expected = f"postgresql://{host}/{database}"
+        self.assertEqual(actual, expected)

@@ -60,4 +60,13 @@ def get_insult() -> Optional[str]:
 
 
 def get_username(telegram_user: User) -> str:
+    """
+    Get the username from the telegram user
+
+    Args:
+        telegram_user (User): Telegram User
+
+    Returns:
+        str: Username if it has one. Public name otherwise
+    """
     return telegram_user.username or telegram_user.full_name
