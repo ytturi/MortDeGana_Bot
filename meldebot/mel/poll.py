@@ -241,7 +241,7 @@ def vote_poll(update: Update, context: CallbackContext) -> None:
     username = get_username(update.effective_user)
 
     # Use old method by default
-    if using_database() is False:
+    if not using_database():
         message_text = update_poll_message(
             text=update.effective_message.text,
             user=username,
