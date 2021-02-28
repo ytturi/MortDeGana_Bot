@@ -13,7 +13,7 @@ setup(
         "ConfigParser",
         "requests",
         "sqlalchemy",
-        "psycopg2-binary"
+        "psycopg2-binary",
     ],
     entry_points="""
         [console_scripts]

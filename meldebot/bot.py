@@ -11,9 +11,15 @@ import click
 
 # Self-imports
 from meldebot.database import Database
-from meldebot.mel.conf import read_configs, init_configs, init_logger
-from meldebot.mel.conf import get_logging_options, get_telegram_token
-from meldebot.mel.conf import get_debug_enabled, using_database
+from meldebot.mel.conf import (
+    read_configs,
+    init_configs,
+    init_logger,
+    get_logging_options,
+    get_telegram_token,
+    get_debug_enabled,
+    using_database,
+)
 from meldebot.mel.flute import flute_handler
 from meldebot.mel.text import TEXT_HANDLERS
 from meldebot.mel.gif import GIF_HANDLERS
