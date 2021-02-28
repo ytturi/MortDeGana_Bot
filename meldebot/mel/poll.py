@@ -8,7 +8,7 @@
 # - Poll: Send a poll with a specified message. Usage: `/poll {message}`
 ###############################################################################
 from __future__ import annotations
-from typing import Dict, List, Optional, TYPE_CHECKING
+from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
@@ -438,7 +438,7 @@ def update_vote(postgres: Database, poll_id: int, username: str, vote: int) -> N
     postgres.engine.execute(update_query, username_=username)
 
 
-def get_all_votes(postgres: Database, poll_id: int) -> Dict[str, int]:
+def get_all_votes(postgres: Database, poll_id: int) -> List[Tuple[str, int]]:
     """
     Get all votes for the current poll_id that are stored in the database
 
@@ -447,7 +447,7 @@ def get_all_votes(postgres: Database, poll_id: int) -> Dict[str, int]:
         poll_id (int): Telegram's `message_id` for the poll
 
     Returns:
-        Dict[str, Dict[str, int]]: A dictionary with the current votes
+        List[Tuple[str, int]]: A list with the current votes in tuples (user, votes)
     """
 
     select_query = (
@@ -458,16 +458,21 @@ def get_all_votes(postgres: Database, poll_id: int) -> Dict[str, int]:
 
     results = postgres.engine.execute(select_query)
 
-    return [{**row} for row in results]
+    return [(row["username"], row["vote"]) for row in results]
 
 
-def build_new_message(old_message: str, votes: List[Dict[str, int]]):
+def build_new_message(old_message: str, votes: List[Tuple[str, int]]) -> str:
     """
     Build the new poll text message with the votes and the old message.
 
     Args:
-        old_message (str): Old poll message. We use it to get the poll question
-        votes (Dict[str, int]): All the votes in the database. Used to build the current answers.
+        old_message (str): Old poll message.
+            We use it to get the poll question
+        votes (List[Tuple[str, int]]): All the votes in the database.
+            Used to build the current answers.
+
+    Returns:
+        str: The new string to update the message
     """
 
     # This is a hack, but it's effective for now.
@@ -477,10 +482,8 @@ def build_new_message(old_message: str, votes: List[Dict[str, int]]):
     # by removing the last 4 '\n'
     question = "\n".join(old_message.split("\n")[:-4])
 
-    mel_votes = [
-        (f'@{row["username"]}', row["vote"]) for row in votes if row["vote"] > 0
-    ]
-    moto_votes = [f'@{row["username"]}' for row in votes if row["vote"] == 0]
+    mel_votes = [(f"@{user}", vote) for user, vote in votes if vote > 0]
+    moto_votes = [f"@{user}" for user, vote in votes if vote == 0]
 
     total_mel = sum([vote for user, vote in mel_votes])
     total_moto = len([user for user in moto_votes])
