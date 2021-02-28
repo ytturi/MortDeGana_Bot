@@ -10,9 +10,10 @@ import logging
 import click
 
 # Self-imports
+from meldebot.database import Database
 from meldebot.mel.conf import read_configs, init_configs, init_logger
 from meldebot.mel.conf import get_logging_options, get_telegram_token
-from meldebot.mel.conf import get_debug_enabled
+from meldebot.mel.conf import get_debug_enabled, using_database
 from meldebot.mel.flute import flute_handler
 from meldebot.mel.text import TEXT_HANDLERS
 from meldebot.mel.gif import GIF_HANDLERS
@@ -42,6 +43,9 @@ MEL_HANDLERS = (
     help="Initialize config file",
 )
 @click.option(
+    "--init_db", is_flag=True, default=False, help="Initialize the database and exit"
+)
+@click.option(
     "-v",
     "--verbose",
     is_flag=True,
@@ -61,17 +65,31 @@ MEL_HANDLERS = (
     default=False,
     help="Set telegram token instead of using a config file",
 )
-def listener(config, init_config, verbose, debug, token):
+def listener(config, init_config, init_db, verbose, debug, token):
     # Init configs
     read_configs(config)
+
     # Init logger
     init_logger(verbose, debug)
     logger = logging.getLogger("INIT")
+
     # Init Configs
     if init_config:
         init_configs(config)
         logger.info("The file 'mortdegana.cfg' has been created.")
         exit(-1)
+
+    # Init database
+    if using_database():
+        logger.info("Using database")
+
+        if init_db is True:
+            logger.info("Initializing database")
+            database = Database()
+            database.init_database()
+
+            exit(0)
+
     # Init listener
     if token:
         TOKEN = token
@@ -91,6 +109,7 @@ def listener(config, init_config, verbose, debug, token):
         if debug_enabled and hasattr(handler, "command"):
             handler.command = [c + "_test" for c in handler.command]
         updater.dispatcher.add_handler(handler)
+
     #   Listen till end
     logger.info("Mel de bot has started")
     updater.start_polling()

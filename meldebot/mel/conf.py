@@ -132,28 +132,28 @@ def get_image_server_auth() -> Dict[str, Optional[str]]:
     }
 
 
-def get_psql_params() -> str:
-    """Get the parameters to connect to the postgres database from the config file.
+def get_psql_connection() -> Optional[str]:
+    """Get the connection URI to connect to the postgres database from the config file.
 
     Defaults the connection to:
 
     postgresql://localhost/meldebot
 
     Returns:
-        str: Connection URI for the database
+        Optional[str]: Connection URI for the database or None
     """
     section = "POSTGRES"
     if not config.has_section(section):
-        return {}
+        return None
 
     if config.has_option(section, "connection"):
         return config.get(section, "connection")
 
-    host = config.get(section, "host", "localhost")
-    database = config.get(section, "database", "meldebot")
-    port = config.get(section, "port")
-    user = config.get(section, "user")
-    password = config.get(section, "password")
+    host = config.get(section, "host", fallback="localhost")
+    database = config.get(section, "database", fallback="meldebot")
+    port = config.get(section, "port", fallback=None)
+    user = config.get(section, "user", fallback=None)
+    password = config.get(section, "password", fallback=None)
 
     return build_connection_uri_from_params(
         host=host, port=port, user=user, password=password, database=database
@@ -197,6 +197,10 @@ def build_connection_uri_from_params(
     connection += f"/{database}"
 
     return connection
+
+
+def using_database() -> bool:
+    return True if get_psql_connection() is not None else False
 
 
 def get_store_path() -> Optional[str]:
