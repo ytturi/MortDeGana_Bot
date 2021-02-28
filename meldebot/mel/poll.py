@@ -181,10 +181,13 @@ def insert_user_in_result(results, result_idx, user, extra=False):
 
     # Init vote text
     text = "@{}".format(user)
+
     # Update results
     votes = result_user_votes(results[result_idx])
+
     # Find last vote (if any)
     user_vote_idx = search_user_vote(votes, user)
+
     if user_vote_idx is not False:
         # IF exists
         if extra:
@@ -194,6 +197,7 @@ def insert_user_in_result(results, result_idx, user, extra=False):
                 text += "+{}".format(extra)
         votes[user_vote_idx] = text
         results[result_idx] = ",".join(votes)  # UPDATE
+
     else:
         # IF not exists, ADD the new vote
         # IF extra, add it
@@ -202,6 +206,7 @@ def insert_user_in_result(results, result_idx, user, extra=False):
         votes.append(text)
         votes = sorted(votes)  # SORT
         results[result_idx] = ",".join(votes)  # UPDATE
+
     # Clean other results and DEL old vote (if any)
     other_idx = 0 if result_idx else 1
     votes = result_user_votes(results[other_idx])
@@ -231,9 +236,24 @@ def update_poll_message(text, user, query):
 def vote_poll(update: Update, context: CallbackContext) -> None:
     logger.info("Handling votepoll")
     username = get_username(update.effective_user)
-    message_text = update_poll_message(
-        text=update.effective_message.text, user=username, query=update.callback_query
-    )
+
+    # Use old method by default
+    if using_database() is False:
+        message_text = update_poll_message(
+            text=update.effective_message.text,
+            user=username,
+            query=update.callback_query,
+        )
+
+    # If database is enabled, use the new method
+    else:
+        message_text = new_update_poll_message(
+            poll_id=update.effective_message.message_id,
+            username=username,
+            old_text=update.effective_message.text,
+            query_data=update.callback_query.data,
+        )
+
     if message_text == update.effective_message.text:
         return
     update.effective_message.edit_text(
@@ -243,6 +263,28 @@ def vote_poll(update: Update, context: CallbackContext) -> None:
         update.effective_message.reply_animation(
             get_gifs("moto"), caption=f"{username}: {get_moto_quote()}", quote=True
         )
+
+
+def new_update_poll_message(
+    poll_id: int,
+    username: str,
+    old_text: str,
+    query_data: str,
+) -> str:
+    """
+    Generate the new text for the poll message and update the database
+
+    Args:
+        poll_id (int): Telegram's `message_id` for the poll
+        username (str): Username of the user interacting with the poll
+        old_text (str): Old message text
+        query_data (str): Vote query data (Text from the pressed button)
+
+    Returns:
+        str: Updated poll text message
+    """
+
+    pass
 
 
 POLL_VOTE_HANDLER = CallbackQueryHandler(vote_poll, pattern=r"^vote")
