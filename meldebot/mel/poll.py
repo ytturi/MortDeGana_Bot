@@ -581,10 +581,10 @@ def get_motos_votes_from_db(group_id: int) -> str:
         return "No hi ha cap moto registrada \U0001F622"
 
     # Sort the ranking
-    ranking = sorted(ranking.items(), key=lambda item: item[1], reverse=True)
+    sorted_ranking = sorted(ranking.items(), key=lambda item: item[1], reverse=True)
 
     message = "*Ranking de Motos*\n"
-    for rank, (user, motos) in enumerate(ranking):
+    for rank, (user, motos) in enumerate(sorted_ranking):
         message += f"{rank+1}. @{user} : {motos}\n"
 
     return message

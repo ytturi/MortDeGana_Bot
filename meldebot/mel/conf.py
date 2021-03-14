@@ -69,7 +69,7 @@ def init_configs(configpath: str = None) -> None:
         cfg.write(SAMPLE_CFG)
 
 
-def get_logging_options() -> Tuple[str, str]:
+def get_logging_options() -> Tuple[int, str]:
     """Get Logging Options
 
     Returns:
@@ -87,9 +87,10 @@ def get_logging_options() -> Tuple[str, str]:
     section = "LOGGING"
     if config.has_section(section):
         if config.has_option(section, "level"):
-            log_level = config.get(section, "level")
-            if log_level.upper() in levels:
-                log_level = levels[log_level]
+            log_level_name = config.get(section, "level")
+            if log_level_name.upper() in levels:
+                log_level = levels[log_level_name]
+
         if config.has_option(section, "format"):
             log_format = config.get(section, "format")
     else:
