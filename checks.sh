@@ -7,3 +7,4 @@ then
   black $pyfiles
 fi
 
+mypy meldebot

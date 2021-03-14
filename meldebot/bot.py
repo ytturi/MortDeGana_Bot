@@ -5,20 +5,19 @@
 # - gdalmau
 # Descr: Telegram bot initializer
 ###############################################################################
+from __future__ import annotations
 from telegram.ext import Updater
 import logging
 import click
 
 # Self-imports
-from meldebot.database import Database
 from meldebot.mel.conf import (
     read_configs,
     init_configs,
     init_logger,
-    get_logging_options,
     get_telegram_token,
     get_debug_enabled,
-    using_database,
+    get_database,
 )
 from meldebot.mel.flute import flute_handler
 from meldebot.mel.text import TEXT_HANDLERS
@@ -71,7 +70,7 @@ MEL_HANDLERS = (
     default=False,
     help="Set telegram token instead of using a config file",
 )
-def listener(config, init_config, init_db, verbose, debug, token):
+def listener(config, init_config, init_db, verbose, debug, token) -> None:
     # Init configs
     read_configs(config)
 
@@ -86,12 +85,12 @@ def listener(config, init_config, init_db, verbose, debug, token):
         exit(-1)
 
     # Init database
-    if using_database():
+    database = get_database()
+    if database.enabled:
         logger.info("Using database")
 
         if init_db is True:
             logger.info("Initializing database")
-            database = Database()
             database.init_database()
 
             exit(0)
