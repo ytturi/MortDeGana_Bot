@@ -1,11 +1,37 @@
+###############################################################################
+# Project: Mort de Gana Bot
+# Authors:
+# - Ytturi
+# - gdalmau
+# Descr: Utils for the bot
+###############################################################################
+from __future__ import annotations
 from functools import wraps
-from random import randint
-from typing import Callable, Optional
+from random import randint, choice
+from typing import Callable, Optional, TYPE_CHECKING
 
 import telegram
 from telegram import User
 
 from meldebot.mel.conf import get_debug_enabled
+
+if TYPE_CHECKING:
+    from telegram import Update
+
+
+TILTING_MESSAGES = (
+    "Te crees un Jedi por mover asi la mano?",
+    "Esta no es la orden que buscas",
+    "Ejecuten la orden 66 *cof, cof* Perdona que deies?",
+    "Vas passat de voltes tu eh!",
+    "Diselo a la mano",
+    "Qui et penses que ets tu?",
+    "Qui l'ha invitat al grup a aquest?",
+    "Algu el coneix? No li faré cas per si de cas...",
+    "Ja en parlarem no et preocupis",
+    "Esta demanat",
+    "I la teva mare també per si de cas",
+)
 
 
 def send_typing_action(func: Callable) -> Callable:
@@ -70,3 +96,19 @@ def get_username(telegram_user: User) -> str:
         str: Username if it has one. Public name otherwise
     """
     return telegram_user.username or telegram_user.full_name
+
+
+def reply_not_implemented(update: Update) -> None:
+    """
+    Reply random text.
+    Used to tilt someone who tries to use a not yet implemented command.
+
+    Args:
+        update (Update): Chat update as the handler received it
+    """
+
+    message = choice(TILTING_MESSAGES)
+    update.effective_message.reply_text(
+        message,
+        quote=True,
+    )
