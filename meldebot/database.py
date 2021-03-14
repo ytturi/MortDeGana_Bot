@@ -1,19 +1,22 @@
+###############################################################################
+# Project: Mort de Gana Bot
+# Authors:
+# - Ytturi
+# Descr: PostgreSQL database connection
+###############################################################################
+from __future__ import annotations
+from typing import Optional
 from sqlalchemy.engine import create_engine, Engine
 from sqlalchemy import Table, Column, MetaData
 from sqlalchemy.types import BigInteger, DateTime, Integer, Text
 
-from meldebot.mel.conf import get_psql_connection, using_database
-
 
 class Database:
-    def __init__(self) -> None:
+    def __init__(self, psql_connection: Optional[str]) -> None:
         """
         Initialize the local variables according to the conf
         """
-        if using_database() is True:
-            self.using_database = True
-        else:
-            self.using_database = False
+        self.psql_connection = psql_connection
 
         # Init engine and tables as None for lazy-load
         self._engine = None
@@ -24,8 +27,18 @@ class Database:
         When this object is destroy we also want to close the connection engine
         """
 
-        if self._engine:
+        if self._engine is not None:
             del self._engine
+
+    @property
+    def enabled(self) -> bool:
+        """Return wether the database can be used or not
+
+        Returns:
+            bool: True if there is a connection, False otherwise
+        """
+
+        return True if self.psql_connection else False
 
     @property
     def engine(self) -> Engine:
@@ -40,11 +53,13 @@ class Database:
         if self._engine is not None:
             return self._engine
 
-        if self.using_database is True:
-            self._engine = create_engine(get_psql_connection())
-            return self._engine
+        if not self.enabled:
+            raise Exception(
+                "Trying to retrieve the database engine but there is no connection"
+            )
 
-        return None
+        self._engine = create_engine(self.psql_connection)
+        return self._engine
 
     @property
     def motos_counter(self) -> Table:
@@ -76,7 +91,7 @@ class Database:
             Column("date", DateTime, index=True, nullable=False),
         )
 
-        if init is True:
+        if init:
             metadata.create_all()
 
     def init_database(self) -> None:
@@ -86,7 +101,7 @@ class Database:
         Warning: This method does not update existing tables
         """
 
-        if self.using_database is False:
+        if self.enabled is False:
             raise Exception(
                 "Trying to initialize the database without database connection"
             )

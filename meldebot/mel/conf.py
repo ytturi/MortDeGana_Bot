@@ -7,9 +7,12 @@
 ###############################################################################
 from configparser import RawConfigParser
 from os import makedirs
-from os.path import expanduser, isfile, isdir, basename, dirname, join
+from os.path import expanduser, isfile, isdir, basename, dirname
 import logging
-from typing import Any, Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple
+
+# Self imports
+from meldebot.database import Database
 
 SAMPLE_CFG = """[DEFAULT]
 telegram_token: <InsertTelegramBotToken>
@@ -32,6 +35,7 @@ debug: False
 """
 
 config = RawConfigParser(inline_comment_prefixes=[";", "#"], allow_no_value=True)
+_database = None
 
 
 def read_configs(configpath: str = None) -> None:
@@ -65,7 +69,7 @@ def init_configs(configpath: str = None) -> None:
         cfg.write(SAMPLE_CFG)
 
 
-def get_logging_options():
+def get_logging_options() -> Tuple[str, str]:
     """Get Logging Options
 
     Returns:
@@ -199,8 +203,18 @@ def build_connection_uri_from_params(
     return connection
 
 
-def using_database() -> bool:
-    return True if get_psql_connection() is not None else False
+def get_database() -> Database:
+    """Get the cached database connection or create and cache a new one
+
+    Returns:
+        Database: current database connection
+    """
+
+    global _database
+    if _database is None:
+        _database = Database(get_psql_connection())
+
+    return _database
 
 
 def get_store_path() -> Optional[str]:

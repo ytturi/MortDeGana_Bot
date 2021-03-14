@@ -17,14 +17,14 @@ from logging import getLogger
 from sqlalchemy import bindparam, select
 
 # Self imports
-from meldebot.database import Database
 from meldebot.mel.gif import get_gifs
 from meldebot.mel.utils import send_typing_action, remove_command_message, get_username
-from meldebot.mel.conf import using_database
+from meldebot.mel.conf import get_database
 
 if TYPE_CHECKING:
     from telegram import Update
     from telegram.ext import CallbackContext
+    from meldebot.database import Database
 
 logger = getLogger(__name__)
 
@@ -60,8 +60,8 @@ MOTO_QUOTE = [
     "Se m'ha mort la PS5 i li fem un funeral. Poques que n'hi han...",
     "Soc un mort de gana",
     "Tinc el rellotge en format 24h",
-    "Tinc un conegut que fa casi un any que no veig que té corona, així que faig quarentena per si de cas."
-    "Tu que m'acaben de trucar que d'aqui 20min anem a fer una implantació i no sé quan tornaré."
+    "Tinc un conegut que fa casi un any que no veig que té corona, així que faig quarentena per si de cas.",
+    "Tu que m'acaben de trucar que d'aqui 20min anem a fer una implantació i no sé quan tornaré.",
     "Volia venir pro no soy 1000itar",
     "Volia venir pro no soy 1000itante",
     "Volia venir pro no soy 100tifiko",
@@ -178,7 +178,7 @@ def insert_user_in_result(results, result_idx, user, extra=False):
         idx = search_user_vote(arr, user)  # Search vote
         if idx is False:
             return 0
-        vote = arr[idx][len(user) + 2 :]  # Remove username from vote
+        vote = arr[idx][(len(user) + 2) :]  # Remove username from vote
         vote.strip()
         return int(vote) if vote else 0  # If any vote, parse to int
 
@@ -241,7 +241,7 @@ def vote_poll(update: Update, context: CallbackContext) -> None:
     username = get_username(update.effective_user)
 
     # Use old method by default
-    if not using_database():
+    if not get_database().enabled:
         message_text = update_poll_message(
             text=update.effective_message.text,
             user=username,
@@ -286,88 +286,88 @@ def new_update_poll_message(
         str: Updated poll text message
     """
 
-    # Initialize the database connection
-    postgres = Database()
-
     # Query data contains a string with the command sent when pressing
     # the button with the format:
     #
     #   "vote [MEL|MOTO|MEL+1|MEL-1]"
     #
-    # Substracting the first 5 characters results in the current vote action
+    # Substracting the first 5 characters ("vote ") results in the
+    # current vote action, which is one of:
+    # - MEL
+    # - MOTO
+    # - MEL+1
+    # - MEL-1
     vote_action = query_data[5:]
 
-    handle_vote(postgres, poll_id, username, vote_action)
+    handle_vote(poll_id, username, vote_action)
 
-    votes = get_all_votes(postgres, poll_id)
+    votes = get_all_votes(poll_id)
     return build_new_message(old_text, votes)
 
 
-def handle_vote(
-    postgres: Database, poll_id: int, username: str, vote_action: str
-) -> None:
+def handle_vote(poll_id: int, username: str, vote_action: str) -> None:
     """
     Update the database according to the vote action
     for the effective user in the poll message
 
     Args:
-        postgres (Database): Database connection
         poll_id (int): Telegram's `message_id` for the poll
         username (str): Username of the user interacting with the poll
         vote_action (str): [description]
     """
 
     # Check for existing vote for this user:
-    existing_vote = get_existing_vote(postgres, poll_id, username)
+    existing_vote = get_existing_vote(poll_id, username)
+    vote_value: int
 
     # Possible actions:
     # - `MOTO`: set the vote to 0
     if vote_action == "MOTO":
-        if existing_vote is None:
-            insert_vote(postgres, poll_id, username, 0)
-
-        elif existing_vote != 0:
-            update_vote(postgres, poll_id, username, 0)
+        vote_value = 0
 
     # - `MEL`: set the vote to 1
     elif vote_action == "MEL":
-        if existing_vote is None:
-            insert_vote(postgres, poll_id, username, 1)
-
-        elif existing_vote != 1:
-            update_vote(postgres, poll_id, username, 1)
+        vote_value = 1
 
     # - `MEL+1`: Add 1 to the current vote
     elif vote_action == "MEL+1":
         if existing_vote is None:
-            insert_vote(postgres, poll_id, username, 2)
+            vote_value = 2
 
         else:
-            new_vote = 2 if existing_vote < 2 else existing_vote + 1
-            update_vote(postgres, poll_id, username, new_vote)
+            vote_value = 2 if existing_vote < 2 else existing_vote + 1
 
     # - `MEL-1`: Substract 1 to the current vote (Can't be less than 1)
     elif vote_action == "MEL-1":
         if existing_vote is None:
-            insert_vote(postgres, poll_id, username, 1)
+            vote_value = 1
 
         else:
-            new_vote = 1 if existing_vote < 2 else existing_vote - 1
-            update_vote(postgres, poll_id, username, new_vote)
+            vote_value = 1 if existing_vote < 2 else existing_vote - 1
+
+    else:
+        raise Exception(f"Unkown vote action {vote_action}")
+
+    if existing_vote is None:
+        insert_vote(poll_id, username, vote_value)
+
+    else:
+        update_vote(poll_id, username, vote_value)
 
 
-def get_existing_vote(postgres: Database, poll_id: int, username: str) -> Optional[int]:
+def get_existing_vote(poll_id: int, username: str) -> Optional[int]:
     """
     Query the database to get the current vote for the user if it exists.
 
     Args:
-        postgres (Database): Database connection
         poll_id (int): Telegram's `message_id` for the poll
         username (str): Username of the user interacting with the poll
 
     Returns:
         int: [description]
     """
+
+    postgres: Database = get_database()
 
     select_query = select([postgres.motos_counter.c.vote]).where(
         (postgres.motos_counter.c.poll_id == poll_id)
@@ -383,17 +383,18 @@ def get_existing_vote(postgres: Database, poll_id: int, username: str) -> Option
         return results["vote"]
 
 
-def insert_vote(postgres: Database, poll_id: int, username: str, vote: int) -> None:
+def insert_vote(poll_id: int, username: str, vote: int) -> None:
     """
     Insert a new vote into the database
 
     Args:
-        postgres (Database): Database connection
         poll_id (int): Telegram's `message_id` for the poll
         username (str): Username of the user interacting with the poll
         vote (int): New user vote
     """
     from datetime import datetime
+
+    postgres: Database = get_database()
 
     insert_values = {
         "poll_id": poll_id,
@@ -407,17 +408,18 @@ def insert_vote(postgres: Database, poll_id: int, username: str, vote: int) -> N
     postgres.engine.execute(insert_query)
 
 
-def update_vote(postgres: Database, poll_id: int, username: str, vote: int) -> None:
+def update_vote(poll_id: int, username: str, vote: int) -> None:
     """
     Insert a new vote into the database
 
     Args:
-        postgres (Database): Database connection
         poll_id (int): Telegram's `message_id` for the poll
         username (str): Username of the user interacting with the poll
         vote (int): New user vote
     """
     from datetime import datetime
+
+    postgres: Database = get_database()
 
     insert_values = {
         "poll_id": poll_id,
@@ -438,17 +440,18 @@ def update_vote(postgres: Database, poll_id: int, username: str, vote: int) -> N
     postgres.engine.execute(update_query, username_=username)
 
 
-def get_all_votes(postgres: Database, poll_id: int) -> List[Tuple[str, int]]:
+def get_all_votes(poll_id: int) -> List[Tuple[str, int]]:
     """
     Get all votes for the current poll_id that are stored in the database
 
     Args:
-        postgres (Database): Database connection
         poll_id (int): Telegram's `message_id` for the poll
 
     Returns:
         List[Tuple[str, int]]: A list with the current votes in tuples (user, votes)
     """
+
+    postgres: Database = get_database()
 
     select_query = (
         select([postgres.motos_counter.c.username, postgres.motos_counter.c.vote])
