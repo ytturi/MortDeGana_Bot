@@ -9,7 +9,7 @@
 ###############################################################################
 from __future__ import annotations
 from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
-
+from collections import defaultdict
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from random import choice, randint
@@ -18,7 +18,12 @@ from sqlalchemy import bindparam, select
 
 # Self imports
 from meldebot.mel.gif import get_gifs
-from meldebot.mel.utils import send_typing_action, remove_command_message, get_username
+from meldebot.mel.utils import (
+    send_typing_action,
+    remove_command_message,
+    get_username,
+    reply_not_implemented,
+)
 from meldebot.mel.conf import get_database
 
 if TYPE_CHECKING:
@@ -251,7 +256,7 @@ def vote_poll(update: Update, context: CallbackContext) -> None:
     # If database is enabled, use the new method
     else:
         message_text = new_update_poll_message(
-            group_id=update.effective_message.chat_id,
+            group_id=(update.effective_message.chat_id) * -1,
             poll_id=update.effective_message.message_id,
             username=username,
             old_text=update.effective_message.text,
@@ -301,7 +306,7 @@ def new_update_poll_message(
     # - MEL-1
     vote_action = query_data[5:]
 
-    handle_vote(poll_id, username, vote_action)
+    handle_vote(group_id, poll_id, username, vote_action)
 
     votes = get_all_votes(poll_id)
     return build_new_message(old_text, votes)
@@ -515,10 +520,83 @@ def build_new_message(old_message: str, votes: List[Tuple[str, int]]) -> str:
 POLL_VOTE_HANDLER = CallbackQueryHandler(vote_poll, pattern=r"^vote")
 
 
+# POLL RANKING HANDLER
+
+
+@send_typing_action
+def get_ranking_motos(update: Update, context: CallbackContext) -> None:
+    """Update the chat with the current motos ranking
+
+    Args:
+        update (Update): Chat Update as received in the handler
+        context (CallbackContext): Callaback context as received in the handler
+    """
+
+    logger.info("Reply ranking motos")
+    database = get_database()
+    if not database.enabled:
+        logger.warning("Database not enabled")
+        reply_not_implemented(update)
+        return
+
+    reply_ranking_motos(update, context)
+
+
+@remove_command_message
+def reply_ranking_motos(update: Update, context: CallbackContext) -> None:
+    """
+    Actually update the chat with the current motos ranking
+
+    Args:
+        update (Update): Chat Update as received in the handler
+        context (CallbackContext): Callaback context as received in the handler
+    """
+
+    message = get_motos_votes_from_db(group_id=update.effective_message.chat_id)
+    update.effective_message.reply_text(message, parse_mode="markdown", quote=False)
+
+
+def get_motos_votes_from_db(group_id: int) -> str:
+    """
+    Get a text ranking of the motos votes in the database.
+
+    Moto vote means that the vote is 0.
+
+    Returns:
+        str: A markdown-formatted summary of votes from the database.
+    """
+
+    postgres: Database = get_database()
+    table = postgres.motos_counter
+
+    select_query = select((table.c.vote, table.c.username)).where(table.c.vote == 0)
+    results = postgres.engine.execute(select_query)
+
+    ranking: Dict[str, int] = defaultdict(int)
+    for row in results:
+        ranking[row["username"]] += 1
+
+    # If there are no rows with vote == 0
+    if not ranking:
+        return "No hi ha cap moto registrada \U0001F622"
+
+    # Sort the ranking
+    ranking = sorted(ranking.items(), key=lambda item: item[1], reverse=True)
+
+    message = "*Ranking de Motos*\n"
+    for rank, (user, motos) in enumerate(ranking):
+        message += f"{rank+1}. @{user} : {motos}\n"
+
+    return message
+
+
+POLL_RANKING_HANDLER = CommandHandler("ranking_motos", get_ranking_motos)
+
 # HANDLERS to register
 
 
 POLL_HANDLERS = [
     POLL_START_HANDLER,
     POLL_VOTE_HANDLER,
+    POLL_RANKING_HANDLER,
 ]
