@@ -85,6 +85,7 @@ class Database:
             "motos_counter",
             metadata,
             Column("id", BigInteger, primary_key=True, index=True),
+            Column("group_id", Integer, index=True, nullable=False),
             Column("poll_id", Integer, index=True, nullable=False),
             Column("username", Text, index=True, nullable=False),
             Column("vote", Integer, index=True, nullable=False),

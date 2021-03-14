@@ -251,6 +251,7 @@ def vote_poll(update: Update, context: CallbackContext) -> None:
     # If database is enabled, use the new method
     else:
         message_text = new_update_poll_message(
+            group_id=update.effective_message.chat_id,
             poll_id=update.effective_message.message_id,
             username=username,
             old_text=update.effective_message.text,
@@ -268,6 +269,7 @@ def vote_poll(update: Update, context: CallbackContext) -> None:
 
 
 def new_update_poll_message(
+    group_id: int,
     poll_id: int,
     username: str,
     old_text: str,
@@ -305,7 +307,7 @@ def new_update_poll_message(
     return build_new_message(old_text, votes)
 
 
-def handle_vote(poll_id: int, username: str, vote_action: str) -> None:
+def handle_vote(group_id: int, poll_id: int, username: str, vote_action: str) -> None:
     """
     Update the database according to the vote action
     for the effective user in the poll message
@@ -349,7 +351,7 @@ def handle_vote(poll_id: int, username: str, vote_action: str) -> None:
         raise Exception(f"Unkown vote action {vote_action}")
 
     if existing_vote is None:
-        insert_vote(poll_id, username, vote_value)
+        insert_vote(group_id, poll_id, username, vote_value)
 
     else:
         update_vote(poll_id, username, vote_value)
@@ -383,7 +385,7 @@ def get_existing_vote(poll_id: int, username: str) -> Optional[int]:
         return results["vote"]
 
 
-def insert_vote(poll_id: int, username: str, vote: int) -> None:
+def insert_vote(group_id: int, poll_id: int, username: str, vote: int) -> None:
     """
     Insert a new vote into the database
 
@@ -397,6 +399,7 @@ def insert_vote(poll_id: int, username: str, vote: int) -> None:
     postgres: Database = get_database()
 
     insert_values = {
+        "group_id": group_id,
         "poll_id": poll_id,
         "username": username,
         "vote": vote,
@@ -421,9 +424,7 @@ def update_vote(poll_id: int, username: str, vote: int) -> None:
 
     postgres: Database = get_database()
 
-    insert_values = {
-        "poll_id": poll_id,
-        "username": username,
+    update_values = {
         "vote": vote,
         # TODO: Move the date to PostgreSQL
         "date": datetime.now(),
@@ -431,7 +432,7 @@ def update_vote(poll_id: int, username: str, vote: int) -> None:
 
     update_query = (
         postgres.motos_counter.update()
-        .values(insert_values)
+        .values(update_values)
         .where(
             (postgres.motos_counter.c.poll_id == poll_id)
             & (postgres.motos_counter.c.username == bindparam("username_"))
