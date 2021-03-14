@@ -25,16 +25,16 @@ from meldebot.mel.utils import (
     remove_command_message,
     get_username,
     get_insult,
+    reply_not_implemented,
 )
 
 
 @send_typing_action
-@remove_command_message
 def cb_spoiler_handler(update: Update, context: CallbackContext) -> None:
     logger.info("Reply spoiler")
     logger.warn("Spoiler: Not yet implemented")
+    reply_not_implemented(update)
     # TODO: Store message to get_store_path() and reply with filename_id
-    pass
     # spoiler_message = update.effective_message.reply_to_message
     # if not spoiler_message:
     #     spoiler_message = update.effective_message
