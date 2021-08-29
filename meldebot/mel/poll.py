@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 from collections import defaultdict
 from telegram.ext import CommandHandler, CallbackQueryHandler
+from telegram.utils.helpers import escape_markdown
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from random import choice, randint
 from logging import getLogger
@@ -583,9 +584,10 @@ def get_motos_votes_from_db(group_id: int) -> str:
     # Sort the ranking
     sorted_ranking = sorted(ranking.items(), key=lambda item: item[1], reverse=True)
 
-    message = "*Ranking de Motos*\n"
+    message = "\U0001F3CD *Ranking de Motos*\n"
     for rank, (user, motos) in enumerate(sorted_ranking):
-        message += f"{rank+1}. @{user} : {motos}\n"
+        username = escape_markdown(user)
+        message += f"{rank+1}. @{username} : {motos}\n"
 
     return message
 
