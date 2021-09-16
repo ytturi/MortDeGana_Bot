@@ -571,11 +571,7 @@ def get_motos_votes_from_db(group_id: int) -> str:
     table = postgres.motos_counter
 
     select_query = select((table.c.vote, table.c.username)).where(
-<<<<<<< Updated upstream
-        table.c.vote == 0 & table.c.group_id == group_id
-=======
         (table.c.vote == 0) & (table.c.group_id == group_id)
->>>>>>> Stashed changes
     )
     results = postgres.engine.execute(select_query)
 
