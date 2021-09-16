@@ -570,7 +570,9 @@ def get_motos_votes_from_db(group_id: int) -> str:
     postgres: Database = get_database()
     table = postgres.motos_counter
 
-    select_query = select((table.c.vote, table.c.username)).where(table.c.vote == 0)
+    select_query = select((table.c.vote, table.c.username)).where(
+        table.c.vote == 0 & table.c.group_id == group_id
+    )
     results = postgres.engine.execute(select_query)
 
     ranking: Dict[str, int] = defaultdict(int)
