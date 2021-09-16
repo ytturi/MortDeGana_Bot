@@ -257,8 +257,8 @@ def vote_poll(update: Update, context: CallbackContext) -> None:
     # If database is enabled, use the new method
     else:
         message_text = new_update_poll_message(
-            group_id=(update.effective_message.chat_id) * -1,
-            poll_id=update.effective_message.message_id,
+            group_id=abs(update.effective_message.chat_id),
+            poll_id=abs(update.effective_message.message_id),
             username=username,
             old_text=update.effective_message.text,
             query_data=update.callback_query.data,
@@ -553,7 +553,7 @@ def reply_ranking_motos(update: Update, context: CallbackContext) -> None:
         context (CallbackContext): Callaback context as received in the handler
     """
 
-    message = get_motos_votes_from_db(group_id=update.effective_message.chat_id)
+    message = get_motos_votes_from_db(group_id=abs(update.effective_message.chat_id))
     update.effective_message.reply_text(message, parse_mode="markdown", quote=False)
 
 
@@ -571,7 +571,11 @@ def get_motos_votes_from_db(group_id: int) -> str:
     table = postgres.motos_counter
 
     select_query = select((table.c.vote, table.c.username)).where(
+<<<<<<< Updated upstream
         table.c.vote == 0 & table.c.group_id == group_id
+=======
+        (table.c.vote == 0) & (table.c.group_id == group_id)
+>>>>>>> Stashed changes
     )
     results = postgres.engine.execute(select_query)
 
