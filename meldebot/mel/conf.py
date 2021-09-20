@@ -17,7 +17,6 @@ from meldebot.database import Database
 SAMPLE_CFG = """[DEFAULT]
 telegram_token: <InsertTelegramBotToken>
 giphy_api_key: <InsertGiphyAPIKey>
-store_path: /data/spoilers
 [LOGGING]
 level: INFO
 format: [%(asctime)s][%(name)s][%(levelname)s]: %(message)s
@@ -30,6 +29,10 @@ format: [%(asctime)s][%(name)s][%(levelname)s]: %(message)s
 # user: meldebot
 # password: meldebot
 # database: meldebot
+[IMAGE_SERVER]
+url: https://example.com
+user: meldebot
+password: meldebot
 [DEVELOPMENT]
 debug: False
 """
@@ -130,10 +133,15 @@ def get_tenor_api_key() -> Optional[str]:
     return config.defaults().get("tenor_api_key", None)
 
 
+def get_image_server_url() -> Optional[str]:
+    return config.get('IMAGE_SERVER', 'url')
+
+
 def get_image_server_auth() -> Dict[str, Optional[str]]:
+
     return {
-        "user": config.defaults().get("image_server_user", None),
-        "password": config.defaults().get("image_server_password", None),
+        "user": config.get('IMAGE_SERVER', "user"),
+        "password": config.get('IMAGE_SERVER', "password"),
     }
 
 

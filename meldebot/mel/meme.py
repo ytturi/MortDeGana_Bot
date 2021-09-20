@@ -14,7 +14,7 @@ from requests import get as http_get
 from requests.auth import HTTPBasicAuth
 
 # Self imports
-from meldebot.mel.conf import get_image_server_auth
+from meldebot.mel.conf import get_image_server_auth, get_image_server_url
 from meldebot.mel.utils import send_typing_action, remove_command_message
 
 if TYPE_CHECKING:
@@ -25,6 +25,16 @@ logger = getLogger(__name__)
 
 
 def get_gisce_meme_url(**params: Dict[str, str]) -> str:
+    """Get gisce_meme URL as an IMAGE_SERVER API request
+
+    Returns:
+        str: URL to the image (gisce_meme)
+    """
+
+    base_url = get_image_server_url()
+    if base_url is None:
+        return None
+
     auth_info = get_image_server_auth()
     if not auth_info:
         logger.critical("NO AUTH INFO FOR ImageServer!")
@@ -32,7 +42,6 @@ def get_gisce_meme_url(**params: Dict[str, str]) -> str:
 
     auth = HTTPBasicAuth(auth_info["user"], auth_info["password"])
 
-    base_url = "https://bcclean.tk/ImageServer/api"
     if params.get("id"):
         base_url += "/image/{}".format(params.get("id"))
     elif params.get("tags"):
@@ -55,7 +64,12 @@ def get_gisce_meme_url(**params: Dict[str, str]) -> str:
 @remove_command_message
 def cb_gisce_meme_handler(update: Update, context: CallbackContext) -> None:
     logger.info("Handling meme")
-    update.message.reply_photo(get_gisce_meme_url(), quote=False)
+    meme_url = get_gisce_meme_url()
+    if meme_url is not None:
+        update.message.reply_photo(meme_url, quote=False)
+
+    else:
+        logger.error('No connection to image server. Set IMAGE_SERVER config section.')
 
 
 gisce_meme_handler = CommandHandler("gisce_meme", cb_gisce_meme_handler)
