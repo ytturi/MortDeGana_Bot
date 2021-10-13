@@ -12,5 +12,5 @@ install:
 
 script:
   - mypy meldebot
-  - black --check
+  - black --check .
   - python setup.py test
