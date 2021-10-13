@@ -56,7 +56,7 @@ MOTO_QUOTE = [
     "Jo vindira, però es que se m'ha espatllat el GPS del mòbil",
     "Jo vindria, però m'agrada fer motos",
     "Jo vindria, però es que s'em morirà el peix que vaig a comprar ara",
-    "Justament aquest dia he quedat per jugar a arrancar cebes"
+    "Justament aquest dia he quedat per jugar a arrancar cebes",
     "M'he endescuidat de regar el cactus de gisce",
     "Mha semblat veure una gota a la carretera",
     "No puc venir pk la dona m'ha dit que anes a la platja de palafrugell i em quedés un parell d'hores sota l'aigua",
