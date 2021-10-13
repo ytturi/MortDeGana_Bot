@@ -134,14 +134,14 @@ def get_tenor_api_key() -> Optional[str]:
 
 
 def get_image_server_url() -> Optional[str]:
-    return config.get('IMAGE_SERVER', 'url')
+    return config.get("IMAGE_SERVER", "url")
 
 
 def get_image_server_auth() -> Dict[str, Optional[str]]:
 
     return {
-        "user": config.get('IMAGE_SERVER', "user"),
-        "password": config.get('IMAGE_SERVER', "password"),
+        "user": config.get("IMAGE_SERVER", "user"),
+        "password": config.get("IMAGE_SERVER", "password"),
     }
 
 
