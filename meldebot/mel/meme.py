@@ -6,12 +6,12 @@
 #  - GISCEMEME: Send random gisce meme. Usage: `/gisce_meme`
 ###############################################################################
 from __future__ import annotations
-from typing import Dict, TYPE_CHECKING
+from typing import Optional, Dict, TYPE_CHECKING
 
 from telegram.ext import CommandHandler
 from logging import getLogger
-from requests import get as http_get
-from requests.auth import HTTPBasicAuth
+from requests import get as http_get  # type: ignore
+from requests.auth import HTTPBasicAuth  # type: ignore
 
 # Self imports
 from meldebot.mel.conf import get_image_server_auth, get_image_server_url
@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 logger = getLogger(__name__)
 
 
-def get_gisce_meme_url(**params: Dict[str, str]) -> str:
+def get_gisce_meme_url(**params: Dict[str, str]) -> Optional[str]:
     """Get gisce_meme URL as an IMAGE_SERVER API request
 
     Returns:
@@ -69,7 +69,7 @@ def cb_gisce_meme_handler(update: Update, context: CallbackContext) -> None:
         update.message.reply_photo(meme_url, quote=False)
 
     else:
-        logger.error('No connection to image server. Set IMAGE_SERVER config section.')
+        logger.error("No connection to image server. Set IMAGE_SERVER config section.")
 
 
 gisce_meme_handler = CommandHandler("gisce_meme", cb_gisce_meme_handler)
