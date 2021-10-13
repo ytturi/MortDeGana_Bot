@@ -15,7 +15,7 @@ from random import choice, randint, sample
 from configparser import ConfigParser
 from os.path import expanduser
 from logging import getLogger
-from requests import get as http_get
+from requests import get as http_get  # type: ignore
 
 # Self imports
 from meldebot.mel.conf import get_giphy_api_key, get_debug_enabled, get_tenor_api_key
