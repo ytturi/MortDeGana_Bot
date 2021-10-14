@@ -7,12 +7,13 @@
 # - Spoiler: Hide spoiler messages in pop-up attachments. Usage: `/spoiler`
 ###############################################################################
 from __future__ import annotations
+
+from logging import getLogger
 from typing import TYPE_CHECKING
 
-from telegram.ext import CommandHandler, CallbackQueryHandler
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from logging import getLogger
 import telegram
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import CallbackQueryHandler, CommandHandler
 
 if TYPE_CHECKING:
     from telegram import Update
@@ -21,11 +22,11 @@ if TYPE_CHECKING:
 logger = getLogger(__name__)
 
 from meldebot.mel.utils import (
-    send_typing_action,
-    remove_command_message,
-    get_username,
     get_insult,
+    get_username,
+    remove_command_message,
     reply_not_implemented,
+    send_typing_action,
 )
 
 

@@ -1,9 +1,9 @@
 import unittest
 from os import listdir, remove
-from os.path import isfile, isdir, basename, dirname
+from os.path import basename, dirname, isdir, isfile
 
-from meldebot.mel import conf
 import meldebot.mel.gif as melbot_gif
+from meldebot.mel import conf
 
 
 class TestConf(unittest.TestCase):

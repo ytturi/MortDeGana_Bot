@@ -1,6 +1,5 @@
 from random import choice, randint
 
-
 EXCUSES = [
     f"Fa {randint(2,30)} anys plovia",
     f"Tinc hora a la pelu que nomes hi vaig {randint(1,20)} cops per setmana",

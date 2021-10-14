@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 with open("dev_requirements.txt", "r") as dev_deps:
     test_deps = [dep.strip() for dep in dev_deps.readlines() if dep.strip()]

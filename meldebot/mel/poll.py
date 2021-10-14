@@ -8,29 +8,33 @@
 # - Poll: Send a poll with a specified message. Usage: `/poll {message}`
 ###############################################################################
 from __future__ import annotations
-from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
+
 from collections import defaultdict
-from telegram.ext import CommandHandler, CallbackQueryHandler
-from telegram.utils.helpers import escape_markdown
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from random import choice
 from logging import getLogger
+from random import choice
+from typing import TYPE_CHECKING, Dict, List, Optional, Tuple
+
 from sqlalchemy import bindparam, select
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import CallbackQueryHandler, CommandHandler
+from telegram.utils.helpers import escape_markdown
+
+from meldebot.mel.conf import get_database
+from meldebot.mel.excuses import get_random_excuse
 
 # Self imports
 from meldebot.mel.gif import get_gifs
 from meldebot.mel.utils import (
-    send_typing_action,
-    remove_command_message,
     get_username,
+    remove_command_message,
     reply_not_implemented,
+    send_typing_action,
 )
-from meldebot.mel.excuses import get_random_excuse
-from meldebot.mel.conf import get_database
 
 if TYPE_CHECKING:
     from telegram import Update
     from telegram.ext import CallbackContext
+
     from meldebot.database import Database
 
 logger = getLogger(__name__)
