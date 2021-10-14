@@ -1,7 +1,7 @@
-from random import randint
+from random import choice, randint
 
 
-MOTO_QUOTE = [
+EXCUSES = [
     f"Fa {randint(2,30)} anys plovia",
     f"Tinc hora a la pelu que nomes hi vaig {randint(1,20)} cops per setmana",
     f"Vaig al gym, la idea es anarhi {randint(1,20)} cops per setmana",
@@ -36,3 +36,12 @@ MOTO_QUOTE = [
     "Volia venir pro no soy 1000itante",
     "Volia venir pro no soy 100tifiko",
 ]
+
+
+def get_random_excuse() -> str:
+    """Generate a random text for motos
+
+    Returns:
+        str: Moto quote
+    """
+    return choice(EXCUSES)

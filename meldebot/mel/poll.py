@@ -25,7 +25,7 @@ from meldebot.mel.utils import (
     get_username,
     reply_not_implemented,
 )
-from meldebot.mel.excuses import MOTO_QUOTE
+from meldebot.mel.excuses import get_random_excuse
 from meldebot.mel.conf import get_database
 
 if TYPE_CHECKING:
@@ -71,15 +71,6 @@ def get_answers(status: Optional[List[str]] = None) -> str:
         status[1],
     )
     return answer
-
-
-def get_moto_quote() -> str:
-    """Generate a random text for motos
-
-    Returns:
-        str: Moto quote
-    """
-    return choice(MOTO_QUOTE)
 
 
 @send_typing_action
@@ -233,7 +224,7 @@ def vote_poll(update: Update, context: CallbackContext) -> None:
     update.effective_message.edit_text(text=message_text, reply_markup=POLL_KEYBOARD)
     if "MOTO" in update.callback_query.data:
         update.effective_message.reply_animation(
-            get_gifs("moto"), caption=f"{username}: {get_moto_quote()}", quote=True
+            get_gifs("moto"), caption=f"{username}: {get_random_excuse()}", quote=True
         )
 
 
