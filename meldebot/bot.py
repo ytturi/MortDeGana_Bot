@@ -6,25 +6,27 @@
 # Descr: Telegram bot initializer
 ###############################################################################
 from __future__ import annotations
-from telegram.ext import Updater
+
 import logging
+
 import click
+from telegram.ext import Updater
 
 # Self-imports
 from meldebot.mel.conf import (
-    read_configs,
+    get_database,
+    get_debug_enabled,
+    get_telegram_token,
     init_configs,
     init_logger,
-    get_telegram_token,
-    get_debug_enabled,
-    get_database,
+    read_configs,
 )
 from meldebot.mel.flute import flute_handler
-from meldebot.mel.text import TEXT_HANDLERS
 from meldebot.mel.gif import GIF_HANDLERS
-from meldebot.mel.reply import REPLY_HANDLERS
-from meldebot.mel.poll import POLL_HANDLERS
 from meldebot.mel.meme import MEME_HANDLERS
+from meldebot.mel.poll import POLL_HANDLERS
+from meldebot.mel.reply import REPLY_HANDLERS
+from meldebot.mel.text import TEXT_HANDLERS
 
 # Command handlers
 MEL_HANDLERS = (

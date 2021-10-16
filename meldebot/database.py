@@ -5,9 +5,11 @@
 # Descr: PostgreSQL database connection
 ###############################################################################
 from __future__ import annotations
+
 from typing import Optional
-from sqlalchemy.engine import create_engine, Engine
-from sqlalchemy import Table, Column, MetaData
+
+from sqlalchemy import Column, MetaData, Table
+from sqlalchemy.engine import Engine, create_engine
 from sqlalchemy.types import BigInteger, DateTime, Integer, Text
 
 

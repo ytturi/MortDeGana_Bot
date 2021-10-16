@@ -6,13 +6,14 @@
 # - FLUTE: Send random shitty flute video
 ###############################################################################
 from __future__ import annotations
+
+from logging import getLogger
+from random import choice
 from typing import TYPE_CHECKING
 
 from telegram.ext import CommandHandler
-from random import choice
-from logging import getLogger
 
-from meldebot.mel.utils import send_typing_action, remove_command_message
+from meldebot.mel.utils import remove_command_message, send_typing_action
 
 if TYPE_CHECKING:
     from telegram import Update

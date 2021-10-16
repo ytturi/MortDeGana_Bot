@@ -5,10 +5,10 @@
 # - gdalmau
 # Descr: Configuration management and tooling
 ###############################################################################
+import logging
 from configparser import RawConfigParser
 from os import makedirs
-from os.path import expanduser, isfile, isdir, basename, dirname
-import logging
+from os.path import basename, dirname, expanduser, isdir, isfile
 from typing import Dict, Optional, Tuple
 
 # Self imports

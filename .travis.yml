@@ -17,4 +17,5 @@ install:
 script:
   - mypy meldebot
   - black --check
+  - isort --check meldebot
   - python setup.py test

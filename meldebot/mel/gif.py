@@ -7,19 +7,20 @@
 # - MOTO: Send motorbike GIF. Usage: `/moto`
 ###############################################################################
 from __future__ import annotations
-from typing import Callable, Dict, List, Optional, TYPE_CHECKING, Union
 
-from telegram.ext import CommandHandler
-import telegram
-from random import choice, randint, sample
 from configparser import ConfigParser
-from os.path import expanduser
 from logging import getLogger
+from os.path import expanduser
+from random import choice, randint, sample
+from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Union
+
+import telegram
 from requests import get as http_get  # type: ignore
+from telegram.ext import CommandHandler
 
 # Self imports
-from meldebot.mel.conf import get_giphy_api_key, get_debug_enabled, get_tenor_api_key
-from meldebot.mel.utils import send_typing_action, remove_command_message
+from meldebot.mel.conf import get_debug_enabled, get_giphy_api_key, get_tenor_api_key
+from meldebot.mel.utils import remove_command_message, send_typing_action
 
 if TYPE_CHECKING:
     from telegram import Update

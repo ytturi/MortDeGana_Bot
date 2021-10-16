@@ -6,9 +6,10 @@
 # Descr: Utils for the bot
 ###############################################################################
 from __future__ import annotations
+
 from functools import wraps
-from random import randint, choice
-from typing import Callable, Optional, TYPE_CHECKING
+from random import choice, randint
+from typing import TYPE_CHECKING, Callable, Optional
 
 import telegram
 from telegram import User
