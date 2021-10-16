@@ -2,9 +2,9 @@ from __future__ import annotations
 import unittest
 
 
-class TestPoll(unittest.TestCase):
+class TestExcuses(unittest.TestCase):
     """
-    Test the methods from `mel/poll.py`
+    Test the methods from `mel/excuses.py`
     that don't require an external party.
     """
 
@@ -16,6 +16,6 @@ class TestPoll(unittest.TestCase):
         causing two excuses to merge (uglily) into one.
         """
 
-        from meldebot.mel.poll import MOTO_QUOTE
+        from meldebot.mel.excuses import EXCUSES
 
-        assert len(MOTO_QUOTE) == 33
+        assert len(EXCUSES) == 33
