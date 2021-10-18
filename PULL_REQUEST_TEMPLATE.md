@@ -1,6 +1,6 @@
 ## Case
 
-<!-- 
+<!--
 Please describe the reason of your PR.
 This is can be an issue number or just a small description of what has to be solved.
 
