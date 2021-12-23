@@ -42,7 +42,7 @@ EXCUSES = [
     "M'estic preparant pel proper canvi de tarifes",
     "Treballo als Països Baixos",
     "He quedat per anar al cine, la peli es diu 'No tinc ganes de venir'. Diuen que és molt bona!",
-    f"Haig d'anar a plantar {randint(1,50)} regues de cebes, {randint(1,50)} de cols, {randint(1,50)} d'alls i {randint(1,50)} de brocolis",
+    f"Haig d'anar a plantar {randint(2,50)} regues de cebes, {randint(2,50)} de cols, {randint(2,50)} d'alls i {randint(2,50)} de brocolis",
     "Tinc un problema i no puc venir",
     "Es que he anat a donar sang i no m'arrba al creelllkakakak",
     f"Ara acabo de recordar que vaig al rocodrom, intento anar {randint(1,50)} vegades per setmana",
