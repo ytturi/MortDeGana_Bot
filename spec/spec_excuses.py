@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+from meldebot.mel.excuses import get_random_excuse, EXCUSES
 import unittest
 
 
@@ -16,7 +16,13 @@ class TestExcuses(unittest.TestCase):
         This test will prevent missing commas when adding excuses,
         causing two excuses to merge (uglily) into one.
         """
+        assert len(EXCUSES) == 61
 
-        from meldebot.mel.excuses import EXCUSES
+    def test_get_random_excuses_function(self) -> None:
+        """
+        Validate that the get_random_excuses returns a str.
 
-        assert len(EXCUSES) == 33
+        This test will check get_random_excuses executes its purpose correctly,
+        choosing and returning one of the excuses defined by users.
+        """
+        assert isinstance(get_random_excuse(), str)
