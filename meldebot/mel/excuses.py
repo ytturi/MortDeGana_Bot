@@ -48,14 +48,14 @@ EXCUSES = [
     f"Ara acabo de recordar que vaig al rocodrom, intento anar {randint(2,50)} vegades per setmana",
     "Brumm brummmmm",
     "Vindria però no bec cervesa",
-    "No puc venir perque m'agrada anar per l'autopista, ara que son gratuites"
+    "No puc venir perque m'agrada anar per l'autopista, ara que son gratuites",
     "He d'anar a casa a simular indexades",
     "El meu horòscop em diu que he de menjar 44 peces de fruita diàries i avui vaig tard",
     "No puc deixar sola la serp que tinc a casa o es menjarà el hàmster",
     "Començo un curs de ganxet a Udemy i em fa molta il·lusió",
     "He llegit a Twitter que avui tinc que holdear BTC",
     "Tinc que anar a posar pinso a les gallines. No obren fins dilluns que ve",
-    "He tingut que marxar de la ciutat per un temps i no sé quan podré tornar. M'han dit que millor no expliqui perquè."
+    "He tingut que marxar de la ciutat per un temps i no sé quan podré tornar. M'han dit que millor no expliqui perquè.",
     "M'han detingut per no recollir una caca de gos. Envia 2.000€ a freemortdegana.com per treure'm d'aquí.",
     "M'he comprat un yo-yo i estic recuperant la meva infància. Seré al parc de sota de casa, berenant pa amb xocolata",
     "M'encantaria, però no em ve de gust",
