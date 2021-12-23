@@ -45,7 +45,7 @@ EXCUSES = [
     f"Haig d'anar a plantar {randint(2,50)} regues de cebes, {randint(2,50)} de cols, {randint(2,50)} d'alls i {randint(2,50)} de brocolis",
     "Tinc un problema i no puc venir",
     "Es que he anat a donar sang i no m'arrba al creelllkakakak",
-    f"Ara acabo de recordar que vaig al rocodrom, intento anar {randint(1,50)} vegades per setmana",
+    f"Ara acabo de recordar que vaig al rocodrom, intento anar {randint(2,50)} vegades per setmana",
     "Brumm brummmmm",
     "Vindria però no bec cervesa",
     "No puc venir perque m'agrada anar per l'autopista, ara que son gratuites"
