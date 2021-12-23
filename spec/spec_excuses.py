@@ -19,4 +19,4 @@ class TestExcuses(unittest.TestCase):
 
         from meldebot.mel.excuses import EXCUSES
 
-        assert len(EXCUSES) == 33
+        assert len(EXCUSES) == 61
