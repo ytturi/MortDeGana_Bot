@@ -17,6 +17,6 @@ class TestExcuses(unittest.TestCase):
         causing two excuses to merge (uglily) into one.
         """
 
-        from meldebot.mel.excuses import EXCUSES
+        from meldebot.mel.excuses import get_random_excuse
 
-        assert len(EXCUSES) == 61
+        assert isinstance(get_random_excuse(), str)
