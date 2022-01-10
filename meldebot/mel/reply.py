@@ -30,6 +30,7 @@ from meldebot.mel.utils import (
 )
 from meldebot.mel.excuses import get_random_excuse
 
+
 @send_typing_action
 def cb_spoiler_handler(update: Update, context: CallbackContext) -> None:
     logger.info("Reply spoiler")
@@ -94,6 +95,7 @@ def cb_insult_handler(update, context) -> None:
             parse_mode=telegram.ParseMode.MARKDOWN,
         )
 
+
 @send_typing_action
 @remove_command_message
 def cb_excusa_handler(update, context) -> None:
@@ -114,6 +116,7 @@ def cb_excusa_handler(update, context) -> None:
             f"{excusa}",
             parse_mode=telegram.ParseMode.MARKDOWN,
         )
+
 
 spoiler_handler = CommandHandler("spoiler", cb_spoiler_handler)
 substitute_handler = CommandHandler("s", cb_substitute_handler)
