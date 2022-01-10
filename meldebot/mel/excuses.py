@@ -63,7 +63,7 @@ EXCUSES = [
     "És que fa temps que estic enfadat amb vosaltres i no recordo perquè. No us vull veure fins que s'em passi.",
     "Uff, impossible. Just tenia pensat trucar a Movistar per a donar-me de baixa. Us veig l'any que ve.",
     "Quan acabi amb les excuses del bot, n'he d'afegir també a unes declaracions del Rajoy. A veure si colen!",
-    "Mmm... no sé si arribaria a temps. Estic esperant que acabi la sèrie One Piece. Després estaré disponible."
+    "Mmm... no sé si arribaria a temps. Estic esperant que acabi la sèrie One Piece. Després estaré disponible.",
 ]
 
 

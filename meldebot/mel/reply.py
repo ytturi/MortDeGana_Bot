@@ -15,12 +15,7 @@ import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackQueryHandler, CommandHandler
 
-if TYPE_CHECKING:
-    from telegram import Update
-    from telegram.ext import CallbackContext
-
-logger = getLogger(__name__)
-
+from meldebot.mel.excuses import get_random_excuse
 from meldebot.mel.utils import (
     get_insult,
     get_username,
@@ -28,6 +23,12 @@ from meldebot.mel.utils import (
     reply_not_implemented,
     send_typing_action,
 )
+
+if TYPE_CHECKING:
+    from telegram import Update
+    from telegram.ext import CallbackContext
+
+logger = getLogger(__name__)
 
 
 @send_typing_action
@@ -95,8 +96,31 @@ def cb_insult_handler(update, context) -> None:
         )
 
 
+@send_typing_action
+@remove_command_message
+def cb_excusa_handler(update, context) -> None:
+    logger.info("Reply Escusa")
+
+    original_message = update.effective_message.reply_to_message
+    excusa = get_random_excuse()
+
+    if original_message:
+        update.message.reply_text(
+            f"{excusa}",
+            reply_to_message_id=original_message.message_id,
+            parse_mode=telegram.ParseMode.MARKDOWN,
+            quote=True,
+        )
+    else:
+        update.message.reply_text(
+            f"{excusa}",
+            parse_mode=telegram.ParseMode.MARKDOWN,
+        )
+
+
 spoiler_handler = CommandHandler("spoiler", cb_spoiler_handler)
 substitute_handler = CommandHandler("s", cb_substitute_handler)
 insult_handler = CommandHandler("insult", cb_insult_handler)
+excusa_handler = CommandHandler("excusa", cb_excusa_handler)
 
-REPLY_HANDLERS = [spoiler_handler, substitute_handler, insult_handler]
+REPLY_HANDLERS = [spoiler_handler, substitute_handler, insult_handler, excusa_handler]

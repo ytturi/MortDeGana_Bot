@@ -1,6 +1,8 @@
 from __future__ import annotations
-from meldebot.mel.excuses import get_random_excuse, EXCUSES
+
 import unittest
+
+from meldebot.mel.excuses import EXCUSES, get_random_excuse
 
 
 class TestExcuses(unittest.TestCase):
