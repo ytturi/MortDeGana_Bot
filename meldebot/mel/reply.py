@@ -15,12 +15,7 @@ import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackQueryHandler, CommandHandler
 
-if TYPE_CHECKING:
-    from telegram import Update
-    from telegram.ext import CallbackContext
-
-logger = getLogger(__name__)
-
+from meldebot.mel.excuses import get_random_excuse
 from meldebot.mel.utils import (
     get_insult,
     get_username,
@@ -28,7 +23,12 @@ from meldebot.mel.utils import (
     reply_not_implemented,
     send_typing_action,
 )
-from meldebot.mel.excuses import get_random_excuse
+
+if TYPE_CHECKING:
+    from telegram import Update
+    from telegram.ext import CallbackContext
+
+logger = getLogger(__name__)
 
 
 @send_typing_action
