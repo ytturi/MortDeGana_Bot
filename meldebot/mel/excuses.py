@@ -64,6 +64,16 @@ EXCUSES = [
     "Uff, impossible. Just tenia pensat trucar a Movistar per a donar-me de baixa. Us veig l'any que ve.",
     "Quan acabi amb les excuses del bot, n'he d'afegir també a unes declaracions del Rajoy. A veure si colen!",
     "Mmm... no sé si arribaria a temps. Estic esperant que acabi la sèrie One Piece. Després estaré disponible.",
+    "És que aquesta tarda entra eòlica al mix i volia aprofitar per a carregar el rellotge i els mòbils.",
+    f"Avui no puc venir. Algú m'ha robat les tovalloles del safareig i les estic rastrejant. Són a {randint(2,10)} km de casa meva.",
+    "He de pagar el lloguer i només tinc la meitat. Així que vaig al casino per a intentar duplicar els meus diners.",
+    "Ahir em vaig desatascar les orelles i amb l'esquerra vaig entrar massa el bastonet. Com que dormo amb el despertador a l'esquerra, no l'he sentit fins ara.",
+    "Vindria, però he de canviar el filtre i la bombeta del forn.",
+    "Ho sento, m'he tingut que barallar al carrer amb uns nois que deien que no ereu els millors companys per anar a fer un Pagès avui.",
+    "Em sap greu. Avui no puc caminar gaire, m'he lesionat un dit fent un bugfix de l'ERP.",
+    "Un altre dia, companys, tinc que rentar els plats i trigo una mica perquè sóc alèrgic a l'aigua calenta.",
+    "No podré venir... el tren que em porta fins aquí deu minuts tard, ha arribat deu minuts tard.",
+    "Un corb m'ha robat les claus. Estic perseguint-lo amb un dron, així que potser trigaré una mica.",
 ]
 
 
