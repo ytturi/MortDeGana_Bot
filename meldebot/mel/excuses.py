@@ -74,6 +74,19 @@ EXCUSES = [
     "Un altre dia, companys, tinc que rentar els plats i trigo una mica perquè sóc alèrgic a l'aigua calenta.",
     "No podré venir... el tren que em porta fins aquí deu minuts tard, ha arribat deu minuts tard.",
     "Un corb m'ha robat les claus. Estic perseguint-lo amb un dron, així que potser trigaré una mica.",
+    "No puc venir, el meu peix daurat té teràpia emocional aquesta tarda.",
+    "M'encantaria, però estic ocupat reorganitzant la meva col·lecció d'aire enllaunat.",
+    "No crec que arribi, he perdut la Wi-Fi a casa i estic buscant la senyal.",
+    "No puc assistir, companys, estic esperant a que el microones em contesti un e-mail.",
+    "Em sap greu, avui estic compromés a trobar la fi de l'Arc de Sant Martí.",
+    "No puc venir, estic enmig d'una marató de comptar totes les rajoles de la meva cuina.",
+    "No puc, el meu mòbil m'ha demanat una actualització de osftware i no em deixa sortir.",
+    "Ho sento, però estic entrenant a la meva ombra per a que deixi de seguir-me. Ja quasi ho he aconseguit!",
+    "No podré venir, la meva nevera organitza una festa secreta i he de vigilar.",
+    "Estic atrapat en un bucle temporal i ja he viscut aquesta quedada tres vegades, no vull arriscar-me a una altra repetició.",
+    "M'encantaria, però tinc que convèncer al meu mirall de uqe sóc la persona que veig.",
+    "Uff, no puc... estic cercant la cura pel dilluns etern... i és una llarga recerca...",
+    "És que el meu sofà m'ha desafiat a un duel de migdiades i no puc rebutjar-lo.",
 ]
 
 
