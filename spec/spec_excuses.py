@@ -18,7 +18,7 @@ class TestExcuses(unittest.TestCase):
         This test will prevent missing commas when adding excuses,
         causing two excuses to merge (uglily) into one.
         """
-        assert len(EXCUSES) == 106
+        assert len(EXCUSES) == 116
 
     def test_get_random_excuses_function(self) -> None:
         """
