@@ -107,6 +107,16 @@ EXCUSES = [
     "M'encantaria, però tinc que convèncer al meu mirall de uqe sóc la persona que veig.",
     "Uff, no puc... estic cercant la cura pel dilluns etern... i és una llarga recerca...",
     "És que el meu sofà m'ha desafiat a un duel de migdiades i no puc rebutjar-lo.",
+    "No puc venir, estic esperant que el forn em faci un discurs motivacional.",
+    "Avui no surto… el terra torna a ser lava.",
+    "No puc, he d’ensenyar a un fantasma a respectar el meu espai personal.",
+    "Estic molt ocupat intentant domesticar una crispet agressiva.",
+    "No podré assistir: estic ajudant el meu WiFi a trobar el seu veritable propòsit.",
+    "No puc venir, tinc cita amb el meu destí… i s’ha endarrerit sense avisar.",
+    "Estic en plena crisi existencial: i si els mitjons desapareguts només volien llibertat?",
+    "M'encantaria venir, però m’han retingut uns gremlins perquè no m’he acabat l’esmorzar.",
+    "No puc assistir, estic intentant recordar on vaig deixar la meva motivació. Crec que al 2019.",
+    "No puc venir, estic intentant convèncer un ocell que no sóc un arbre.",
 ]
 
 
